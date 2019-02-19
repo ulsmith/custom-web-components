@@ -176,7 +176,7 @@ export default class CWCResourceRouter extends CustomHTMLElement {
 	 * @param {String} component The component tag name (lowercase, hyphoned)
 	 */
 	_paintRoute(component) {
-		this.dom.innerHTML = `<${component}></${component}>`;
+		this.dom().innerHTML = `<${component}></${component}>`;
 		this.dispatchEvent(new CustomEvent('routeloaded'));
 	}
 }
