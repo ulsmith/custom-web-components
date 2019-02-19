@@ -40,7 +40,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	template() {
 		return html`
 			<style>
-				:host, cwc-layout-dockable { display: block; height: 100%; }
+				${this.host()} { display: block; height: 100%; }
 
 				#cwc-layout-dockable { display: flex; flex-flow: row wrap; margin: 0; padding: 0;}
 				#cwc-layout-dockable [hidden] { display: none !important; }
@@ -120,7 +120,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	 * @description Lifecycle hook that gets called when the element html template is updated
 	 */
 	templateUpdated() {
-		this._menuNode = this.dom.querySelector('#structure-menu');
+		this._menuNode = this.dom().querySelector('#structure-menu');
 		this.updateHeight();
 	}
 
@@ -131,7 +131,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	 * @param {Event} ev The event that instigated the function
 	 */
 	updateHeight(ev) {
-		this.dom.style.height = window.innerHeight + 'px';
+		this.dom().style.height = window.innerHeight + 'px';
 		if (window.innerWidth < 800) {
 			setTimeout(() => this.toggleMenu(true), 1);
 			this._menuNode.style.height = window.innerHeight + 'px';
