@@ -15,17 +15,17 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @example HTML
  * <cwc-base-tag size="small" color="blue" shape="rounded"></cwc-base-tag>
  */
-export default class CWCBaseTag extends CustomHTMLElement {
+class CWCBaseTag extends CustomHTMLElement {
 	/**
 	 * @public @name template
 	 * @description Template function to return web component UI
-	 * 
+	 *
 	 * @return {String} HTML template block
-	 * 
+	 *
 	 * @example JS
 	 * this.updateTemplate(); // updates the template and topically re-renders changes
 	 */
-	template() {
+	static template() {
 		return html`
 			<div id="cwc-resource-router" ?size="${this.getAttribute('size')}" ?color="${this.getAttribute('color')}" ?shape="${this.getAttribute('shape')}">
 				<style>
@@ -59,7 +59,7 @@ export default class CWCBaseTag extends CustomHTMLElement {
 	/**
 	 * @public @static @get @name observedAttributes
 	 * @description Lifecycle hook that sets attributes to observe on the element
-	 * 
+	 *
 	 * @return {Array} An array of string attribute names (hyphoned)
 	 */
 	static get observedAttributes() {
@@ -69,7 +69,7 @@ export default class CWCBaseTag extends CustomHTMLElement {
 	/**
 	 * @public @name attributeChanged
 	 * @description Lifecycle hook that gets called when the elements observed attributes change
-     * 
+     *
 	 * @param {String} property Name of the property changed
      * @param {Mixed} oldValue Value before the change
      * @param {Mixed} newValue Value after the change

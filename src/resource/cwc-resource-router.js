@@ -19,7 +19,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @example HTML
  * <cwc-resource-router .route="${this.route}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
  */
-export default class CWCResourceRouter extends CustomHTMLElement {
+class CWCResourceRouter extends CustomHTMLElement {
 	/**
 	 * @public @constructor @name constructor
 	 * @description Process called function triggered when component is instantiated (but not ready or in DOM, must call super() first)
@@ -45,7 +45,7 @@ export default class CWCResourceRouter extends CustomHTMLElement {
 	 * @example JS
 	 * this.updateTemplate(); // updates the template and topically re-renders changes
 	 */
-	template() {
+	static template() {
 		return html`<div id="cwc-resource-router"></div>`;
 	}
 

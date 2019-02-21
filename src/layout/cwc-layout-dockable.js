@@ -9,11 +9,11 @@ import CWCIconMaterial from '../icon/cwc-icon-material.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2018 Paul Smith (ulsmith.net)
  * @license MIT
- * 
+ *
  * @example HTML
  * <cwc-layout-dockable></cwc-layout-dockable>
  */
-export default class CWCLayoutDockable extends CustomHTMLElement {
+class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @constructor @name constructor
 	 * @description Process called function triggered when component is instantiated (but not ready or in DOM, must call super() first)
@@ -34,10 +34,10 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @name template
 	 * @description Template function to return web component HTML template
-	 * 
+	 *
 	 * @return {TemplateResult} HTML template result
 	 */
-	template() {
+	static template() {
 		return html`
 			<style>
 				${this.host()} { display: block; height: 100%; }
@@ -56,7 +56,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 				#cwc-layout-dockable .structure-page { display: block; flex: 10 1 550px; overflow-y: auto; margin: 0; padding: 20px; box-sizing: border-box; background-color: #ddd; color: #222; }
 				#cwc-layout-dockable .structure-page .icon-bars { display: none; width: 35px; height: 35px; border: 1px solid #888; border-radius: 50px; background-color: white; padding: 10px; box-sizing: border-box; position: fixed; bottom: 15px; right: 15px; opacity: 0.6; cursor: pointer; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5); }
 				#cwc-layout-dockable .structure-page .icon-bars:hover { opacity: 1; }
-				
+
 				@media screen and (min-width:1px) and (max-width:799px) {
 					#cwc-layout-dockable .structure-menu { position: fixed; top: 0px; left: 0px; width: 250px; min-height: 100%; opacity: 0.95; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5); }
 					#cwc-layout-dockable .structure-menu[docked] { left: -300px; }
@@ -92,7 +92,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @static @get @name observedProperties
 	 * @description Lifecycle hook that sets properties to observe on the element
-	 * 
+	 *
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
@@ -127,7 +127,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @name updateHeight
 	 * @description Updates the menu and page height to match the window
-	 * 
+	 *
 	 * @param {Event} ev The event that instigated the function
 	 */
 	updateHeight(ev) {
@@ -144,7 +144,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @name toggleMenu
 	 * @description Toggles the menu in and out once in mobile view
-	 * 
+	 *
 	 * @param {Boolean} docked Dock or un dock the menu or swippy swappy if nothing passed in
 	 */
 	toggleMenu(docked, ev) {
@@ -156,7 +156,7 @@ export default class CWCLayoutDockable extends CustomHTMLElement {
 	/**
 	 * @public @name changeRoute
 	 * @description Change the route based in the route click by issuing a changeroute event with the selected route
-	 * 
+	 *
 	 * @param {Boolean} docked Dock or un dock the menu or swippy swappy if nothing passed in
 	 */
 	changeRoute(route) {
