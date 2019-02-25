@@ -1,12 +1,12 @@
 {
   "name": "custom-web-components",
-  "version": "1.0.4",
+  "version": "1.2.0",
   "license": "MIT",
   "description": "Collection of web components written using custom-web-components using a HTML rendering library, lit-html(render, html)",
   "author": "Paul Smith (smiffy6969)",
   "homepage": "http://ulsmith.net",
   "dependencies": {
-    "custom-web-component": "^1.1.0"
+    "custom-web-component": "^1.2.0"
   },
   "devDependencies": {}
 }

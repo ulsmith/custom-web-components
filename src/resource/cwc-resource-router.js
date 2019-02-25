@@ -181,7 +181,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 	 * @param {String} component The component tag name (lowercase, hyphoned)
 	 */
 	_paintRoute(component) {
-		this.dom().innerHTML = `<${component}></${component}>`;
+		this.shadowRoot.innerHTML = `<${component}></${component}>`;
 	}
 }
 
