@@ -1,0 +1,856 @@
+import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
+import '../icon/material/cwc-icon-material-general.js';
+import './cwc-overlay.js';
+import '../control/cwc-control-input.js';
+import '../control/cwc-control-button.js';
+
+/**
+ * @public @name CWCOverlayPickerDate
+ * @extends CustomHTMLElement
+ * @description Application Web Component, common component, overlay picker letting you pick a date
+ * @author Paul Smith <p@ulsmith.net>
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ *
+ * @example
+ * <cwc-overlay-picker-date format="dd/mm/yyyy" label="Date" placeholder="Input Date" required disabled validate-on-load></cwc-overlay-picker-date>
+ */
+class CWCOverlayPickerDate extends CustomHTMLElement {
+
+	/**
+     * @public @constructor @name constructor
+	 * @description Triggered when component is instantiated (but not ready or in DOM, must call super() first)
+	 */
+	constructor() {
+		super();
+
+		this.value = '';
+		this.mode = 'day';
+		this.days = [];
+		this.years = [];
+		this.invalid = false;
+		this.selected;
+		this.date = new Date();
+		this.date.setDate(1);
+
+		this.fullMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		this.abbMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		this.fullDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		this.abbDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+		this.format = this.hasAttribute('format') ? this.getAttribute('format') : 'dd/mm/yyyy';
+		this.label = this.hasAttribute('label') ? this.getAttribute('label') : 'Date';
+		this.required = this.hasAttribute('required') ? true : false;
+		this.disabled = this.hasAttribute('disabled') ? true : false;
+		
+		this._open;
+	}
+
+	/**
+	 * @public @static @name template
+	 * @description Template function to return web component UI
+	 * @return {TemplateResult} HTML template result
+	 */
+    static template() {
+		return html`
+			<style>
+				:host { display: block; width: 100%; }
+
+				[hidden] { display: none !important; }
+
+				.cwc-overlay-picker-date { padding: 0; color: #222; }
+				.cwc-overlay-picker-date .cwc-inputs { width: 100%; display: inline-block; position: relative; }
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; height: var(--cwc-overlay-picker-date--button-open--height, 30px); }
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
+
+				.cwc-overlay-picker-date .cwc-inputs .cwc-input { 
+					width: 100%; 
+					display: inline-block; 
+					padding: 0 40px 0 0; 
+					box-sizing: border-box; 
+					--cwc-control-input--padding: var(--cwc-overlay-picker-date--input--padding, 4px 25px 4px 4px);
+				}
+				
+				.cwc-overlay-picker-date .cwc-box {
+					margin: 0;
+					padding: 0;
+					width: 260px;
+					height: 320px;
+					box-sizing: border-box;
+					z-index: 1001;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box {
+					display: inline-block;
+					padding: 0px;
+					margin: 0;
+				    text-align: center;
+					width: 260px;
+					height: 320px;
+					box-sizing: border-box;
+					float: left;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls {
+					padding: 0px;
+					height: 30px;
+					-webkit-touch-callout: none; /* iOS Safari */
+					-webkit-user-select: none; /* Safari */
+					-moz-user-select: none; /* Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-month {
+					line-height: 20px;
+					box-shadow: 0 0px 5px 0px #444;
+					padding: 5px 10px;
+					margin-right: 1px;
+					border-radius: 50px 0px 0px 50px;
+					cursor: pointer;
+					display: inline-block;
+					box-sizing: border-box;
+					color: #222;
+					font-size: 14px;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-year {
+					line-height: 20px;
+					box-shadow: 0 0px 5px 0px #444;
+					padding: 5px 10px;
+					margin-left: 1px;
+					border-radius: 0px 50px 50px 0px;
+					cursor: pointer;
+					display: inline-block;
+					box-sizing: border-box;
+					color: #222;
+					font-size: 14px;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-month[selected], .cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-year[selected] { background-color: #ddd; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon {
+					height: 30px;
+					width: 30px;
+					box-shadow: 0 0px 5px 0px #444;
+					padding: 2px;
+					border-radius: 50px;
+					cursor: pointer;
+					display: inline-block;
+					box-sizing: border-box;
+					color: #444;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[back] { float: left; }
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[forward] { float: right; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days {
+					list-style-type: none;
+					margin: 0;
+					margin: 10px 0;
+					padding: 0;
+					height: 240px;
+					width: 260px;
+					display: flex;
+					flex-flow: row wrap;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li {
+					border: 1px solid #ccc;
+					background-color: #eee;
+					color: #555;
+					box-sizing: border-box;
+					font-size: 14px;
+					line-height: 14px;
+					display: flex;
+					margin: 1px 1px;
+					cursor: pointer;
+					flex: 1 1 32px;
+					align-items: center;
+					justify-content: center;
+					-webkit-touch-callout: none; /* iOS Safari */
+					-webkit-user-select: none; /* Safari */
+					-moz-user-select: none; /* Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none;
+					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+7), .cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+6) { background-color: #ddd; }
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[today] { font-weight: bold; color: #000; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[selected] {
+					border: var(--cwc-overlay-picker-date--selected-day--border, 1px solid #1b741b);
+					background: var(--cwc-overlay-picker-date--selected-day--background, #0f990f);
+					color: var(--cwc-overlay-picker-date--selected-day--color, white);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li .cwc-day {
+					margin: 0;
+					padding: 0;
+					display: block;
+   					font-size: 10px;
+					line-height: 14px;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li .cwc-date {
+					margin: 0;
+					padding: 0;
+					display: block;
+					font-size: 14px;
+					line-height: 20px;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months {
+					list-style-type: none;
+					padding: 0;
+					margin: 10px 0;
+					height: 240px;
+					width: 260px;
+					display: flex;
+					flex-flow: row wrap;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li {
+					border: 1px solid #ccc;
+				    background-color: #ddd;
+					color: #222;
+					box-sizing: border-box;
+					display: flex;
+					margin: 1px;
+					cursor: pointer;
+					font-size: 14px;
+					line-height: 14px;
+					flex: 1 1 80px;
+					align-items: center;
+					justify-content: center;
+					-webkit-touch-callout: none; /* iOS Safari */
+					-webkit-user-select: none; /* Safari */
+					-moz-user-select: none; /* Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none;
+					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li[today] { font-weight: bold; color: black; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li[selected] {
+					border: var(--cwc-overlay-picker-date--selected-month--border, 1px solid #ea5121);
+					background: var(--cwc-overlay-picker-date--selected-month--background, #ff7448);
+					color: var(--cwc-overlay-picker-date--selected-month--color, white);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years {
+					list-style-type: none;
+					padding: 0;
+					margin: 10px 0;
+					height: 240px;
+					width: 260px;
+					display: flex;
+					flex-flow: row wrap;
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li {
+					border: 1px solid #ccc;
+				    background-color: #ddd;
+					color: #222;
+					box-sizing: border-box;
+					display: flex;
+					flex: 1 1 45px;
+					margin: 1px;
+					cursor: pointer;
+					font-size: 14px;
+					line-height: 14px;
+					align-items: center;
+					justify-content: center;
+					-webkit-touch-callout: none; /* iOS Safari */
+					-webkit-user-select: none; /* Safari */
+					-moz-user-select: none; /* Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none;
+					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li[today] { font-weight: bold; color: black; }
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li[selected] {
+					border: var(--cwc-overlay-picker-date--selected-year--border, 1px solid #ea5121);
+					background: var(--cwc-overlay-picker-date--selected-year--background, #ff7448);
+					color: var(--cwc-overlay-picker-date--selected-year--color, white);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls { display: flex; flex-flow: row; margin: -5px; }
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; }
+
+        		@media (max-width: 550px) {
+                    .cwc-overlay-picker-date .cwc-box { width: 260px; }
+					.cwc-overlay-picker-date .cwc-box .cwc-date-box { width: 100%; height: 80px; margin-bottom: 10px; }
+					.cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date { height: fit-content; position: initial; width: 100%; margin-top: 0; }
+
+					.cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-day, .cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-year, .cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-date {
+						font-size: 20px;
+						line-height: 26px;
+						display: inline-block;
+					}
+
+					.cwc-overlay-picker-date .cwc-box .date-box .cwc-controls .cwc-icon { margin: 5px 2px; }
+				}
+			</style>
+			
+			<div class="cwc-overlay-picker-date">
+				<div class="cwc-inputs">
+					<cwc-control-input
+						type="text"
+						id="input"
+						class="cwc-input"
+						label="${ifDefined(this.label)}"
+						regex="${ifDefined(this._pattern(this.format))}"
+						invalid-message="${this.format} or tomorrow, next year..."
+					    context="${this.hasAttribute('context') ? this.getAttribute('context') : ''}"
+						placeholder="${this.getAttribute('placeholder') || ''}"
+						.value="${this.value}"
+						?disabled="${this.hasAttribute('disabled')}"
+						?required="${this.hasAttribute('required')}"
+						?validate-on-load="${this.hasAttribute('validate-on-load')}"
+					    ?invalid="${this.hasAttribute('invalid')}"
+						@validated="${this._manual.bind(this)}"
+					></cwc-control-input>
+					<cwc-icon-material-general name="clear" class="cwc-icon-button cwc-clear" @click="${this._delete.bind(this)}" ?hidden="${this.hasAttribute('disabled')}"></cwc-icon-material-general>
+					<cwc-control-button class="cwc-icon-button cwc-open" @click="${this.show.bind(this)}" ?disabled="${this.hasAttribute('disabled')}">
+						<cwc-icon-material-general name="dateRange" class="cwc-icon"></cwc-icon-material-general>
+					</cwc-control-button>
+				</div>
+
+				<cwc-overlay id="picker" class="cwc-picker" @hide="${this._closed.bind(this)}">
+					<div class="cwc-box">
+						<div class="cwc-control-box">
+							<div class="cwc-controls">
+								<span class="cwc-icon" back @click="${this._back.bind(this)}" ?hidden="${this.mode == 'month'}">${GeneralIcons.chevronLeft}</span>
+								<span class="cwc-month" @click="${this._changeMode.bind(this, 'month')}" ?selected="${this.mode == 'month'}">
+									${this._formatDate('mmmm', this.date)}
+								</span><span class="cwc-year" @click="${this._changeMode.bind(this, 'year')}" ?selected="${this.mode == 'year'}">
+									${this._formatDate('yyyy', this.date)}
+								</span>
+								<span class="cwc-icon" forward @click="${this._forward.bind(this)}" ?hidden="${this.mode == 'month'}">${GeneralIcons.chevronRight}</span>
+							</div>
+							<ul class="cwc-days" ?hidden="${this.mode != 'day'}">
+								${this.days ? this.days.map((day, idx) => html`
+									<li @click="${this._selectDay.bind(this, idx, day.disabled)}" ?selected="${this._datesEqual(day.date, this.selected)}" ?disabled="${day.disabled}" ?today="${this._datesEqual(day.date, this.today)}">
+										<div class="cwc-details">
+											<span class="cwc-day">${this._formatDate('ddd', day.date)}</span>
+											<span class="cwc-date">${this._formatDate('dd', day.date)}</span>
+										</div>
+									</li>
+								`) : ''}
+							</ul>
+							<ul class="cwc-years" ?hidden="${this.mode != 'year'}">
+								${this.years ? this.years.map((year, idx) => html`
+									<li @click="${this._selectYear.bind(this, idx)}" ?today="${this._formatDate('yyyy', this.today) == year}" ?selected="${this._formatDate('yyyy', this.date) == year}">
+										<div class="cwc-details">
+											<span class="cwc-year">${year}</span>
+										</div>
+									</li>
+								`) : ''}
+							</ul>
+							<ul class="cwc-months" ?hidden="${this.mode != 'month'}">
+								${this.fullMonths ? this.fullMonths.map((month, idx) => html`
+									<li @click="${this._selectMonth.bind(this, idx)}" ?today="${this._formatDate('mmmm', this.today) == month}" ?selected="${this._formatDate('mmmm', this.date) == month}">
+										<div class="cwc-details">
+											<span class="cwc-month">${month}</span>
+										</div>
+									</li>
+								`) : ''}
+							</ul>
+							<div class="bottom-controls">
+								<cwc-control-button class="cwc-bottom-button" @click="${this._today.bind(this)}">Today</cwc-control-button>
+								<cwc-control-button class="cwc-bottom-button" @click="${this.hide.bind(this)}">Close</cwc-control-button>
+							</div>
+						</div>
+					</div>
+				</cwc-overlay>
+			</div>
+        `;
+	}
+
+	/**
+	 * @public @static @get @name observedProperties
+	 * @description Provide properties to watch for changes
+	 * @return {Array} Array of property names as strings
+	 */
+	static get observedProperties() { return ['format', 'label', 'value', 'required', 'disabled', 'invalid', 'selected'] }
+
+	/**
+	 * @public @name propertyChanged
+	 * @description Callback run when a custom elements properties change
+	 * @param {String} property The property name
+	 * @param {Mixed} oldValue The old value
+	 * @param {Mixed} newValue The new value
+	 */
+	propertyChanged(property, oldValue, newValue) { this.updateTemplate() }
+
+	/**
+	 * @public @static @get @name observedProperties
+	 * @description Provide properties to watch for changes
+	 * @return {Array} Array of property names as strings
+	 */
+	static get observedAttributes() { return ['format', 'label', 'required', 'disabled', 'validate-on-load', 'placeholder', 'context'] }
+
+	/**
+	 * @public @name propertyChanged
+	 * @description Callback run when a custom elements properties change
+	 * @param {String} property The property name
+	 * @param {Mixed} oldValue The old value
+	 * @param {Mixed} newValue The new value
+	 */
+	attributeChanged(attribute, oldValue, newValue) {
+		switch (attribute) {
+			case 'format': this.format = newValue; break;
+			case 'label': this.label = newValue; break;
+			case 'required': this.required = newValue; break;
+			case 'disabled': this.disabled = newValue; break;
+		}
+
+		this.updateTemplate();
+	}
+
+	/**
+	 * @public @name connected
+	 * @description Callback run once the custom element has been added to the DOM and template is rendered
+	 */
+	connected() { this.today = new Date() }
+
+	/**
+	 * @private @name open
+	 * @description Show the date picker
+     * @param {Event} ev Any event that kicks the function
+	 */
+	show(ev) {
+		if (this.disabled) return;
+
+		this._open = true;
+		this.updateTemplate();
+		let liveValue = this.shadowRoot.querySelector('#input').value;
+		if (!!liveValue) this.selected = this._stringToDate(liveValue);
+		else this.selected = null;
+
+		this.date.setDate(1);
+		this.date.setMonth(this.selected ? this.selected.getMonth() : this.today.getMonth());
+		this.date.setFullYear(this.selected ? this.selected.getFullYear() : this.today.getFullYear());
+		this.date = new Date(this.date);
+
+		this._createMonth();
+		this.shadowRoot.querySelector('#picker').show();
+
+		this.scrollable = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+	}
+
+	/**
+	 * @private @name hide
+	 * @description Hide the date picker
+     * @param {Event} ev Any event that kicks the function
+	 */
+	hide(ev) {
+		this._closed();
+		this.shadowRoot.querySelector('#picker').hide();
+	}
+
+	/**
+	 * @private @name validate
+	 * @description Proxy the validation to input
+	 */
+	validate() { return this.shadowRoot.querySelector('cwc-control-input').validate() }
+
+	/**
+	 * @private @name _closed
+	 * @description Run when the picker is closed, to save values and emit events
+	 */
+	_closed() {
+		this._open = false;
+		this.updateTemplate();
+
+		this.value = this.selected ? this._formatDate(this.format, this.selected) : undefined;
+		this.shadowRoot.querySelector('cwc-control-input').validate(this.value)
+		this.opened = false;
+		this.invalid = this.shadowRoot.querySelector('#input').invalid;
+
+		this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
+
+		document.body.style.overflow = this.scrollable;
+
+		if (this.invalid) this.setAttribute('invalid', '');
+		else this.removeAttribute('invalid');
+	}
+
+	/**
+	 * @private @name _manual
+	 * @description Data is entered manually into the input box, converts to a date
+     * @param {Event} ev Any event that kicks the function
+	 */
+	_manual(ev) {
+		let input = this.shadowRoot.querySelector('#input');
+		if (input.invalid) {
+			this.value = input.value;
+			this.updateTemplate();
+			return;
+		}
+
+		this.selected = this._stringToDate(input.value);
+		this.value = this.selected ? this._formatDate(this.format, this.selected) : undefined;
+		this.invalid = input.invalid;
+
+		if (this.invalid) this.setAttribute('invalid', '');
+		else this.removeAttribute('invalid');
+		
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _clear
+	 * @description Clear the selected date
+     * @param {Event} ev Any event that kicks the function
+	 */
+	_clear(ev) {
+		this.selected = null;
+	}
+
+	/**
+	 * @private @name _delete
+	 * @description Delete the date entered into thte input box
+     * @param {Event} ev Any event that kicks the function
+	 */
+	_delete(ev) {
+		this.value = '';
+		this.shadowRoot.querySelector('#input').value = '';
+		this.invalid = this.shadowRoot.querySelector('#input').invalid;
+
+		if (this.invalid) this.setAttribute('invalid', '');
+		else this.removeAttribute('invalid');
+
+		this.shadowRoot.querySelector('#input').focus();
+
+		this.updateTemplate();
+		this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
+	}
+
+	/**
+	 * @private @name _today
+	 * @description Set the date to today
+     * @param {Event} ev Any event that kicks the function
+	 */
+	_today(ev) {
+		this.date.setDate(1);
+		this.date.setMonth(this.today.getMonth());
+		this.date.setFullYear(this.today.getFullYear());
+		this.date = new Date(this.date);
+		this._createMonth();
+		
+		this.mode = 'day';
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _monthSuffix
+	 * @description Generate a month suffix from date object
+     * @param {Date} date Date object
+	 * @return {String} Date suffix such as st, nd, rd, th
+	 */
+	_monthSuffix(date) {
+		if (!date || typeof date !== 'object') return '';
+		let dateNum = date.getDate();
+		return [1, 21, 31].indexOf(dateNum) >= 0 ? 'st' : ([2, 22].indexOf(dateNum) >= 0 ? 'nd' : ([3, 23].indexOf(dateNum) >= 0 ? 'rd' : 'th'));
+	}
+
+	/**
+	 * @private @name _datesEqual
+	 * @description Check if two dates are equal
+     * @param {Date} date1 Date object
+     * @param {Date} date2 Date object
+	 * @return {Boolean} Are the two dates equal
+	 */
+	_datesEqual(date1, date2) {
+		return !!date1 && !!date2 && !!date1.toLocaleDateString && !!date2.toLocaleDateString && date1.toLocaleDateString() === date2.toLocaleDateString();
+	}
+
+	/**
+	 * @private @name _formatDate
+	 * @description Format a date in a prticular format
+     * @param {String} format The format of the date in e.g. dd/mm/yy
+     * @param {Date} date Date object
+	 * @return {Boolean} Are the two dates equal
+	 */
+	_formatDate(format, date) {
+		if (!date || typeof date !== 'object') return '';
+
+		let formatted = '';
+		let parts = format.split(/\s|\\|\/|\-/);
+		for (let part of parts) {
+			// ddd, dd, d
+			formatted += part.toLowerCase() === 'dddd' ? this.fullDays[date.getDay()] : '';
+			formatted += part.toLowerCase() === 'ddd' ? this.abbDays[date.getDay()] : '';
+			formatted += part.toLowerCase() === 'dds' ? (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + this._monthSuffix(date) : '';
+			formatted += part.toLowerCase() === 'dd' ? (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) : '';
+			formatted += part.toLowerCase() === 'ds' ? (date.getDate()) + this._monthSuffix(date) : '';
+			formatted += part.toLowerCase() === 'd' ? (date.getDate()) : '';
+
+			// mmm, mm, m
+			formatted += part.toLowerCase() === 'mmmm' ? this.fullMonths[date.getMonth()] : '';
+			formatted += part.toLowerCase() === 'mmm' ? this.abbMonths[date.getMonth()] : '';
+			formatted += part.toLowerCase() === 'mm' ? (date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth()) : '';
+			formatted += part.toLowerCase() === 'm' ? date.getMonth() + 1 : '';
+
+			// mmm, mm, m
+			formatted += part.toLowerCase() === 'yyyy' ? date.getFullYear() : '';
+			formatted += part.toLowerCase() === 'yy' ? parseInt((date.getYear() / 100 + '').split('.')[1]) : '';
+
+			// spacer
+			let pos = format.indexOf(part);
+			if (pos + part.length < format.length) formatted += format.substring(pos + part.length, pos + part.length + 1);
+		}
+
+		return formatted;
+	}
+
+	/**
+	 * @private @name _createMonth
+	 * @description Generate all the months for the calendar
+	 */
+	_createMonth() {
+		// chache current place
+		let cache = { day: this.date.getDate(), month: this.date.getMonth(), year: this.date.getFullYear() };
+
+		// rewind the date
+		let days = [];
+		while (this.date.getDay() != 1) this.date.setDate(this.date.getDate() - 1);
+
+		// do the first monday to get past loop
+		days.push({
+			'id': days.length,
+			'date': new Date(this.date),
+			'disabled': this.date.getMonth() != cache.month
+		});
+
+		this.date.setDate(this.date.getDate() + 1);
+
+		// now loop until we hit the next monday that is not in the month we selected
+		while (!(this.date.getDay() == 1 && this.date.getMonth() != cache.month)) {
+			days.push({
+				'id': days.length,
+				'date': new Date(this.date),
+				'disabled': this.date.getMonth() != cache.month
+			});
+			this.date.setDate(this.date.getDate() + 1);
+		}
+		this.days = days;
+
+		// reset the date object
+		this.date.setDate(cache.day);
+		this.date.setMonth(cache.month);
+		this.date.setFullYear(cache.year);
+
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _internalFormat
+	 * @description Create in internal date string representation
+	 * @param {Date} date A date object to convert
+	 * @return {String} a date string in YYYY-MM-DD format
+	 */
+	_internalFormat(date) {
+		return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	}
+
+	/**
+	 * @private @name _selectDay
+	 * @description Select a day from calendar
+	 * @param {Number} idx The index of the day from the array
+	 * @param {Boolean} disabled Is this day disabled?
+	 * @param {Event} ev The event that called this function
+	 */
+	_selectDay(idx, disabled, ev) {
+		// set selected
+		if (disabled) return;
+		this.selected = new Date(this.days[parseInt(idx)].date);		
+		this.hide();
+	}
+
+	/**
+	 * @private @name _selectMonth
+	 * @description Select a month from calendar
+	 * @param {Number} idx The index of the month from the array
+	 * @param {Event} ev The event that called this function
+	 */
+	_selectMonth(idx, ev) {
+		var dateObject = new Date();
+
+		dateObject.setDate(this.date.getDate());
+		dateObject.setMonth(idx);
+		dateObject.setYear(this.date.getFullYear());
+
+		this.date = dateObject;
+		this._createMonth();
+
+		this.mode = 'day';
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _selectYear
+	 * @description Select a year from calendar
+	 * @param {Number} idx The index of the year from the array
+	 * @param {Event} ev The event that called this function
+	 */
+	_selectYear(idx, ev) {
+		var dateObject = new Date();
+
+		dateObject.setDate(this.date.getDate());
+		dateObject.setMonth(this.date.getMonth());
+		dateObject.setYear(this.years[idx]);
+
+		this.date = dateObject
+		this._createMonth();
+
+		this.mode = 'day';
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _changeMode
+	 * @description Change the calendar mode from day to month to year so people can choose them
+	 */
+	_changeMode(type) {
+		if (type == this.mode) type = 'day';
+
+		if (type == 'year') {
+			var years = [];
+			var start = parseInt(this.date.getFullYear()) - 12;
+			for (var i = start; i < start + 25; i++) years.push(i);
+
+			this.years = years;
+			this.mode = 'year';
+		}
+
+		this.mode = type;
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _back
+	 * @description Go back on days to the previous months days
+	 */
+	_back() {
+		if (this.mode == 'day') {
+			this.date.setMonth(this.date.getMonth() - 1);
+			this.date = new Date(this.date);
+			this._createMonth();
+		} else if (this.mode == 'year') {
+			var start = parseInt(this.years[0]) - 25;
+			this.years = [];
+			for (var i = start; i < start + 25; i++) this.years.push(i);
+		}
+
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _forward
+	 * @description Go forward on days to the next months days
+	 */
+	_forward() {
+		if (this.mode == 'day') {
+			this.date.setMonth(this.date.getMonth() + 1);
+			this.date = new Date(this.date);
+			this._createMonth();
+		} else if (this.mode == 'year') {
+			var start = parseInt(this.years[24]) + 1;
+			this.years = [];
+			for (var i = start; i < start + 25; i++) this.years.push(i);
+		}
+
+		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _stringToDate
+	 * @description Convert a string to a date object
+	 * @param {String} string The date as a string which wants to be converted (can also be things like today, next week)
+	 * @return {Date} A date object base on teh string
+	 */
+	_stringToDate(string) {
+		let newDate = new Date();
+
+		switch (string.toLowerCase()) {
+			case 'today': case 'now': case 'current': break;
+			case 'tomorrow': newDate.setDate(this.today.getDate() +1); break;
+			case 'yesterday': newDate.setDate(this.today.getDate() -1); break;
+			case 'next week': newDate.setDate(this.today.getDate() +7); break;
+			case 'fortnight': case 'next 2 weeks': newDate.setDate(this.today.getDate() +14); break;
+			case 'last week': newDate.setDate(this.today.getDate() -7); break;
+			case 'last 2 weeks': newDate.setDate(this.today.getDate() -14); break;
+			case 'last month': newDate.setMonth(this.today.getMonth() -1); break;
+			case 'next month': newDate.setMonth(this.today.getMonth() +1); break;
+			case 'last year': newDate.setFullYear(this.today.getFullYear() -1); break;
+			case 'next year': newDate.setFullYear(this.today.getFullYear() +1); break;
+			default:
+				let fParts = this.format.toLowerCase().split(/\s|\\|\/|\-/);
+				let dParts = string.split(/\s|\\|\/|\-/);
+
+				// get indexes
+				let dddd = fParts.indexOf('dddd');
+				let ddd = fParts.indexOf('ddd');
+				let dds = fParts.indexOf('dds');
+				let dd = fParts.indexOf('dd');
+				let ds = fParts.indexOf('ds');
+				let d = fParts.indexOf('d');
+				
+				let mmmm = fParts.indexOf('mmmm');
+				let mmm = fParts.indexOf('mmm');
+				let mm = fParts.indexOf('mm');
+				let m = fParts.indexOf('m');
+
+				let yyyy = fParts.indexOf('yyyy');
+				let yy = fParts.indexOf('yy');
+
+				if (dd >= 0) newDate.setDate(parseInt(dParts[dd]));
+				else if (d >= 0) newDate.setDate(parseInt(dParts[d]));
+
+				if (mm >= 0) newDate.setMonth(parseInt(dParts[mm]) -1);
+				else if (m >= 0) newDate.setMonth(parseInt(dParts[m]) -1);
+
+				if (yyyy >= 0) newDate.setFullYear(parseInt(dParts[yyyy]));
+				else if (yy >= 0) newDate.setYear(parseInt(dParts[yy]));
+
+				if (isNaN(newDate.getTime())) newDate = new Date();
+			break;
+		}
+
+		return newDate;
+	}
+
+	/**
+	 * @private @name _pattern
+	 * @description Turn a date pattern into a regex so we can validate against a string
+	 * @param {String} format The format we want to convert such as DD/MM/YYYY
+	 * @return {String} A regex pattern based off the format
+	 */
+	_pattern(format) {
+		let parsed = this.format.toLowerCase()
+			.replace('dd', '(3[0-1]|2[0-9]|1[0-9]|0[0-9])')
+			.replace('d', '(3[0-1]|2[0-9]|1[0-9]|[0-9])')
+			.replace('mmmm', '(january|february|march|april|may|june|july|august|september|october|november|december|January|February|March|April|May|June|July|August|September|October|November|December)')
+			.replace('mmm', '(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)')
+			.replace('mm', '(1[0-2]|0[0-9])')
+			.replace('m', '(1[0-2]|[0-9])')
+			.replace('yyyy', '[0-9]{4}')
+			.replace('yy', '[0-9]{2}');
+
+		return `^(${parsed})$|^today$|^tomorrow$|^yesterday$|^next week$|^fortnight$|^last week$|^last month$|^next month$|^last year$|^next year$`;
+	}
+}
+
+// bootstrap the class as a new web component
+customElements.define('cwc-overlay-picker-date', CWCOverlayPickerDate);
