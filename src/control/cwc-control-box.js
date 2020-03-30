@@ -7,6 +7,15 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
+ * 
+ * @event change The value is updated
+ *
+ * @attribute {string} label The control label
+ * @attribute {string} value The initial value, if set
+ * @attribute {flag} disabled To disable the control
+ * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {flag} required The control is required
+ * @attribute {flag} validate-on-load Validate the control when it loads in the dom
  *
  * @style_variable --cwc-control-box--border
  * @style_variable --cwc-control-box--border-radius

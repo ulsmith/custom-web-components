@@ -8,6 +8,8 @@ import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-componen
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  *
+ * @event click The button is clicked
+ *
  * @attribute {string} context [primary, secondary, success, warning, danger] as the context for the element
  * @attribute {string} type The type for the button
  * @attribute {flag} disabled Add to disabled the button

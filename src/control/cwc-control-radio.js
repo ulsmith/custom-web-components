@@ -3,11 +3,47 @@ import '../icon/material/cwc-icon-material-general.js';
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * @public @name CWCControlRadioOption
+ * @public @name CWCControlRadio
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, radio
+ * @description Custom Web Component, radio button
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @event change The value is updated
+ *
+ * @property {string} value The initial value (overrides attribute value)
+ *
+ * @attribute {string} label The checkbox label
+ * @attribute {string} name The checkbox name
+ * @attribute {string} invalid-message The message to show when control is invalid
+ * @attribute {string} value The initial value, if set
+ * @attribute {string} help The help text to display with a little hover icon
+ * @attribute {flag} disabled To disable the control
+ * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {flag} required The control is required
+ * @attribute {flag} validate-on-load Validate the control when it loads in the dom
+ *
+ * @style_variable --cwc-control-radio--fill
+ * @style_variable --cwc-control-radio--color
+ * @style_variable --cwc-control-radio--text-align
+ *
+ * @style_variable --cwc-control-radio--fill--hover
+ * @style_variable --cwc-control-radio--color--hover
+ *
+ * @style_variable --cwc-control-radio--label--text-align
+ * @style_variable --cwc-control-radio--label--color
+ * @style_variable --cwc-control-radio--label--font-weight
+ *
+ * @style_variable --cwc-control-radio--invalid--fill
+ * @style_variable --cwc-control-radio--invalid--color
+ *
+ * @style_variable --cwc-control-radio--[context]--fill
+ * @style_variable --cwc-control-radio--[context]--color
+ * @style_variable --cwc-control-radio--[context]--fill--hover
+ * @style_variable --cwc-control-radio--[context]--color--hover
+ *
+ * @style_variable --cwc-control-radio--disabled--opacity
  *
  * @example
  * <cwc-control-radio
@@ -24,101 +60,6 @@ import '../overlay/cwc-overlay-help.js';
  * 		<cwc-control-radio-option value="two">Two</cwc-control-radio-option>
  * </cwc-control-radio>
  */
-class CWCControlRadioOption extends CustomHTMLElement {
-
-	/**
-     * @public @constructor @name constructor
-	 * @description Triggered when component is instantiated (but not ready or in DOM, must call super() first)
-	 */
-	constructor() {
-		super();
-
-		this.value = this.hasAttribute('value') ? this.getAttribute('value') : this.value;
-	}
-
-	/**
-	 * @public @static @name template
-	 * @description Template function to return web component UI
-	 * @return {TemplateResult} HTML template result
-	 */
-	static template() {
-		return html`
-			<style>
-                :host { 
-					display: inline-block; 
-					width: fit-content; 
-					line-height: 40px; 
-					height: 30px;
-					cursor: default;
-					user-select: none;
-					fill: inherit;
-					color: inherit;
-					-webkit-touch-callout: none;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-					-ms-user-select: none;
-				}
-				
-				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
-				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
-				.cwc-control-radio-option .cwc-radio-button-icon { display: inline-block; padding: 4px; fill: inherit; vertical-align: sub; }
-				.cwc-control-radio-option .cwc-radio-button-label { display: inline-block; font-size: 14px; color: inherit; position: relative; top: -7px; }
-			</style>
-
-			<div class="cwc-control-radio-option">
-				<cwc-icon-material-general class="cwc-radio-button-icon" @click="${this._click.bind(this)}"type="icons" name="${this.hasAttribute('selected') ? 'radioButtonChecked' : 'radioButtonUnchecked'}"></cwc-icon-material-general>
-				<span class="cwc-radio-button-label" @click="${this._click.bind(this)}"><slot></slot></span>
-			</div>
-		`;
-	}
-
-	/**
-	 * @public @static @get @name observedProperties
-	 * @description Provide properties to watch for changes
-	 * @return {Array} Array of property names as strings
-	 */
-	static get observedProperties() { return ['value'] }
-
-	/**
-	 * @public @name propertyChanged
-	 * @description Callback run when a custom elements properties change
-	 * @param {String} property The property name
-	 * @param {Mixed} oldValue The old value
-	 * @param {Mixed} newValue The new value
-	 */
-	proeprtyChanged(property, oldValue, newValue) { this.updateTemplate() }
-
-	/**
-	 * @public @static @get @name observedAttributes
-	 * @description Provide attributes to watch for changes
-	 * @return {Array} Array of attribute names as strings
-	 */
-	static get observedAttributes() { return ['selected'] }
-	
-	/**
-	 * @public @name attributeChanged
-	 * @description Callback run when a custom elements attributes change
-	 * @param {String} attribute The attribute name
-	 * @param {Mixed} oldValue The old value
-	 * @param {Mixed} newValue The new value
-	 */
-	attributeChanged(attribute, oldValue, newValue) { this.updateTemplate() }
-
-	/**
-	 * @private @name _click
-	 * @description Detect click, update a property and dispatch an event
-     * @param {Event} ev Any event that kicks the function
-	 */
-	_click(ev) {
-        if (this.hasAttribute('selected')) return;
-        ev.stopPropagation();
-		this.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: this }));
-	}
-}
-
-// bootstrap the class as a new web component
-customElements.define('cwc-control-radio-option', CWCControlRadioOption);
-
 class CWCControlRadio extends CustomHTMLElement {
 
 	/**
@@ -216,8 +157,8 @@ class CWCControlRadio extends CustomHTMLElement {
 				:host([context="danger"]) .cwc-radio-buttons { fill: var(--cwc-control-radio--danger--fill, red); color: var(--cwc-control-radio--danger--color, red); }
 				:host([context="danger"]:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--danger--fill--hover, darkred); color: var(--cwc-control-radio--danger--color--hover, darkred); }
 
-				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--danger--fill, red); color: var(--cwc-control-radio--danger--color, red); }
-				:host .cwc-radio-container .cwc-error { color: var(--cwc-control-radio--danger--color, red); }
+				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--invalid--fill, var(--cwc-control-radio--danger--fill, red)); color: var(--cwc-control-radio--invalid--color, var(--cwc-control-radio--danger--color, red)); }
+				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-control-radio--invalid--color, var(--cwc-control-radio--danger--color, red)); }
 
 				:host([justify="center"]) .cwc-radio-container { text-align: center; }
 				:host([justify="right"]) .cwc-radio-container { text-align: right; }
@@ -259,7 +200,7 @@ class CWCControlRadio extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['label', 'invalid-message', 'disabled', 'invalid', 'required'] }
+	static get observedAttributes() { return ['label', 'name', 'invalid-message', 'disabled', 'invalid', 'required'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -314,7 +255,7 @@ class CWCControlRadio extends CustomHTMLElement {
      * @param {Event} ev Any event that kicks the function
 	 */
 	_change(ev) {
-        if (this.hasAttribute('disabled')) return;
+		if (this.hasAttribute('disabled')) return;
 
 		if (this.value === ev.detail.value) return;
 
@@ -337,3 +278,114 @@ class CWCControlRadio extends CustomHTMLElement {
 
 // bootstrap the class as a new web component
 customElements.define('cwc-control-radio', CWCControlRadio);
+
+/**
+ * @public @name CWCControlRadioOption
+ * @extends CustomHTMLElement
+ * @description Custom Web Component, radio button options for radio button
+ * @author Paul Smith <p@ulsmith.net>
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @property {string} value The initial value (overrides attribute value)
+ *
+ * @attribute {string} value The initial value, if set
+ * @attribute {flag} selected Is this option selected
+ * 
+ * @example
+ * <cwc-control-radio-option value="one" selected>One</cwc-control-radio-option>
+ */
+class CWCControlRadioOption extends CustomHTMLElement {
+
+	/**
+     * @public @constructor @name constructor
+	 * @description Triggered when component is instantiated (but not ready or in DOM, must call super() first)
+	 */
+	constructor() {
+		super();
+
+		this.value = this.hasAttribute('value') ? this.getAttribute('value') : this.value;
+	}
+
+	/**
+	 * @public @static @name template
+	 * @description Template function to return web component UI
+	 * @return {TemplateResult} HTML template result
+	 */
+	static template() {
+		return html`
+			<style>
+                :host { 
+					display: inline-block; 
+					width: fit-content; 
+					line-height: 40px; 
+					height: 30px;
+					cursor: default;
+					user-select: none;
+					fill: inherit;
+					color: inherit;
+					-webkit-touch-callout: none;
+					-webkit-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+				}
+				
+				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
+				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
+				.cwc-control-radio-option .cwc-radio-button-icon { display: inline-block; padding: 4px; fill: inherit; vertical-align: sub; }
+				.cwc-control-radio-option .cwc-radio-button-label { display: inline-block; font-size: 14px; color: inherit; position: relative; top: -7px; }
+			</style>
+
+			<div class="cwc-control-radio-option">
+				<cwc-icon-material-general class="cwc-radio-button-icon" @click="${this._click.bind(this)}"type="icons" name="${this.hasAttribute('selected') ? 'radioButtonChecked' : 'radioButtonUnchecked'}"></cwc-icon-material-general>
+				<span class="cwc-radio-button-label" @click="${this._click.bind(this)}"><slot></slot></span>
+			</div>
+		`;
+	}
+
+	/**
+	 * @public @static @get @name observedProperties
+	 * @description Provide properties to watch for changes
+	 * @return {Array} Array of property names as strings
+	 */
+	static get observedProperties() { return ['value'] }
+
+	/**
+	 * @public @name propertyChanged
+	 * @description Callback run when a custom elements properties change
+	 * @param {String} property The property name
+	 * @param {Mixed} oldValue The old value
+	 * @param {Mixed} newValue The new value
+	 */
+	proeprtyChanged(property, oldValue, newValue) { this.updateTemplate() }
+
+	/**
+	 * @public @static @get @name observedAttributes
+	 * @description Provide attributes to watch for changes
+	 * @return {Array} Array of attribute names as strings
+	 */
+	static get observedAttributes() { return ['selected'] }
+	
+	/**
+	 * @public @name attributeChanged
+	 * @description Callback run when a custom elements attributes change
+	 * @param {String} attribute The attribute name
+	 * @param {Mixed} oldValue The old value
+	 * @param {Mixed} newValue The new value
+	 */
+	attributeChanged(attribute, oldValue, newValue) { this.updateTemplate() }
+
+	/**
+	 * @private @name _click
+	 * @description Detect click, update a property and dispatch an event
+     * @param {Event} ev Any event that kicks the function
+	 */
+	_click(ev) {
+        if (this.hasAttribute('selected')) return;
+        ev.stopPropagation();
+		this.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: this }));
+	}
+}
+
+// bootstrap the class as a new web component
+customElements.define('cwc-control-radio-option', CWCControlRadioOption);

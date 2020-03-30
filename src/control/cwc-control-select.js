@@ -4,10 +4,50 @@ import '../overlay/cwc-overlay-help.js';
 /**
  * @public @name CWCControlSelect
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, select
+ * @description Custom Web Component, select box for forms
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
+ * @event change The value is updated
+ *
+ * @property {string} value The initial value (overrides attribute value)
+ * 
+ * @attribute {string} label The control label
+ * @attribute {string} name The control name
+ * @attribute {string} invalid-message The message to show when control is invalid
+ * @attribute {string} help The help text to display with a little hover icon
+ * @attribute {string} value The initial value, if set
+ * @attribute {flag} disabled To disable the control
+ * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {flag} required The control is required
+ * @attribute {flag} validate-on-load Validate the control when it loads in the dom
+ * 
+ * @style_variable --cwc-control-select--background
+ * @style_variable --cwc-control-select--border
+ * @style_variable --cwc-control-select--border-radius
+ * @style_variable --cwc-control-select--color
+ * @style_variable --cwc-control-select--height
+ * @style_variable --cwc-control-select--font-size
+ * @style_variable --cwc-control-select--font-weight
+ * @style_variable --cwc-control-select--font-style
+ * @style_variable --cwc-control-select--font-family
+ * @style_variable --cwc-control-select--margin
+ * @style_variable --cwc-control-select--padding
+ * @style_variable --cwc-control-select--text-align
+ *
+ * @style_variable --cwc-control-select--label--text-align
+ * @style_variable --cwc-control-select--label--color
+ * @style_variable --cwc-control-select--label--font-weight
+ *
+ * @style_variable --cwc-control-select--invalid--border - Drops back to danger if not set
+ * @style_variable --cwc-control-select--invalid--color - Drops back to danger if not set
+ *
+ * @style_variable --cwc-control-select--[context]--border
+ * @style_variable --cwc-control-select--[context]--color
+ *
+ * @style_variable --cwc-control-select--disabled--opacity
+ * 
  * @example
  * <cwc-control-select
  * 		label="A input"
@@ -127,8 +167,8 @@ class CWCControlSelect extends CustomHTMLElement {
 				:host([context="warning"]) .cwc-control-select select { border: var(--cwc-control-select--warning--border, 1px solid orange) !important; color: var(--cwc-control-select--warning--color, orange) !important; }
 				:host([context="danger"]) .cwc-control-select select { border: var(--cwc-control-select--danger--border, 1px solid red) !important; color: var(--cwc-control-select--danger--color, red) !important; }
 	
-				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--danger--border, 1px solid red) !important; color: var(--cwc-control-select--danger--color, red) !important; }
-				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--danger--color, red) }
+				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--invalid--border, var(--cwc-control-select--danger--border, 1px solid red)) !important; color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) !important; }
+				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) }
 
 				:host([justify="center"]) .cwc-select-container { text-align: center; }
 				:host([justify="right"]) .cwc-select-container { text-align: right; }

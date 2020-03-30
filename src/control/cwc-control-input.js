@@ -4,9 +4,50 @@ import '../overlay/cwc-overlay-help.js';
 /**
  * @public @name CWCControlInput
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, input
+ * @description Custom Web Component, input box for forms
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @event [any input event] The standard input event happens, change, input, keydown etc.
+ * @event validated The value is validated
+ *
+ * @property {string} value The initial value (overrides attribute value)
+ * 
+ * @attribute {string} label The control label
+ * @attribute {string} name The control name
+ * @attribute {string} type The contorl type
+ * @attribute {string} invalid-message The message to show when control is invalid
+ * @attribute {string} help The help text to display with a little hover icon
+ * @attribute {string} regex The regex value to validate against
+ * @attribute {string} value The initial value, if set
+ * @attribute {flag} disabled To disable the control
+ * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {flag} required The control is required
+ * @attribute {flag} validate-on-load Validate the control when it loads in the dom
+ * 
+ * @style_variable --cwc-control-input--text-align
+ * @style_variable --cwc-control-input--padding
+ * @style_variable --cwc-control-input--border-radius
+ * @style_variable --cwc-control-input--border
+ * @style_variable --cwc-control-input--color
+ * @style_variable --cwc-control-input--background
+ * @style_variable --cwc-control-input--font-size
+ * @style_variable --cwc-control-input--font-weight
+ * @style_variable --cwc-control-input--font-style
+ * @style_variable --cwc-control-input--font-family
+ *
+ * @style_variable --cwc-control-input--label--text-align
+ * @style_variable --cwc-control-input--label--color
+ * @style_variable --cwc-control-input--label--font-weight
+ *
+ * @style_variable --cwc-control-input--invalid--border - Drops back to danger if not set
+ * @style_variable --cwc-control-input--invalid--color - Drops back to danger if not set
+ *
+ * @style_variable --cwc-control-input--[context]--border
+ * @style_variable --cwc-control-input--[context]--color
+ *
+ * @style_variable --cwc-control-input--disabled--opacity
  * 
  * @example
  * <cwc-control-input
@@ -148,9 +189,9 @@ class CWCControlInput extends CustomHTMLElement {
 				:host([context="danger"]) .cwc-input-container input { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
 				:host([context="danger"]) .cwc-input-container textarea { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
 
-				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
-				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
-				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--danger--color, red); }
+				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--invalid--border, var(--cwc-control-input--danger--border, 1px solid red)); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
+				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--invalid--border, var(--cwc-control-input--danger--border, 1px solid red)); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
+				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--danger--color, var(--cwc-control-input--danger--color, red)); }
 
 				:host([justify="center"]) .cwc-input-container { text-align: center; }
 				:host([justify="right"]) .cwc-input-container { text-align: right; }
