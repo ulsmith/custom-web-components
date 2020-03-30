@@ -4,6 +4,45 @@ import '../icon/material/cwc-icon-material-general.js';
 import '../icon/material/cwc-icon-material-image.js';
 
 /**
+ * @public @name CwcLayoutCard
+ * @extends CustomHTMLElement
+ * @description Custom Web Component, a card based layout that can be expanded, and show a loading spinner
+ * @author Paul Smith <p@ulsmith.net>
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @attribute {flag} loading The element is loading
+ * @attribute {flag} collapsible The element can collapse and expand with a click
+ *
+ * @style_variable --cwc-layout-card--border
+ * @style_variable --cwc-layout-card--border
+ * @style_variable --cwc-layout-card--border-radius
+ *
+ * @style_variable --cwc-layout-card--header--padding
+ * @style_variable --cwc-layout-card--header--background
+ * @style_variable --cwc-layout-card--header--color
+ * @style_variable --cwc-layout-card--header--color
+ * @style_variable --cwc-layout-card--header--border-radius
+ *
+ * @style_variable --cwc-layout-card--body--padding
+ * @style_variable --cwc-layout-card--body--background
+ * @style_variable --cwc-layout-card--body--color
+ *
+ * @style_variable --cwc-layout-card--footer--padding
+ * @style_variable --cwc-layout-card--footer--background
+ * @style_variable --cwc-layout-card--footer--color
+ * @style_variable --cwc-layout-card--footer--border-radius
+ *
+ * @example
+ * <cwc-layout-card collapsible ?loading="${isLoading}">
+ *		<h4 slot="header">A Heading</h4>
+ *		<div slot="body">
+ *			<p>Some thing in the body</p>
+ *		</div>
+ *		<div slot="footer">
+ *			<cwc-control-button>Save</cwc-control-button>
+ *		</div>
+ * </cwc-layout-card>
  */
 class CwcLayoutCard extends CustomHTMLElement {
 
@@ -71,10 +110,7 @@ class CwcLayoutCard extends CustomHTMLElement {
 					background: #d5d5d5;
 				}
 
-				:host([collapsible]) .wrapper[open] {
-					max-height: 1500px;
-					transition: max-height 0.25s ease-in;
-				}
+				:host([collapsible]) .wrapper[open] { max-height: 1500px; transition: max-height 0.25s ease-in; }
 
 				.wrapper .body {
 					margin: 0px;
@@ -91,7 +127,7 @@ class CwcLayoutCard extends CustomHTMLElement {
 					border-radius: var(--cwc-layout-card--footer--border-radius, 0px);
 				}
 
-				@keyframes loading {
+				@keyframes loading { 
 					0% { transform:rotate(0deg); }
 					10% { transform:rotate(5deg); }
 					90% { transform:rotate(355deg); }
