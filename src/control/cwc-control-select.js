@@ -15,6 +15,7 @@ import '../overlay/cwc-overlay-help.js';
  * 
  * @attribute {string} label The control label
  * @attribute {string} name The control name
+ * @attribute {string} justify [left, center, right] Justify options
  * @attribute {string} invalid-message The message to show when control is invalid
  * @attribute {string} help The help text to display with a little hover icon
  * @attribute {string} value The initial value, if set
