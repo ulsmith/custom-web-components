@@ -316,9 +316,11 @@ const ICONS = {
 /**
  * @public @name CWCIconMaterialGeneral
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, material icons
+ * @description Custom Web Component, common component, material icons general
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ *
+ * @attribute {string} name The name of the icon to display
  *
  * @example
  * <cwc-icon-material-general name="foo"></cwc-icon-material-general>
