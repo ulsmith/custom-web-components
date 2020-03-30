@@ -33,12 +33,14 @@ class CWCControlSwitch extends CustomHTMLElement {
 			<style>
 			    :host {
 					display: inline-block;
-					width: 100%;
+					min-width: 200px;
 					height: 62px;
 					box-sizing: border-box;
 				}
 
 				.cwc-control-switch {
+					position: relative;
+					padding-right: 25px;
 					width: inherit;
 					height: inherit;
 					display: block;
@@ -89,7 +91,7 @@ class CWCControlSwitch extends CustomHTMLElement {
 
 				.cwc-control-switch .cwc-help {
 					position: absolute;
-					top: 6px;
+					top: 0px;
 					right: 0px;
 				}
 

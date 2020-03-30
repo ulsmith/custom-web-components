@@ -3,10 +3,28 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCControlBox
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, box select
+ * @description Custom Web Component, box select
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
+ * @style_variable --cwc-control-box--border
+ * @style_variable --cwc-control-box--border-radius
+ * 
+ * @style_variable --cwc-control-box--label--color
+ * @style_variable --cwc-control-box--label--font-weight
+ * @style_variable --cwc-control-box--label--text-align
+ * 
+ * @style_variable --cwc-control-box--option--background
+ * @style_variable --cwc-control-box--option--color
+ * @style_variable --cwc-control-box--option--font-size
+ * @style_variable --cwc-control-box--option--font-family
+ * @style_variable --cwc-control-box--option--cursor
+ * @style_variable --cwc-control-box--option--border-radius
+ * 
+ * @style_variable --cwc-control-box--option--background--selected
+ * @style_variable --cwc-control-box--option--color--selected
+ * 
  * @example
  * <cwc-control-box label="Hello" value="1" disabled invalid @change="${this.test.bind(this)}">
  * 		<option value="1">One</option>
@@ -42,7 +60,7 @@ class CWCControlBox extends CustomHTMLElement {
 					box-sizing: border-box;
 				}
 
-				.cwc-container {
+				.container {
 					width: 100%;
 					height: inherit;
 					display: inline-block;
@@ -51,9 +69,9 @@ class CWCControlBox extends CustomHTMLElement {
 					position: relative;
 				}
 
-				.cwc-container [invisible] { opacity: 0; }
+				.container [invisible] { opacity: 0; }
 				
-				.cwc-container label {
+				.container label {
 					display: block;
 					min-height: 20px;
 					color: var(--cwc-control-box--label--color, black);
@@ -63,7 +81,7 @@ class CWCControlBox extends CustomHTMLElement {
 					overflow: hidden;
 				}
 				
-				.cwc-container .cwc-box-buttons {
+				.container .cwc-box-buttons {
 					display: flex;
 					flex-flow: row;
 					width: 100%;
@@ -73,7 +91,7 @@ class CWCControlBox extends CustomHTMLElement {
 					box-sizing: border-box;
 				}
 				
- 				.cwc-container .cwc-box-buttons .cwc-option {
+ 				.container .cwc-box-buttons .cwc-option {
  					flex: 1 1;
  					display: block;
  					background: var(--cwc-control-box--option--background, white);
@@ -90,14 +108,14 @@ class CWCControlBox extends CustomHTMLElement {
  					border-radius: var(--cwc-control-box--option--border-radius, 0);
  				}
 				
- 				.cwc-container .cwc-box-buttons .cwc-option[selected] {
+ 				.container .cwc-box-buttons .cwc-option[selected] {
  					background: var(--cwc-control-box--option--background--selected, black);
  					color: var(--cwc-control-box--option--color--selected, white);
 					cursor: default;
  				}
 			</style>
 
-			<div class="cwc-container" ?invalid="${this.invalid}">
+			<div class="container" ?invalid="${this.invalid}">
 				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
 				<div id="box-buttons" class="cwc-box-buttons" @change="${this._change.bind(this)}">
 					${this.options.length > 0 ? this.options.map((option) => html`
@@ -179,7 +197,7 @@ class CWCControlBox extends CustomHTMLElement {
 
 	/**
 	 * @private @name validate
-	 * @description Validate any text for errors based on required or regex
+	 * @description Validate value for errors based on required or regex
      * @param {Event} ev Any event that kicks the function
 	 */
 	validate(value) {
@@ -191,8 +209,8 @@ class CWCControlBox extends CustomHTMLElement {
 	}
 
 	/**
-	 * @private @name _event
-	 * @description Detect an event, update a property and dispatch an event
+	 * @private @name _change
+	 * @description Detect a change
      * @param {Event} ev Any event that kicks the function
 	 */
 	_change(ev) {

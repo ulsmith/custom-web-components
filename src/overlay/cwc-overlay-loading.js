@@ -1,4 +1,5 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
+import '../icon/material/cwc-icon-material-image.js';
 
 /**
  * @public @name CWCOverlayLoading
@@ -8,7 +9,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
  * @example
- * <cwc-overlay visible></cwc-overlay>
+ * <cwc-overlay-loading visible></cwc-overlay-loading>
  */
 class CWCOverlayLoading extends CustomHTMLElement {
 
@@ -17,12 +18,11 @@ class CWCOverlayLoading extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
-        return html`
+	static template() {
+		return html`
 			<style>
 				:host {
 					display: none;
-					z-index: -1;
 					opacity: 0;
 					position: fixed;
 					top: 50%;
@@ -31,14 +31,32 @@ class CWCOverlayLoading extends CustomHTMLElement {
 					margin-left: -60px;
 					width: 120px;
 					height: 120px;
-					border-radius: 80px;
-					box-sizing: border-box;
-					transition: opacity 190ms ease-in-out;
-					padding: var(--cwc-overlay-loading--padding, 10px);
-					background: var(--cwc-overlay-loading--background, white);
-					border: var(--cwc-overlay-loading--border, none);
-					box-shadow: var(--cwc-overlay-loading--box-shadow, 0px 0px 15px 0px grey);
 					z-index: var(--cwc-overlay-loading--z-index, 1000);
+					box-shadow: var(--cwc-overlay-loading--box-shadow, 0px 0px 15px 0px rgba(0,0,0,0.55));
+					border: var(--cwc-overlay-loading--border, none);
+					border-radius: 80px;
+					padding: var(--cwc-overlay-loading--padding, 10px);
+					box-sizing: border-box;
+					background: var(--cwc-overlay-loading--background, white);
+					animation-name: loading;
+					animation-duration: 750ms;
+					animation-iteration-count: infinite;
+					animation-timing-function: ease-in-out;
+					transition: opacity var(--cwc-overlay-loading--speed, 250ms) ease-in-out;
+				}
+
+				:host([static]) {
+					opacity: 0;
+					position: static;
+					top: 0;
+					left: 0;
+					margin-top: 0;
+					margin-left: 0;
+					animation-name: loading;
+					animation-duration: 750ms;
+					animation-iteration-count: infinite;
+					animation-timing-function: ease-in-out;
+					transition: opacity var(--cwc-overlay-loading--speed, 250ms) ease-in-out;
 				}
 
 				:host([visible]) {
@@ -46,20 +64,29 @@ class CWCOverlayLoading extends CustomHTMLElement {
 					z-index: var(--cwc-overlay-loading--z-index, 1000);
 				}
 
-				.loading {
-					display: inline-block;
-					width: 50px;
-					height: 50px;
-					border: 3px solid rgba(255,255,255,.3);
-					border-top-color: #fff;
-					border-radius: 50%;
-					animation: spin 1s ease-in-out infinite;
-					-webkit-animation: spin 1s ease-in-out infinite;
+				.loading img { width: 100%; height: 100%; }
+
+				.loading .icon {
+					width: 100%;
+					height: 100%;
+				}
+
+				@keyframes loading {
+					0% { transform:rotate(0deg); }
+					10% { transform:rotate(5deg); }
+					90% { transform:rotate(355deg); }
+					100% { transform:rotate(360deg); }
 				}
 			</style>
 
 			<div class="cwc-overlay-loading">
-				<div class="loading" ?fade="${!this._loading}" ?hidden="${this._loaded}"></div>
+				<div class="loading" ?fade="${!this._loading}" ?hidden="${this._loaded}">
+					${this.hasAttribute('src') ?
+						html`<img class="loading" ?fade="${!this._loading}" ?hidden="${this._loaded}" src="${this.getAttribute('src')}">`
+						:
+						html`<cwc-icon-material-image class="icon" name="rotateRight"></cwc-icon-material-hardware>`
+					}
+				</div>
 			</div>
         `;
 	}
@@ -80,9 +107,7 @@ class CWCOverlayLoading extends CustomHTMLElement {
 	 */
 	show(ev) {
 		this.dispatchEvent(new CustomEvent('show'));
-
 		this.setAttribute('visible', '');
-
 		setTimeout(() => this.style.opacity = 1, 50);
 	}
 
@@ -93,11 +118,9 @@ class CWCOverlayLoading extends CustomHTMLElement {
 	 */
 	hide(ev) {
 		if (this.style.display === 'none') return;
-
 		this.dispatchEvent(new CustomEvent('hide'));
 		this.style.opacity = 0;
-
-		setTimeout(() => this.removeAttribute('visible'), 200);
+		setTimeout(() => this.removeAttribute('visible'), 250);
 	}
 }
 

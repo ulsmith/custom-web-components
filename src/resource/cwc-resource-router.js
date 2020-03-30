@@ -30,6 +30,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 		// properties
 		this.route;
 		this.routes;
+		this.permissions;
 
 		// private
 		this._windowEvent;
@@ -56,7 +57,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['route', 'routes'];
+		return ['route', 'routes', 'permissions'];
 	}
 
 	/**
@@ -106,6 +107,17 @@ class CWCResourceRouter extends CustomHTMLElement {
 	}
 
 	/**
+	 * @private @name _permitted
+	 * @description Change the route of the application
+	 * 
+     * @param {String} path The path of the route
+	 */
+	_permitted(permission, type) {
+		permission = this.permissions.filter((perm) => perm.role === permission)[0] || {};
+		return permission[type];
+	}
+
+	/**
 	 * @public @name updateRoute
 	 * @description Update the router with a new route
      * 
@@ -124,9 +136,12 @@ class CWCResourceRouter extends CustomHTMLElement {
 		let route = this._getRouteFromPath(path);
 		let routeDefault = this._getRouteFromPath(this.getAttribute('default'));
 		let routeNotFound = this._getRouteFromPath(this.getAttribute('not-found'));
+		let routeNotAllowed = this._getRouteFromPath(this.getAttribute('not-allowed'));
+		if (route && route.prefix) route.parameters = path.split(route.prefix)[1].replace(/^\/|\/$/g, '').split('/');
 
 		// not set, load default, set then load, else 404
-		if (!path) this._loadRoute(routeDefault);
+		if (route && route.permission && !this._permitted(route.permission, 'read')) this._loadRoute(routeNotAllowed);
+		else if (!path) this._loadRoute(routeDefault);
 		else if (route) this._loadRoute(route);
 		else this._loadRoute(routeNotFound);
 	}

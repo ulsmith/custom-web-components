@@ -8,7 +8,54 @@ import '../overlay/cwc-overlay-help.js';
  * @description Application Web Component, common component, checkbox
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ * 
+ * @attribute {string} label The checkbox label
+ * @attribute {string} checked-message The message to show when checked
+ * @attribute {string} unchecked-message The message to show when not checked
+ * @attribute {string} invalid-message The message to show when control is invalid
+ * @attribute {string} help The help text to display with a little hover icon
+ * @attribute {flag} value The initial value, flag there checked, else not checked
+ * @attribute {flag} disabled To disable the control
+ * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {flag} required The control is required
+ * @attribute {flag} validate-on-load Validate the control when it loads in the dom
  *
+ * @style_variable --cwc-control-checkbox--border
+ * @style_variable --cwc-control-checkbox--border-radius
+ * @style_variable --cwc-control-checkbox--color
+ * @style_variable --cwc-control-checkbox--float
+ * @style_variable --cwc-control-checkbox--fill
+ * @style_variable --cwc-control-checkbox--font-size
+ * @style_variable --cwc-control-checkbox--font-weight
+ * @style_variable --cwc-control-checkbox--font-style
+ * @style_variable --cwc-control-checkbox--font-family
+ * @style_variable --cwc-control-checkbox--text-align
+
+ * @style_variable --cwc-control-checkbox--color--hover
+ * @style_variable --cwc-control-checkbox--fill--hover
+
+ * @style_variable --cwc-control-checkbox--label--text-align
+ * @style_variable --cwc-control-checkbox--label--color
+ * @style_variable --cwc-control-checkbox--label--font-size
+ * @style_variable --cwc-control-checkbox--label--font-weight
+ * @style_variable --cwc-control-checkbox--label--font-style
+ * @style_variable --cwc-control-checkbox--label--font-family
+
+ * @style_variable --cwc-control-checkbox--invalid--fill - Drops back to danger if not set
+ * @style_variable --cwc-control-checkbox--invalid--border - Drops back to danger if not set
+ * @style_variable --cwc-control-checkbox--invalid--color - Drops back to danger if not set
+ * @style_variable --cwc-control-checkbox--invalid--fill--hover - Drops back to danger if not set
+ * @style_variable --cwc-control-checkbox--invalid--color--hover - Drops back to danger if not set
+
+ * @style_variable --cwc-control-checkbox--[context]--fill
+ * @style_variable --cwc-control-checkbox--[context]--border
+ * @style_variable --cwc-control-checkbox--[context]--color
+ * @style_variable --cwc-control-checkbox--[context]--fill--hover
+ * @style_variable --cwc-control-checkbox--[context]--color--hover
+
+ * @style_variable --cwc-control-checkbox--disabled--opacity
+ * 
  * @example
  * <cwc-control-checkbox 
  * 		label="A Checkbox" 
@@ -16,6 +63,7 @@ import '../overlay/cwc-overlay-help.js';
  * 		unchecked-message="Not Checked" 
  * 		invalid-message="Please check me" 
  * 		help="Blah blah blah" 
+ * 		value
  * 		disabled 
  * 		invalid 
  * 		required 

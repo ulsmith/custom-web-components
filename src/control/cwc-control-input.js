@@ -250,6 +250,7 @@ class CWCControlInput extends CustomHTMLElement {
      * @param {Event} ev Any event that kicks the function
 	 */
 	validate(value) {
+		value = value === undefined ? this.value : value;
 		this.invalid = this.hasAttribute('regex') && !((new RegExp(this.getAttribute('regex'))).test(value)) ? true : false;
 		this.invalid = this.hasAttribute('required') ? (!value || value.length < 1 ? true : this.invalid) : (!value || value.length < 1 ? false : this.invalid);
 
