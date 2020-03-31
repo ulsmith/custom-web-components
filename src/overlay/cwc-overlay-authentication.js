@@ -7,12 +7,27 @@ import '../icon/material/cwc-icon-material-general.js';
 /**
  * @public @name CWCOverlayAuthentication
  * @extends CustomHTMLElement
- * @description Application Web Component, authentication overlay, helps with login, logout and autherisation
+ * @description Custom Web Component, authentication overlay, helps with login, logout, authorisation, registration. password reset
  * @author Paul Smith <p@ulsmith.net>
- * @copyright 2018 Paul Smith (ulsmith.net)
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  * 
- * @example HTML
+ * @event change The user data has changed, send user data as event detail
+ * 
+ * @method login() Open the login overlay and wait for login
+ * @method authenticate() Open the authenticate overlay and wait fo rauthentication to happen
+ * @method terminate() Log the user out and terminate authentication
+ * 
+ * @property {Object} route The route object form cwc-resource-router
+ *
+ * @attribute {String} reset-route The route/path to the reset endpoint on the api
+ * @attribute {String} register-route The route/path to the register endpoint on the api
+ * @attribute {String} activate-route The route/path to the activate endpoint on the api
+ * @attribute {String} system-key The key to use for prefixing the local storage data, such as 'my-app' or the DNS name
+ * @attribute {String} system-version The version to output in the overlays as a footer
+ * @attribute {String} api-url The URL of the API used before the routes above, such as http://my-app.com
+ * 
+ * @example HTML (requires REST API with specific endpoints)
  *	<cwc-overlay-authentication
  *		reset-route="reset"
  *		register-route="register"
@@ -184,10 +199,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 					color: blue;
 				}
 
-				.footer span.link:hover {
-					color: #00006c;
-				}
-
+				.footer span.link:hover { color: #00006c; }
 				.footer .button { float: right; }
 
 				.bumpf {
@@ -200,14 +212,8 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 					width: 100%;
 				}
 
-				.bumpf span {
-					font-size: 16px;
-					color: white;
-				}
-
-				.bumpf span.version {
-					float: right;
-				}
+				.bumpf span { font-size: 16px; color: white; }
+				.bumpf span.version { float: right; }
 
 				.auth-heading {
 					margin: 0;
