@@ -10,6 +10,8 @@ import '../overlay/cwc-overlay-help.js';
  * @license MIT
  * 
  * @event change The value is updated
+ * 
+ * @method validate(Boolean value) The value on or off, true or false
  *
  * @property {string} value The initial value (overrides attribute value)
  *

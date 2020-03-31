@@ -10,8 +10,11 @@ import '../overlay/cwc-overlay-help.js';
  * @license MIT
  *
  * @event change The value is updated
+ * 
+ * @method render() Re-render the options
+ * @method validate(Mixed value) The value selected
  *
- * @property {string} value The initial value (overrides attribute value)
+ * @property {Mixed} value The initial value (overrides attribute value)
  * 
  * @attribute {string} label The control label
  * @attribute {string} name The control name
@@ -238,14 +241,14 @@ class CWCControlSelect extends CustomHTMLElement {
 	 * @description Callback run once the custom element has complete a re-render
 	 */
 	templateUpdated() {
-		this.rerender();
+		this.render();
 	}
 
 	/**
-	 * @public @name templateUpdated
-	 * @description Callback run once the custom element has complete a re-render
+	 * @public @name render
+	 * @description Re-redner the options
 	 */
-	rerender() {
+	render() {
 		setTimeout(() => {
 			let options = this.innerHTML;
 			let select = this.shadowRoot.querySelector('select');

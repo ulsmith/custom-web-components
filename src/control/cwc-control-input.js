@@ -11,6 +11,9 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @event [any input event] The standard input event happens, change, input, keydown etc.
  * @event validated The value is validated
+ * 
+ * @method focus() Set focus on the input box
+ * @method validate(String value) The value in the input box
  *
  * @property {string} value The initial value (overrides attribute value)
  * 

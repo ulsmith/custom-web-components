@@ -12,6 +12,8 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @event change The value is updated
  * 
+ * @method validate(Boolean value) The value checked or not
+ * 
  * @property {string} value The initial value (overrides attribute value)
  * 
  * @attribute {string} label The checkbox label

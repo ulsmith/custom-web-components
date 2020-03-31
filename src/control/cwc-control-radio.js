@@ -3,6 +3,7 @@ import '../icon/material/cwc-icon-material-general.js';
 import '../overlay/cwc-overlay-help.js';
 
 /**
+ * 
  * @public @name CWCControlRadio
  * @extends CustomHTMLElement
  * @description Custom Web Component, radio button
@@ -11,7 +12,9 @@ import '../overlay/cwc-overlay-help.js';
  * @license MIT
  *
  * @event change The value is updated
- *
+ * 
+ * @method validate(String value) The value selected
+ * 
  * @property {string} value The initial value (overrides attribute value)
  *
  * @attribute {string} label The checkbox label
@@ -193,7 +196,7 @@ class CWCControlRadio extends CustomHTMLElement {
 	 * @param {Mixed} oldValue The old value
 	 * @param {Mixed} newValue The new value
 	 */
-	proeprtyChanged(property, oldValue, newValue) { this.updateTemplate() }
+	propertyChanged(property, oldValue, newValue) { this.updateTemplate() }
 
 	/**
 	 * @public @static @get @name observedAttributes
@@ -357,7 +360,7 @@ class CWCControlRadioOption extends CustomHTMLElement {
 	 * @param {Mixed} oldValue The old value
 	 * @param {Mixed} newValue The new value
 	 */
-	proeprtyChanged(property, oldValue, newValue) { this.updateTemplate() }
+	propertyChanged(property, oldValue, newValue) { this.updateTemplate() }
 
 	/**
 	 * @public @static @get @name observedAttributes

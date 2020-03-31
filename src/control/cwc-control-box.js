@@ -9,6 +9,9 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @license MIT
  * 
  * @event change The value is updated
+ * 
+ * @method render() Re-render the options
+ * @method validate(Array value) The value saved, an array of selections
  *
  * @attribute {string} label The control label
  * @attribute {string} value The initial value, if set
