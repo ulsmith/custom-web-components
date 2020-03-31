@@ -9,6 +9,23 @@ import '../icon/material/cwc-icon-material-general.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2018 Paul Smith (ulsmith.net)
  * @license MIT
+ *
+ * @event change The table has been ordered
+ * 
+ * @method changeRoute(Object route, Event ev) Change the route to the one sent in
+ * @method updateHeight(Event ev) Update the height of the menu and page area
+ * @method toggleMenu(Boolean docked, Event ev) Toggle the menu docked/undocked
+ * 
+ * @property {Object} route Route object, the selected route { component: '...', prefix: '...', path: '...', label: '...', hidden: true, permission: '...' }
+ * @property {Object} route.component The component to display when route matched such as my-component
+ * @property {Object} route.path The url path to match such as some/url would match http://yoursite.com/some/url
+ * @property {Object} route.prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
+ * @property {Object} route.label The label to use when displaying links in the menu
+ * @property {Object} route.hidden Do not show the route in the menu
+ * @property {Object} route.permission The permission you need to have to view the route with cwc-resource-router
+ * @property {Array[Object]} routes Array of routes to use for menu items
+ *
+ * @attribute {flag} docked When the menu is docked (mobile)
  * 
  * @example HTML
  * <cwc-layout-dockable></cwc-layout-dockable>
