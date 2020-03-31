@@ -6,6 +6,79 @@ import '../base/cwc-base-tag.js';
 import '../control/cwc-control-button.js';
 
 /**
+ * @public @name CwcLayoutTable
+ * @extends CustomHTMLElement
+ * @description Custom Web Component, a table based layout that can be paginated internally, externally or have its own footer, shows a loading spinner when loading
+ * @author Paul Smith <p@ulsmith.net>
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @event order The table has been ordered
+ * @event page The table page has changed by a direct page number input
+ * @event start The table page has gone to the start
+ * @event end The table page has gone to the end
+ * @event back The table page has gone back one
+ * @event forward The table page has gone forward one
+ * @event {action} A table data event has been triggered, as set in table data [[{event: ...}]] returns row as detail
+ * 
+ * @property {Array[String|Object]} header An array (columns) of string table headings or objects ['One', {...}, ...]
+ * @property {Number} header[].colspan Column span of heading as Number
+ * @property {String} header[].justify Justify the heading left, center, right
+ * @property {String} header[].fontWeight Font weight of the heading normal, bold
+ * @property {String} header[].weight Width of the heading as percentage or pixel etc. 50%, 100px
+ * @property {String} header[].order Should the column be orderable, and direction, empty for orderable, asc, desc to force order
+ * @property {String} header[].value The actual heading should you be using an object and not a string
+ *
+ * @property {Array[Array[String|Object]]} body An array (rows) of arrays (columns) of table data as strings or objects [['One', {...}, ...]]
+ * @property {Number} body[][].colspan Column span of data as Number
+ * @property {String} body[][].justify Justify the heading left, center, right
+ * @property {String} body[][].fontWeight Font weight of the heading normal, bold
+ * @property {String} body[][].event Make the contents a clickable button with an event to fire (returns row)
+ * @property {String} body[][].link Make the contents a clickable anchor link
+ * @property {String} body[][].value The actual data should you be using an object and not a string
+ * 
+ * @property {Array[String|Object]} footer An array (columns) of table footers as strings or objects ['One', {...}, ...]
+ * @property {Number} footer[].colspan Column span of footer as Number
+ * @property {String} footer[].justify Justify the footer left, center, right
+ * @property {String} footer[].fontWeight Font weight of the footer normal, bold
+ * @property {String} footer[].value The actual data should you be using an object and not a string
+ *
+ * @attribute {Number} page-size The size of the pages (how many rows) when paginating internally or externally
+ * @attribute {Number} page-count The amount pages calculated when paginating externally only
+ * @attribute {Number} page The page you are currently on when paginating externally only
+ * @attribute {flag} loading The element is loading
+ * @attribute {flag} paginate-external The table is paginated, but externally, all pagination is set outside table
+ * @attribute {flag} paginate-internal The table is paginated internally, we feed it all the data and let it handle the pagination
+ *
+ * @style_variable --cwc-layout-card--border
+ * @style_variable --cwc-layout-card--border
+ * @style_variable --cwc-layout-card--border-radius
+ *
+ * @style_variable --cwc-layout-card--header--padding
+ * @style_variable --cwc-layout-card--header--background
+ * @style_variable --cwc-layout-card--header--color
+ * @style_variable --cwc-layout-card--header--color
+ * @style_variable --cwc-layout-card--header--border-radius
+ *
+ * @style_variable --cwc-layout-card--body--padding
+ * @style_variable --cwc-layout-card--body--background
+ * @style_variable --cwc-layout-card--body--color
+ *
+ * @style_variable --cwc-layout-card--footer--padding
+ * @style_variable --cwc-layout-card--footer--background
+ * @style_variable --cwc-layout-card--footer--color
+ * @style_variable --cwc-layout-card--footer--border-radius
+ *
+ * @example
+ * <cwc-layout-card collapsible ?loading="${isLoading}">
+ *		<h4 slot="header">A Heading</h4>
+ *		<div slot="body">
+ *			<p>Some thing in the body</p>
+ *		</div>
+ *		<div slot="footer">
+ *			<cwc-control-button>Save</cwc-control-button>
+ *		</div>
+ * </cwc-layout-card>
  */
 class CwcLayoutTable extends CustomHTMLElement {
 
@@ -315,7 +388,8 @@ class CwcLayoutTable extends CustomHTMLElement {
 		for (let i = 0; i < this.heading.length; i++) if (i !== idx && this.heading[i].order) this.heading[i].order = '';
 
 		// event or order
-		if (this.hasAttribute('paginate-external')) return this.dispatchEvent(new CustomEvent('order', { detail: { index: idx, order: this.heading[idx].order } }));
+		this.dispatchEvent(new CustomEvent('order', { detail: { index: idx, order: this.heading[idx].order } }));
+		if (this.hasAttribute('paginate-external')) return;
 		else {
 			this.body = this.body.sort((a, b) => {
 				if (a[idx] < b[idx]) return this.heading[idx].order === 'asc' ? -1 : 1;
@@ -339,9 +413,9 @@ class CwcLayoutTable extends CustomHTMLElement {
 		page = page > this._pageCount ? this._pageCount : page;
 		page = page < 1 ? 1 : page;
 
+		clearTimeout(this._externalPageDebounce);
+		this._externalPageDebounce = setTimeout(() => this.dispatchEvent(new CustomEvent('page', { detail: { page: page } })), 1000);
 		if (this.hasAttribute('paginate-external')) {
-			clearTimeout(this._externalPageDebounce);
-			this._externalPageDebounce = setTimeout(() => this.dispatchEvent(new CustomEvent('page', { detail: { page: page } })), 1000);
 			ev.target.value = page;
 			return;
 		}
@@ -356,7 +430,8 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Event} ev The event that kicked the method
 	 */
 	_start(ev) {
-		if (this.hasAttribute('paginate-external')) return this.dispatchEvent(new CustomEvent('start'));
+		this.dispatchEvent(new CustomEvent('start'));
+		if (this.hasAttribute('paginate-external')) return;
 
 		this._page = 1;
 		this.updateTemplate();
@@ -368,7 +443,8 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Event} ev The event that kicked the method
 	 */
 	_end(ev) {
-		if (this.hasAttribute('paginate-external')) return this.dispatchEvent(new CustomEvent('end'));
+		this.dispatchEvent(new CustomEvent('end'));
+		if (this.hasAttribute('paginate-external')) return;
 
 		this._page = this._pageCount;
 		this.updateTemplate();
@@ -380,7 +456,8 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Event} ev The event that kicked the method
 	 */
 	_back(ev) {
-		if (this.hasAttribute('paginate-external')) return this.dispatchEvent(new CustomEvent('back'));
+		this.dispatchEvent(new CustomEvent('back'));
+		if (this.hasAttribute('paginate-external')) return;
 
 		if (this._page < 2) return;
 		this._page--;
@@ -393,7 +470,8 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Event} ev The event that kicked the method
 	 */
 	_forward(ev) {
-		if (this.hasAttribute('paginate-external')) return this.dispatchEvent(new CustomEvent('forward'));
+		this.dispatchEvent(new CustomEvent('forward'));
+		if (this.hasAttribute('paginate-external')) return;
 
 		if (this._page >= this._pageCount) return;
 		this._page++;
