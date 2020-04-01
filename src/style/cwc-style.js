@@ -6,9 +6,13 @@ import Request from '../resource/cwc-resource-request.js';
 /**
  * @public @name CWCStyle
  * @extends CustomHTMLElement
- * @description Class definition, common component, adds style overrides for all project through css variables. Load from css file or embed
+ * @description Custom element, adds style override support for all project through css variables.
+ * Load from css file or embed. This is to help offer support for ie11 through shadyCSS
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ * 
+ * @attribute {String} href Used when you wan tto load style overrides from a css file
  *
  * @example
  * <cwc-style>
