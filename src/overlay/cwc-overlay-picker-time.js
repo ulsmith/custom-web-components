@@ -11,6 +11,35 @@ import '../control/cwc-control-button.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
+ * @event show The modal has been shown
+ * @event hide The modal has been hidden
+ *
+ * @method show() Show the modal manually
+ * @method hide() Hide the modal manually
+ *
+ * @property {String} format The date format to use
+ * @property {String} label The label to use for the input box
+ * @property {String} value The selected date formatted
+ * @property {Boolean} required The label to use for the input box
+ * @property {Boolean} disabled The label to use for the input box
+ * @property {Boolean} invalid The label to use for the input box
+ *
+ * @attribute {String} format The date format to use
+ * @attribute {String} label The label to use for the input box
+ * @attribute {String} placeholder The placeholder text in the input box
+ * @attribute {String} context The context of the input box as primary, secondary, success, warning, danger
+ * @attribute {Flag} required The label to use for the input box
+ * @attribute {Flag} disabled The label to use for the input box
+ * @attribute {Flag} invalid The label to use for the input box
+ * @attribute {Flag} validate-on-load The current selected date from the picker
+ *
+ * @style_variable @inherits All cwc-contorl-input variables inherited
+ * 
+ * @style_variable --cwc-overlay-picker-time--selectable--background
+ * @style_variable --cwc-overlay-picker-time--selectable--border
+ * @style_variable --cwc-overlay-picker-time--selectable--border-radius
+ * @style_variable --cwc-overlay-picker-time--selectable--color
+ * 
  * @example
  * <cwc-overlay-picker-time format="hh:mm:ss"></cwc-overlay-picker-time>
  */
@@ -335,6 +364,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 		this.shadowRoot.querySelector('#picker').show();
 		this.scrollable = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
+		this.dispatchEvent(new CustomEvent('show'));
 	}
 
 	/**
@@ -345,6 +375,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 	hide(ev) {
 		this._closed();
 		this.shadowRoot.querySelector('#picker').hide();
+		this.dispatchEvent(new CustomEvent('hide'));
 	}
 
 	_closed(ev) {
