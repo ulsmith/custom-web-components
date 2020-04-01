@@ -57,7 +57,6 @@ import '../control/cwc-control-button.js';
  * @style_variable --cwc-layout-card--header--padding
  * @style_variable --cwc-layout-card--header--background
  * @style_variable --cwc-layout-card--header--color
- * @style_variable --cwc-layout-card--header--color
  * @style_variable --cwc-layout-card--header--border-radius
  *
  * @style_variable --cwc-layout-card--body--padding
