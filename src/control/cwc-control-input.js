@@ -24,6 +24,8 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {string} help The help text to display with a little hover icon
  * @attribute {string} regex The regex value to validate against
  * @attribute {string} value The initial value, if set
+ * @attribute {string} context The contaxt as primary, success, warning, danger
+ * @attribute {string} justify The justification of content as left, right, center
  * @attribute {flag} disabled To disable the control
  * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
  * @attribute {flag} required The control is required

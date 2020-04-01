@@ -15,6 +15,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @method hide() Hide the modal manually
  *
  * @attribute {flag} visible The element visible
+ * @attribute {string} context The contaxt as primary, success, warning, danger
  * @attribute {Number} timeout The timeout to auto close
  *
  * @style_variable --cwc-overlay-notify--background

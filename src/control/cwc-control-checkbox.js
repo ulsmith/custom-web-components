@@ -22,6 +22,7 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {string} invalid-message The message to show when control is invalid
  * @attribute {string} help The help text to display with a little hover icon
  * @attribute {string} value The initial value, if set
+ * @attribute {string} context The contaxt as primary, secondary, success, warning, danger
  * @attribute {flag} disabled To disable the control
  * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
  * @attribute {flag} required The control is required
