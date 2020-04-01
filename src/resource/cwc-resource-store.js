@@ -1,8 +1,9 @@
 /**
  * @public @name CWCResourceStore
- * @description Class definition, common component, adds local storage resources
+ * @description Class definition, adds local storage resources
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
  * @example
  * CWCResourceStore.setItem('foo', {bar: 'bar'});

@@ -1,8 +1,9 @@
 /**
  * @public @name CWCResourceCrypto
- * @description Class definition, common component, adds crypto resources
+ * @description Library class giving static crypto resources
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
  * @example
  * CWCResourceCrypto.md5('hello');

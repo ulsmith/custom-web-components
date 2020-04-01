@@ -3,21 +3,35 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCResourceRouter
  * @extends CustomHTMLElement
- * @description Custom Web Component, adds dynamic lazy routing (deactivated) via push state URL or hashtag
+ * @description Custom Web Component, adds dynamic lazy routing (deactivated) via push state URL or hashtag.
+ * Loads the component into the router when URL matches and permissions met if set
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2018 Paul Smith (ulsmith.net)
  * @license MIT
  * 
- * @property {String} route The route to set as 'one', 'one/two'
- * @property {Array} routes The routes to use as array of objects [{src: '../../app/test/app-test-index.js', component: 'app-test-index', route: 'test' },...]
+ * @event change The route has been changed and is painted to the DOM
  * 
- * @attribute default The default route to use for no route (index page)
- * @attribute not-found The route to use when no route found (404)
- * @attribute push-state Flag to tell the router if it's using push-state (fallback is hashtag) 
- * @attribute redirect Flag to tell the system to redirect the default page to it's actual route
+ * @property {String} path The route path to set as 'one', 'one/two'
+ * @property {Array[Object]} routes The routes to use as array of objects [{src: '../../app/test/app-test-index.js', component: 'app-test-index', route: 'test' },...]
+ * @property {Array[Object.String]} routes[].component The component to display when route matched such as my-component
+ * @property {Array[Object.String]} routes[].path The url path to match such as some/url would match http://yoursite.com/some/url
+ * @property {Array[Object.String]} routes[].prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
+ * @property {Array[Object.String]} routes[].label The label to use when displaying links in the menu
+ * @property {Array[Object.Boolean]} routes[].hidden Do not show the route in the menu
+ * @property {Array[Object.String]} routes[].permission The permission you need to have to view the route such as ui.route.something
+ * @property {Array[Object]} permissions The permissions for the user logged in, as an array of objects [{role, 'ur.role.name', read: true, write, true, delete: true}, ...]
+ * @property {Array[Object.String]} permissions[].role The role that needs to match to the permission in the route
+ * @property {Array[Object.Boolean]} permissions[].read Does the user have read access
+ * @property {Array[Object.Boolean]} permissions[].write Does the user have write access
+ * @property {Array[Object.Boolean]} permissions[].delete Does the user have delete access
+ *
+ * @attribute {String} default The default route path when no path detected in url (index page)
+ * @attribute {String} not-found The route to use when no route found (404)
+ * @attribute {Flag} push-state Flag to tell the router if it's using push-state (fallback is hashtag) 
+ * @attribute {Flag} redirect Flag to tell the system to redirect the default page to it's actual route or show it as empty in the url
  * 
  * @example HTML
- * <cwc-resource-router .route="${this.route}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
+ * <cwc-resource-router .route="${this.path}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
  */
 class CWCResourceRouter extends CustomHTMLElement {
 	/**
@@ -28,7 +42,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 		super();
 
 		// properties
-		this.route;
+		this.path;
 		this.routes;
 		this.permissions;
 
@@ -170,7 +184,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 
 		// set route
 		this._selected = selected;
-		this.route = selected.path;
+		this.path = selected.path;
 
 		if (!customElements.get(selected.component)) {
 			// this is for when modules importing is universally excepted
