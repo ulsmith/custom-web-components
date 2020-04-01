@@ -3,9 +3,30 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCOverlay
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay base clas to provide a generic overlay for modals etc.
+ * @description Custom Web Component, overlay base component to provide a generic overlay for modals etc.
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @event show The modal has been shown
+ * @event hide The modal has been hidden
+ *
+ * @method show() Show the modal manually
+ * @method hide() Hide the modal manually
+ * @method toggle() Toggle the modal manually from hide / show or show / hide
+ *
+ * @attribute {Flag} visible The loading overlay is visible
+ * 
+ * @style_variable --cwc-overlay--background
+ * @style_variable --cwc-overlay--border
+ * @style_variable --cwc-overlay--border-radius
+ * @style_variable --cwc-overlay--box-shadow
+ * @style_variable --cwc-overlay--padding
+ * @style_variable --cwc-overlay--z-index
+ * @style_variable --cwc-overlay--backdrop--background
+ * @style_variable --cwc-overlay--backdrop--opacity
+ * 
+ * @slot Single root slot for content to place in the overlay
  *
  * @example
  * <cwc-overlay visible><span>Your thing overlayed</span></cwc-overlay>
