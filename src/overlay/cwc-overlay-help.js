@@ -4,12 +4,30 @@ import '../icon/material/cwc-icon-material-general.js';
 /**
  * @public @name CWCOverlayHelp
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay help with clickable icon
+ * @description Custom Web Component, overlay help tooltip with clickable icon
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
+ * @event show The help tip has been shown
+ * @event hide The help tip has been hidden
+ * 
+ * @method show() Show the help tip manually
+ * @method hide() Hide the help tip manually
+ * 
+ * @style_variable --cwc-overlay-help--background
+ * @style_variable --cwc-overlay-help--border
+ * @style_variable --cwc-overlay-help--border-radius
+ * @style_variable --cwc-overlay-help--box-shadow
+ * @style_variable --cwc-overlay-help--color
+ * @style_variable --cwc-overlay-help--font-size
+ * @style_variable --cwc-overlay-help--padding
+ *
+ * @style_variable --cwc-overlay-help--icon--color
+ * 
+ * @slot root Single root slot for text to show in help tip
+ * 
  * @example
- * <cwc-overlay-help>Bla bla bla bla...</cwc-overlay-help>
+ * <cwc-overlay-help>This is a help message...</cwc-overlay-help>
  */
 class CWCOverlayHelp extends CustomHTMLElement {
 

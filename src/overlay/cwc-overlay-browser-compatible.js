@@ -6,9 +6,16 @@ import '../icon/material/cwc-icon-material-hardware.js';
 /**
  * @public @name CWCOverlayBrowserCompatible
  * @extends CustomHTMLElement
- * @description Application Web Component, main application gateway, the root web component that starts the application
+ * @description Custom Web Component, displays a compatible browser message if using incompatible browsers. Persistance saved to local storage
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ * 
+ * @attribute {Flag} show Opens the owverlay and show it, happens automatically if browser compatibility failed
+ *
+ * @slot root Single root slot for text to show in help tip
+ * 
+ * @example <cwc-overlay-browser-compatible></cwc-overlay-browser-compatible>
  */
 class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 
@@ -42,7 +49,7 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 					width: 100%;
 					height: 100%;
 					overflow: auto;
-					font-family: 'Dosis', sans-serif;
+					font-family: sans-serif;
 				}
 
 				:host([show]) { display: block; }
@@ -63,8 +70,10 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
             </style>
 
 			${this._isIE11 && !this._ignore ? html`
-				<link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
-				<div class="compatible">
+				<div>
+					<slot></slot>
+				</div>
+				<div id="default-message" class="compatible">
 					<h1>
 						<cwc-icon-material-hardware class="icon" name="security"></cwc-icon-material-hardware>
 						Unfortunately we have stopped supporting IE11
@@ -102,6 +111,13 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 	 */
 	connected() {
 		if (this._isIE11 && !this._ignore) this.setAttribute('show', '');
+	}
+
+	templateUpdated() {
+		const slot = this.shadowRoot.querySelector('slot');
+		const defaultMessage = this.shadowRoot.querySelector('#default-message');
+		slot.parentNode.style.display = slot.assignedNodes().length < 1 ? 'none' : 'block';
+		defaultMessage.style.display = slot.assignedNodes().length < 1 ? 'block' : 'none';
 	}
 
 	_remove() {

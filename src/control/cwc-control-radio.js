@@ -47,6 +47,8 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-radio--[context]--color--hover
  *
  * @style_variable --cwc-control-radio--disabled--opacity
+ * 
+ * @slot root Single root slot to show all cwc-control-radio-option elements
  *
  * @example
  * <cwc-control-radio
@@ -294,6 +296,8 @@ customElements.define('cwc-control-radio', CWCControlRadio);
  *
  * @attribute {string} value The initial value, if set
  * @attribute {flag} selected Is this option selected
+ * 
+ * @slot root Single root slot to show option label/text/icon etc.
  * 
  * @example
  * <cwc-control-radio-option value="one" selected>One</cwc-control-radio-option>

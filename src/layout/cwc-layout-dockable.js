@@ -26,9 +26,20 @@ import '../icon/material/cwc-icon-material-general.js';
  * @property {Array[Object]} routes Array of routes to use for menu items
  *
  * @attribute {flag} docked When the menu is docked (mobile)
+ *
+ * @slot menu-header The content area top of the menu
+ * @slot menu-footer The content area bottom of the menu
+ * @slot page The content area reserved as page area.
  * 
  * @example HTML
- * <cwc-layout-dockable></cwc-layout-dockable>
+ * <cwc-layout-dockable>
+ * 		<span slot="menu-header">My Business</span>
+ * 		<span slot="menu-footer">My Copywrite</span>
+ * 		<div slot="page">
+ * 			<h1>Page One</h1>
+ * 			<p>This is a page...</p>
+ * 		</div>
+ * </cwc-layout-dockable>
  */
 class CWCLayoutDockable extends CustomHTMLElement {
 

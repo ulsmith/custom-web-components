@@ -33,6 +33,10 @@ import '../icon/material/cwc-icon-material-image.js';
  * @style_variable --cwc-layout-card--footer--color
  * @style_variable --cwc-layout-card--footer--border-radius
  *
+ * @slot header Content in the title area, the header, omit to remove
+ * @slot body Content that goes in the collapsible body
+ * @slot footer Content that goe sin hte footer, omit to remove
+ *
  * @example
  * <cwc-layout-card collapsible ?loading="${isLoading}">
  *		<h4 slot="header">A Heading</h4>

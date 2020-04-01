@@ -40,6 +40,8 @@ import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-componen
  * @style_variable --cwc-control-button--[context]--background--active
  * @style_variable --cwc-control-button--[context]--box-shadow--active
  *
+ * @slot root Single root slot to show contents of button
+ * 
  * @example
  * <cwc-control-button @click="${this.test.bind(this)}" type="submit" disabled>A Button</cwc-control-button>
  */

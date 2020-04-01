@@ -68,17 +68,23 @@ import '../control/cwc-control-button.js';
  * @style_variable --cwc-layout-card--footer--background
  * @style_variable --cwc-layout-card--footer--color
  * @style_variable --cwc-layout-card--footer--border-radius
- *
+ * 
  * @example
- * <cwc-layout-card collapsible ?loading="${isLoading}">
- *		<h4 slot="header">A Heading</h4>
- *		<div slot="body">
- *			<p>Some thing in the body</p>
- *		</div>
- *		<div slot="footer">
- *			<cwc-control-button>Save</cwc-control-button>
- *		</div>
- * </cwc-layout-card>
+ * <cwc-layout-card 
+ * 		.header="${this._header}"
+ * 		.body="${this._body}"
+ * 		page-size="5"
+ * 		paginate-internal
+ * ></cwc-layout-card>
+ *
+ * <cwc-layout-card
+ * 		.header="${this._header}"
+ * 		.body="${this._body}"
+ * 		page-size="5"
+ * 		page-count="4"
+ *		page="1"
+ * 		paginate-external
+ * ></cwc-layout-card>
  */
 class CwcLayoutTable extends CustomHTMLElement {
 
