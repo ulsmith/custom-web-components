@@ -10,7 +10,8 @@ import '../control/cwc-control-button.js';
  * @description Custom Web Component, overlay picker letting you pick a date
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
- *
+ * @license MIT
+ * 
  * @event show The date picker has been shown
  * @event hide The date picker has been hidden
  * @event change The the value has changed, with event detail as the value

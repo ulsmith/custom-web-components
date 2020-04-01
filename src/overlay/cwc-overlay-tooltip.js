@@ -3,10 +3,30 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCOverlayTooltip
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay tooltip
+ * @description Custom Web Component, overlay tooltip
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
+ * @event show The tooltip has been shown
+ * @event hide The tooltip has been hidden
+ *
+ * @method show() Show the tooltip manually
+ * @method hide() Hide the tooltip manually
+ * 
+ * @attribute {String} for Text that matches the closest element name attribute for which it relates
+ * 
+ * @style_variable --cwc-overlay-tooltip--background
+ * @style_variable --cwc-overlay-tooltip--border
+ * @style_variable --cwc-overlay-tooltip--border-radius
+ * @style_variable --cwc-overlay-tooltip--box-shadow
+ * @style_variable --cwc-overlay-tooltip--color
+ * @style_variable --cwc-overlay-tooltip--font-size
+ * @style_variable --cwc-overlay-tooltip--padding
+ * @style_variable --cwc-overlay-tooltip--transition-time
+ *
+ * @slot Single root slot for content in the saving component
+ * 
  * @example
  * <cwc-overlay-tooltip for="input-one">Your tooltip message</cwc-overlay-tooltip>
  */
@@ -37,7 +57,7 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 					display: none;
 					z-index: -1;
 					opacity: 0;
-					transition: opacity 150ms linear;
+					transition: opacity var(--cwc-overlay-tooltip--transition-time, 150ms) linear;
 					max-width: 250px;
 				}
 

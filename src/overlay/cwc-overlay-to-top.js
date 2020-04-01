@@ -7,7 +7,8 @@ import '../icon/material/cwc-icon-material-general.js';
  * @description Application Web Component, common component, overlay top top button
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
- *
+ * @license MIT
+ * 
  * @event show The to-top has been shown
  * @event hide The to-top has been hidden
  * @event totop The to-top has gone to top
