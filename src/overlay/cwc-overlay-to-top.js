@@ -8,6 +8,18 @@ import '../icon/material/cwc-icon-material-general.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
+ * @event show The to-top has been shown
+ * @event hide The to-top has been hidden
+ * @event totop The to-top has gone to top
+ *
+ * @method show() Show the to-top manually
+ * @method hide() Hide the to-top manually
+ * 
+ * @style_variable --cwc-overlay-to-top--transition-time
+ * @style_variable --cwc-overlay-to-top--background
+ * @style_variable --cwc-overlay-to-top--box-shadow
+ * @style_variable --cwc-overlay-to-top--opacity
+ * 
  * @example
  * <cwc-overlay-to-top></cwc-overlay-to-top>
  */
@@ -39,24 +51,24 @@ class CWCOverlayToTop extends CustomHTMLElement {
 					width: 50px;
 					height: 50px;
 					margin-left: -25px;
-					transition: opacity 100ms ease-in-out;
+					transition: opacity var(--cwc-overlay-to-top--transition-time, 100ms) ease-in-out;
 				}
 
-				.cwc-topper {
+				.cwc-totop {
 					display: block;
 					height: 50px;
 					width: 50px;
 					fill: white;
 					padding: 10px;
-					background-color: #4b7cb9;
+					background: var(--cwc-overlay-to-top--background, #4b7cb9);
 					border-radius: 50px;
 					box-sizing: border-box;
-					box-shadow: 0px 0px 20px -4px rgba(0,0,0,0.75);
-					opacity: 0.8;
+					box-shadow: var(--cwc-overlay-to-top--box-shadow, 0px 0px 20px -4px rgba(0,0,0,0.75));
+					opacity: var(--cwc-overlay-to-top--opacity, 0.8);
 				}
 			</style>
 
-			<cwc-icon-material-general name="arrowUpward" class="cwc-topper" @click="${this.goToTop.bind(this)}"></cwc-icon-material-general>
+			<cwc-icon-material-general name="arrowUpward" class="cwc-totop" @click="${this.goToTop.bind(this)}"></cwc-icon-material-general>
 
         `;
 	}
@@ -89,6 +101,7 @@ class CWCOverlayToTop extends CustomHTMLElement {
 	goToTop(ev) {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 		this.hide();
+		this.dispatchEvent(new CustomEvent('totop'));
 	}
 
 	/**
