@@ -11,8 +11,8 @@ import '../icon/material/cwc-icon-material-image.js';
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  *
- * @attribute {flag} loading The element is loading
- * @attribute {flag} collapsible The element can collapse and expand with a click
+ * @attribute {Flag} loading The element is loading
+ * @attribute {Flag} collapsible The element can collapse and expand with a click
  *
  * @style_variable --cwc-layout-card--border
  * @style_variable --cwc-layout-card--border

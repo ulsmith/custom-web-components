@@ -15,14 +15,14 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @property {string} value The initial value (overrides attribute value)
  *
- * @attribute {string} label The control label
- * @attribute {string} help The help text to display with a little hover icon
- * @attribute {string} value The initial value, if set
- * @attribute {string} context The contaxt as primary, success, warning, danger
- * @attribute {flag} disabled To disable the control
- * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
- * @attribute {flag} required The control is required
- * @attribute {flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {String} label The control label
+ * @attribute {String} help The help text to display with a little hover icon
+ * @attribute {String} value The initial value, if set
+ * @attribute {String} context The contaxt as primary, success, warning, danger
+ * @attribute {Flag} disabled To disable the control
+ * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} required The control is required
+ * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
  *
  * @style_variable --cwc-control-switch--background
  * @style_variable --cwc-control-switch--border

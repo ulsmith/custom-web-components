@@ -14,8 +14,8 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @method show(Number timeout) Show the modal manually with optional timeout for auto close in ms
  * @method hide() Hide the modal manually
  *
- * @attribute {flag} visible The element visible
- * @attribute {string} context The contaxt as primary, success, warning, danger
+ * @attribute {Flag} visible The element visible
+ * @attribute {String} context The contaxt as primary, success, warning, danger
  * @attribute {Number} timeout The timeout to auto close
  *
  * @style_variable --cwc-overlay-notify--background

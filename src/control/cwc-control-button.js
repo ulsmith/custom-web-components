@@ -10,9 +10,9 @@ import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-componen
  *
  * @event click The button is clicked
  *
- * @attribute {string} context The contaxt as primary, secondary, success, warning, danger
- * @attribute {string} type The type for the button
- * @attribute {flag} disabled Add to disabled the button
+ * @attribute {String} context The contaxt as primary, secondary, success, warning, danger
+ * @attribute {String} type The type for the button
+ * @attribute {Flag} disabled Add to disabled the button
  *
  * @style_variable --cwc-control-button--border-radius
  * @style_variable --cwc-control-button--height

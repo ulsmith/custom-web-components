@@ -40,7 +40,7 @@ const ICONS = {
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
- * @attribute {string} name The name of the icon to display
+ * @attribute {String} name The name of the icon to display
  *
  * @example
  * <cwc-icon-material-social name="foo"></cwc-icon-material-social>

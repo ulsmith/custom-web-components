@@ -46,9 +46,9 @@ import '../control/cwc-control-button.js';
  * @attribute {Number} page-size The size of the pages (how many rows) when paginating internally or externally
  * @attribute {Number} page-count The amount pages calculated when paginating externally only
  * @attribute {Number} page The page you are currently on when paginating externally only
- * @attribute {flag} loading The element is loading
- * @attribute {flag} paginate-external The table is paginated, but externally, all pagination is set outside table
- * @attribute {flag} paginate-internal The table is paginated internally, we feed it all the data and let it handle the pagination
+ * @attribute {Flag} loading The element is loading
+ * @attribute {Flag} paginate-external The table is paginated, but externally, all pagination is set outside table
+ * @attribute {Flag} paginate-internal The table is paginated internally, we feed it all the data and let it handle the pagination
  *
  * @style_variable --cwc-layout-card--border
  * @style_variable --cwc-layout-card--border

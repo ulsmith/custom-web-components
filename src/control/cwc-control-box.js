@@ -13,12 +13,12 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @method render() Re-render the options
  * @method validate(Array value) The value saved, an array of selections
  *
- * @attribute {string} label The control label
- * @attribute {string} value The initial value, if set
- * @attribute {flag} disabled To disable the control
- * @attribute {flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
- * @attribute {flag} required The control is required
- * @attribute {flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {String} label The control label
+ * @attribute {String} value The initial value, if set
+ * @attribute {Flag} disabled To disable the control
+ * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} required The control is required
+ * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
  *
  * @style_variable --cwc-control-box--border
  * @style_variable --cwc-control-box--border-radius
