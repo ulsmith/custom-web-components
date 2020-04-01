@@ -3,10 +3,40 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCOverlayNotify
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay notify that can be styled
+ * @description Custom Web Component, overlay notify message that can be styled
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ * 
+ * @event show The help tip has been shown
+ * @event hide The help tip has been hidden
  *
+ * @method show(Number timeout) Show the modal manually with optional timeout for auto close in ms
+ * @method hide() Hide the modal manually
+ *
+ * @attribute {flag} visible The element visible
+ * @attribute {Number} timeout The timeout to auto close
+ *
+ * @style_variable --cwc-overlay-notify--background
+ * @style_variable --cwc-overlay-notify--border
+ * @style_variable --cwc-overlay-notify--border-radius
+ * @style_variable --cwc-overlay-notify--bottom
+ * @style_variable --cwc-overlay-notify--box-shadow
+ * @style_variable --cwc-overlay-notify--color
+ * @style_variable --cwc-overlay-notify--fill
+ * @style_variable --cwc-overlay-notify--left
+ * @style_variable --cwc-overlay-notify--right
+ * @style_variable --cwc-overlay-notify--top
+ * @style_variable --cwc-overlay-notify--transform
+ * @style_variable --cwc-overlay-notify--z-index
+ *
+ * @style_variable --cwc-overlay-notify--[context]--background
+ * @style_variable --cwc-overlay-notify--[context]--color
+ * @style_variable --cwc-overlay-notify--[context]--fill
+ * @style_variable --cwc-overlay-notify--[context]--border
+ * 
+ * @slot Single root slot, to add a message to the notify component
+ * 
  * @example
  * <cwc-overlay-notify timeout="4000" context="primary">Your Message</cwc-overlay-notify>
  */

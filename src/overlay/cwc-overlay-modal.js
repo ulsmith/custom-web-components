@@ -5,17 +5,46 @@ import '../icon/material/cwc-icon-material-general.js';
 /**
  * @public @name CWCOverlayModal
  * @extends CustomHTMLElement
- * @description Application Web Component, adds a modal to the page that can close itself
+ * @description Custom Web Component, adds a modal to the page that can close itself
  * @author Paul Smith <p@ulsmith.net>
- * @copyright 2018 Paul Smith (ulsmith.net)
+ * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
+ *
+ * @event show The help tip has been shown
+ * @event hide The help tip has been hidden
+ *
+ * @method show() Show the modal manually
+ * @method hide() Hide the modal manually
+ * @method toggle() Toggle the modal manually from hide / show or show / hide
+ * 
+ * @style_variable --cwc-overlay-modal--border
+ * @style_variable --cwc-overlay-modal--border-radius
+ * @style_variable --cwc-overlay-modal--box-shadow
+ * @style_variable --cwc-overlay-modal--background
+ * @style_variable --cwc-overlay-modal--transition
+ * 
+ * @style_variable --cwc-overlay-modal--header--padding
+ * @style_variable --cwc-overlay-modal--header--background
+ * @style_variable --cwc-overlay-modal--header--color
+ *
+ * @style_variable --cwc-overlay-modal--body--padding
+ * @style_variable --cwc-overlay-modal--body--background
+ * @style_variable --cwc-overlay-modal--body--color
+ *
+ * @style_variable --cwc-overlay-modal--footer--padding
+ * @style_variable --cwc-overlay-modal--footer--background
+ * @style_variable --cwc-overlay-modal--footer--color
+ * 
+ * @slot header Content in the title area, the header, omit to remove
+ * @slot body Content that goes in the body
+ * @slot footer Content that goes in the footer, omit to remove
  *
  * @example HTML
  * <cwc-overlay-modal>
  * 	   <div slot="header">
  * 	       <h1>A Modal</h1>
  *     </div>
- * 	   <div slot="main">
+ * 	   <div slot="body">
  * 	       <p>Some content...</p>
  *     </div>
  * 	   <div slot="footer">
@@ -33,8 +62,6 @@ class CWCOverlayModal extends CustomHTMLElement {
 		super();
 
 		this.visible = false;
-		this._header = this.hasAttribute('header');
-		this._footer = this.hasAttribute('footer');
 
 		window.addEventListener('resize', this.adjustHost.bind(this));
 	}
@@ -57,18 +84,21 @@ class CWCOverlayModal extends CustomHTMLElement {
 					left: 50%;
 					width: 50%;
 					height: fit-content;
-					box-shadow: 0px 0px 25px -1px rgba(0,0,0,0.75);
-					background-color: white;
-					transition: ease-out 200ms opacity;
+					border: var(--cwc-overlay-modal--border, 1px solid #ccc);
+					border-radius: var(--cwc-overlay-modal--border-radius, 0px);
+					box-shadow: var(--cwc-overlay-modal--box-shadow, 0px 0px 6px -4px rgba(0,0,0,0.75));
+					background: var(--cwc-overlay-modal--background, white);
+					transition: var(--cwc-overlay-modal--transition, ease-out 200ms opacity);
 					display: none;
 					opacity: 0;
 					z-index: 1000;
 				}
 
 				.cwc-overlay-modal .header {
-					padding: 10px;
-					background-color: #444;
-					color: white;
+					padding: var(--cwc-overlay-modal--header--padding, 10px);
+					background: var(--cwc-overlay-modal--header--background, #444);
+					color: var(--cwc-overlay-modal--header--color, white);
+					fill: var(--cwc-overlay-modal--header--color, white);
 				}
 
 				.cwc-overlay-modal .header .icon {
@@ -78,30 +108,33 @@ class CWCOverlayModal extends CustomHTMLElement {
 					width: 35px; 
 					height: 35px;
 					cursor: pointer;
-					fill: white;
+					fill: var(--cwc-overlay-modal--header--color, white);
 				}
 
-				.cwc-overlay-modal .main {
-					padding: 10px;
+				.cwc-overlay-modal .body {
+					padding: var(--cwc-overlay-modal--body--padding, 10px);
 					overflow: auto;
-
+					background: var(--cwc-overlay-modal--body--background, transparent);
+					color: var(--cwc-overlay-modal--body--color, #222);
+					fill: var(--cwc-overlay-modal--body--color, #222);
 				}
 
 				.cwc-overlay-modal .footer {
-					padding: 10px;
-					background-color: #e4e4e4;
+					padding: var(--cwc-overlay-modal--footer--padding, 10px);
+					background: var(--cwc-overlay-modal--footer--background, #e4e4e4);
+					color: var(--cwc-overlay-modal--footer--color, #222);
+					fill: var(--cwc-overlay-modal--footer--color, #222);
 				}
 			</style>
 
 			<div class="cwc-overlay-modal">
 				<div class="box">
 					<div class="header" ?hidden="${!this._header}">
-					<!-- <div class="header"> -->
 						<slot name="header"></slot>
 						<span class="icon" @click="${this.hide.bind(this)}">${CWCIconMaterialGeneral.close}</span>
 					</div>
-					<div id="main" class="main">
-						<slot name="main"></slot>
+					<div id="body" class="body">
+						<slot name="body"></slot>
 					</div>
 					<div class="footer" ?hidden="${!this._footer}">
 						<slot name="footer"></slot>
@@ -116,6 +149,11 @@ class CWCOverlayModal extends CustomHTMLElement {
 	 * @description Lifecycle hook that gets called when the element template is rendered
 	 */
 	templateUpdated() {
+		const header = this.shadowRoot.querySelector('slot[name="header"]');
+		const footer = this.shadowRoot.querySelector('slot[name="footer"]');
+		header.parentNode.style.display = header.assignedNodes().length < 1 ? 'none' : 'block';
+		footer.parentNode.style.display = footer.assignedNodes().length < 1 ? 'none' : 'block';
+
 		this.visibility();
 	}
 
@@ -165,6 +203,7 @@ class CWCOverlayModal extends CustomHTMLElement {
 	show() {
 		this.visible = true;
 		this.visibility();
+		this.dispatchEvent(new CustomEvent('show'));
 	}
 
 	/**
@@ -174,6 +213,7 @@ class CWCOverlayModal extends CustomHTMLElement {
 	hide() {
 		this.visible = false;
 		this.visibility();
+		this.dispatchEvent(new CustomEvent('hide'));
 	}
 }
 

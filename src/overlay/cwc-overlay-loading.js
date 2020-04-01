@@ -4,12 +4,31 @@ import '../icon/material/cwc-icon-material-image.js';
 /**
  * @public @name CWCOverlayLoading
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay loader that can be styled
+ * @description Custom Web Component, centrally positioned overlay loader that can be styled or statically placed
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
+ * @event show The loading overlay has been shown
+ * @event hide The loading overlay has been hidden
+ *
+ * @method show() Show the loading overlay manually
+ * @method hide() Hide the loading overlay manually
+ * 
+ * @attribute {String} src The uses an image of your choice as the spinner, defaults to spinner icon
+ * @attribute {Flag} static The loading overlay is statically placed inline with other content
+ * @attribute {Flag} visible The loading overlay is visible
+ * @attribute {Flag} show-on-load The loading overlay is shown when loaded
+ *
+ * @style_variable --cwc-overlay-loading--background
+ * @style_variable --cwc-overlay-loading--border
+ * @style_variable --cwc-overlay-loading--box-shadow
+ * @style_variable --cwc-overlay-loading--padding
+ * @style_variable --cwc-overlay-loading--speed
+ * @style_variable --cwc-overlay-loading--z-index
+ * 
  * @example
- * <cwc-overlay-loading visible></cwc-overlay-loading>
+ * <cwc-overlay-loading show-on-load></cwc-overlay-loading>
  */
 class CWCOverlayLoading extends CustomHTMLElement {
 

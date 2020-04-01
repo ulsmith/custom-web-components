@@ -35,7 +35,7 @@ import '../icon/material/cwc-icon-material-image.js';
  *
  * @slot header Content in the title area, the header, omit to remove
  * @slot body Content that goes in the collapsible body
- * @slot footer Content that goe sin hte footer, omit to remove
+ * @slot footer Content that goes in the footer, omit to remove
  *
  * @example
  * <cwc-layout-card collapsible ?loading="${isLoading}">
