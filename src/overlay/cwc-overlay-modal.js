@@ -10,8 +10,8 @@ import '../icon/material/cwc-icon-material-general.js';
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  *
- * @event show The help tip has been shown
- * @event hide The help tip has been hidden
+ * @event show The modal has been shown
+ * @event hide The modal has been hidden
  *
  * @method show() Show the modal manually
  * @method hide() Hide the modal manually
