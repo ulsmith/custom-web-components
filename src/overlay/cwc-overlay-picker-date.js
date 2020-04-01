@@ -11,8 +11,58 @@ import '../control/cwc-control-button.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  *
+ * @event show The date picker has been shown
+ * @event hide The date picker has been hidden
+ * @event change The the value has changed, with event detail as the value
+ *
+ * @method show() Show the date picker manually
+ * @method hide() Hide the date picker manually
+ * @method validate(String value) Validate the value from the component
+ * 
+ * @property {String} format The date format to use
+ * @property {String} label The label to use for the input box
+ * @property {String} value The selected date formatted
+ * @property {Boolean} required The label to use for the input box
+ * @property {Boolean} disabled The label to use for the input box
+ * @property {Boolean} invalid The label to use for the input box
+ * @property {Date} selected The current selected date from the picker
+ * 
+ * @attribute {String} format The date format to use
+ * @attribute {String} label The label to use for the input box
+ * @attribute {String} placeholder The placeholder text in the input box
+ * @attribute {String} context The context of the input box as primary, secondary, success, warning, danger
+ * @attribute {Flag} required The label to use for the input box
+ * @attribute {Flag} disabled The label to use for the input box
+ * @attribute {Flag} invalid The label to use for the input box
+ * @attribute {Flag} validate-on-load The current selected date from the picker
+ * 
+ * @style_variable @inherits All cwc-contorl-input variables inherited
+ * 
+ * @style_variable --cwc-overlay-picker-date--button-open--height
+ * @style_variable --cwc-overlay-picker-date--selectable--border-radius
+ * @style_variable --cwc-overlay-picker-date--icon--margin
+ * 
+ * @style_variable --cwc-overlay-picker-date--selected-day--background
+ * @style_variable --cwc-overlay-picker-date--selected-day--border
+ * @style_variable --cwc-overlay-picker-date--selected-day--color
+ * 
+ * @style_variable --cwc-overlay-picker-date--selected-month--background
+ * @style_variable --cwc-overlay-picker-date--selected-month--border
+ * @style_variable --cwc-overlay-picker-date--selected-month--color
+ * 
+ * @style_variable --cwc-overlay-picker-date--selected-year--background
+ * @style_variable --cwc-overlay-picker-date--selected-year--border
+ * @style_variable --cwc-overlay-picker-date--selected-year--color
+ * 
  * @example
- * <cwc-overlay-picker-date format="dd/mm/yyyy" label="Date" placeholder="Input Date" required disabled validate-on-load></cwc-overlay-picker-date>
+ * <cwc-overlay-picker-date 
+ * 		format="dd/mm/yyyy"
+ * 		label="Date"
+ * 		placeholder="Input Date"
+ * 		required
+ * 		disabled
+ * 		validate-on-load
+ * ></cwc-overlay-picker-date>
  */
 class CWCOverlayPickerDate extends CustomHTMLElement {
 
@@ -446,6 +496,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 
 		this.scrollable = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
+		this.dispatchEvent(new CustomEvent('show'));
 	}
 
 	/**
@@ -456,13 +507,15 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 	hide(ev) {
 		this._closed();
 		this.shadowRoot.querySelector('#picker').hide();
+		this.dispatchEvent(new CustomEvent('hide'));
 	}
 
 	/**
 	 * @private @name validate
 	 * @description Proxy the validation to input
+	 * @param {String} value The value to validate
 	 */
-	validate() { return this.shadowRoot.querySelector('cwc-control-input').validate() }
+	validate(value) { return this.shadowRoot.querySelector('cwc-control-input').validate(value) }
 
 	/**
 	 * @private @name _closed
