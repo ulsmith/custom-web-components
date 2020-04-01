@@ -3,9 +3,34 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 /**
  * @public @name CWCOverlaySaving
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay saving indicator
+ * @description Custom Web Component, overlay saving indicator
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
+ *
+ * @event show The saving indicator has been shown
+ * @event hide The saving indicator has been hidden
+ *
+ * @method show() Show the saving indicator manually
+ * @method hide() Hide the saving indicator manually
+ *
+ * @attribute {Flag} visible The component is visible
+ * @attribute {Number} timeout The auto close time in ms
+ *
+ * @style_variable --cwc-overlay-saving--padding
+ * @style_variable --cwc-overlay-saving--background
+ * @style_variable --cwc-overlay-saving--border
+ * @style_variable --cwc-overlay-saving--border-radius
+ * @style_variable --cwc-overlay-saving--bottom
+ * @style_variable --cwc-overlay-saving--box-shadow
+ * @style_variable --cwc-overlay-saving--color
+ * @style_variable --cwc-overlay-saving--font-size
+ * @style_variable --cwc-overlay-saving--font-weight
+ * @style_variable --cwc-overlay-saving--text-transform
+ * @style_variable --cwc-overlay-saving--top
+ * @style_variable --cwc-overlay-saving--z-index
+ * 
+ * @slot Single root slot for content in the saving component
  *
  * @example
  * <cwc-overlay-saving timeout="4000">Your saving message</cwc-overlay-saving>
@@ -99,11 +124,10 @@ class CWCOverlaySaving extends CustomHTMLElement {
      * @param {Event} ev Any event that kicks the function
 	 */
 	show(ev) {
-		this.dispatchEvent(new CustomEvent('show'));
-
 		clearTimeout(this._showing);
 		this.setAttribute('visible', '');
-
+		
+		this.dispatchEvent(new CustomEvent('show'));
 		setTimeout(() => {
 			this.style.opacity = 1;
 			if (this._timeout) this._showing = setTimeout(() => this.hide(ev), this._timeout);
@@ -118,8 +142,8 @@ class CWCOverlaySaving extends CustomHTMLElement {
 	hide(ev) {
 		if (this.style.display === 'none') return;
 
-		this.dispatchEvent(new CustomEvent('hide'));
 		this.style.opacity = 0;
+		this.dispatchEvent(new CustomEvent('hide'));
 		setTimeout(() => this.removeAttribute('visible'), 200);
 	}
 }

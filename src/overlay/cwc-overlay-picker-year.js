@@ -7,9 +7,10 @@ import '../control/cwc-control-button.js';
 /**
  * @public @name CWCOverlayPickerYear
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay picker letting you pick a year
+ * @description Custom Web Component, overlay picker letting you pick a year
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
+ * @license MIT
  *
  * @event show The date picker has been shown
  * @event hide The date picker has been hidden
