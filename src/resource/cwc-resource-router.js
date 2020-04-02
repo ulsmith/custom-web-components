@@ -11,8 +11,8 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * 
  * @event change The route has been changed and is painted to the DOM
  * 
- * @property {String} path The route path to set as 'one', 'one/two'
- * @property {Array[Object]} routes The routes to use as array of objects [{src: '../../app/test/app-test-index.js', component: 'app-test-index', route: 'test' },...]
+ * @property {Object} route The route selected { component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' }
+ * @property {Array[Object]} routes The routes to use as array of objects [{ component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' },...]
  * @property {Array[Object.String]} routes[].component The component to display when route matched such as my-component
  * @property {Array[Object.String]} routes[].path The url path to match such as some/url would match http://yoursite.com/some/url
  * @property {Array[Object.String]} routes[].prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
@@ -31,7 +31,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @attribute {Flag} redirect Flag to tell the system to redirect the default page to it's actual route or show it as empty in the url
  * 
  * @example HTML
- * <cwc-resource-router .route="${this.path}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
+ * <cwc-resource-router .route="${this.route}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
  */
 class CWCResourceRouter extends CustomHTMLElement {
 	/**
@@ -42,7 +42,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 		super();
 
 		// properties
-		this.path;
+		this.route;
 		this.routes;
 		this.permissions;
 
@@ -71,7 +71,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['path', 'routes', 'permissions'];
+		return ['route', 'routes', 'permissions'];
 	}
 
 	/**
@@ -184,7 +184,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 
 		// set route
 		this._selected = selected;
-		this.path = selected.path;
+		this.route = selected;
 
 		if (!customElements.get(selected.component)) {
 			// this is for when modules importing is universally excepted
