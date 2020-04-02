@@ -71,7 +71,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['route', 'routes', 'permissions'];
+		return ['path', 'routes', 'permissions'];
 	}
 
 	/**
