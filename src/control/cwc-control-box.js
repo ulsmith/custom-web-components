@@ -114,17 +114,20 @@ class CWCControlBox extends CustomHTMLElement {
  					height: 28px;
  					text-align: center;
  					line-height: 30px;
- 					cursor: default;
  					padding: 0 5px;
  					white-space: nowrap;
- 					border-radius: var(--cwc-control-box--option--border-radius, 0);
- 				}
+					border-radius: var(--cwc-control-box--option--border-radius, 0);
+					outline: none;
+				}
+				 
+				:host([disabled]) .container .cwc-box-buttons .cwc-option { cursor: not-allowed; }
 				
  				.container .cwc-box-buttons .cwc-option[selected] {
  					background: var(--cwc-control-box--option--background--selected, black);
  					color: var(--cwc-control-box--option--color--selected, white);
 					cursor: default;
  				}
+				
 			</style>
 
 			<div class="container" ?invalid="${this.invalid}">
