@@ -37,6 +37,8 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @style_variable --cwc-control-box--option--background--selected
  * @style_variable --cwc-control-box--option--color--selected
  * 
+ * @style_variable --cwc-control-box--disabled--opacity
+ * 
  * @example
  * <cwc-control-box label="Hello" value="1" disabled invalid @change="${this.test.bind(this)}">
  * 		<option value="1">One</option>
@@ -120,7 +122,8 @@ class CWCControlBox extends CustomHTMLElement {
 					outline: none;
 				}
 				 
-				:host([disabled]) .container .cwc-box-buttons .cwc-option { cursor: not-allowed; }
+				:host([disabled]) .container .cwc-box-buttons .cwc-option {	pointer-events: none; cursor: not-allowed; }
+				:host([disabled]) {	opacity: var(--cwc-control-box--disabled--opacity, 0.6); }
 				
  				.container .cwc-box-buttons .cwc-option[selected] {
  					background: var(--cwc-control-box--option--background--selected, black);
