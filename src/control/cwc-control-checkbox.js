@@ -49,17 +49,11 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-checkbox--label--font-style
  * @style_variable --cwc-control-checkbox--label--font-family
  *
- * @style_variable --cwc-control-checkbox--invalid--fill - Drops back to danger if not set
- * @style_variable --cwc-control-checkbox--invalid--border - Drops back to danger if not set
- * @style_variable --cwc-control-checkbox--invalid--color - Drops back to danger if not set
- * @style_variable --cwc-control-checkbox--invalid--fill--hover - Drops back to danger if not set
- * @style_variable --cwc-control-checkbox--invalid--color--hover - Drops back to danger if not set
- *
- * @style_variable --cwc-control-checkbox--[context]--fill
- * @style_variable --cwc-control-checkbox--[context]--border
- * @style_variable --cwc-control-checkbox--[context]--color
- * @style_variable --cwc-control-checkbox--[context]--fill--hover
- * @style_variable --cwc-control-checkbox--[context]--color--hover
+ * @style_variable --cwc-control-checkbox--invalid--fill
+ * @style_variable --cwc-control-checkbox--invalid--border
+ * @style_variable --cwc-control-checkbox--invalid--color
+ * @style_variable --cwc-control-checkbox--invalid--fill--hover
+ * @style_variable --cwc-control-checkbox--invalid--color--hover
  *
  * @style_variable --cwc-control-checkbox--disabled--opacity
  * 
@@ -202,48 +196,13 @@ class CWCControlCheckbox extends CustomHTMLElement {
 					right: 2px;
 				}
 
-				:host([context="primary"]) .cwc-checkbox-container { fill: var(--cwc-control-checkbox--primary--fill, blue); }
-				:host([context="primary"]) .cwc-checkbox-container[boxed] { border: var(--cwc-control-checkbox--primary--border, 1px solid blue); }
-				:host([context="primary"]) .cwc-checkbox-container .cwc-sub-content { color: var(--cwc-control-checkbox--primary--color, blue); }
-				:host([context="primary"]) .cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--primary--color, blue); }
-				:host([context="primary"]) .cwc-checkbox-container .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--primary--fill--hover, darkblue); }
-				:host([context="primary"]) .cwc-checkbox-container .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--primary--color--hover, darkblue); }
-
-				:host([context="secondary"]) .cwc-checkbox-container { fill: var(--cwc-control-checkbox--secondary--fill, grey); }
-				:host([context="secondary"]) .cwc-checkbox-container[boxed] { border: var(--cwc-control-checkbox--secondary--border, 1px solid grey); }
-				:host([context="secondary"]) .cwc-checkbox-container .cwc-sub-content { color: var(--cwc-control-checkbox--secondary--color, grey); }
-				:host([context="secondary"]) .cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--secondary--color, grey); }
-				:host([context="secondary"]) .cwc-checkbox-container .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--secondary--fill--hover, darkgrey); }
-				:host([context="secondary"]) .cwc-checkbox-container .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--secondary--color--hover, darkgrey); }
-
-				:host([context="success"]) .cwc-checkbox-container { fill: var(--cwc-control-checkbox--success--fill, green); }
-				:host([context="success"]) .cwc-checkbox-container[boxed] { border: var(--cwc-control-checkbox--success--border, 1px solid green); }
-				:host([context="success"]) .cwc-checkbox-container .cwc-sub-content { color: var(--cwc-control-checkbox--success--color, green); }
-				:host([context="success"]) .cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--success--color, green); }
-				:host([context="success"]) .cwc-checkbox-container .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--success--fill--hover, darkgreen); }
-				:host([context="success"]) .cwc-checkbox-container .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--success--color--hover, darkgreen); }
-
-				:host([context="warning"]) .cwc-checkbox-container { fill: var(--cwc-control-checkbox--warning--fill, orange); }
-				:host([context="warning"]) .cwc-checkbox-container[boxed] { border: var(--cwc-control-checkbox--warning--border, 1px solid orange); }
-				:host([context="warning"]) .cwc-checkbox-container .cwc-sub-content { color: var(--cwc-control-checkbox--warning--color, orange); }
-				:host([context="warning"]) .cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--warning--color, orange); }
-				:host([context="warning"]) .cwc-checkbox-container .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--warning--fill--hover, darkorange); }
-				:host([context="warning"]) .cwc-checkbox-container .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--warning--color--hover, darkorange); }
-
-				:host([context="danger"]) .cwc-checkbox-container { fill: var(--cwc-control-checkbox--danger--fill, red); }
-				:host([context="danger"]) .cwc-checkbox-container[boxed] { border: var(--cwc-control-checkbox--danger--border, 1px solid red); }
-				:host([context="danger"]) .cwc-checkbox-container .cwc-sub-content { color: var(--cwc-control-checkbox--danger--color, red); }
-				:host([context="danger"]) .cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--danger--color, red); }
-				:host([context="danger"]) .cwc-checkbox-container .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--danger--fill--hover, darkred); }
-				:host([context="danger"]) .cwc-checkbox-container .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--danger--color--hover, darkred); }
-
-				:host .cwc-checkbox-container[invalid] { fill: var(--cwc-control-checkbox--invalid--fill, var(--cwc-control-checkbox--danger--fill, red)); }
-				:host .cwc-checkbox-container[invalid][boxed] { border: var(--cwc-control-checkbox--invalid--border, var(--cwc-control-checkbox--danger--border, 1px solid red)); }
-				:host .cwc-checkbox-container[invalid] .cwc-sub-content { color: var(--cwc-control-checkbox--invalid--color, var(--cwc-control-checkbox--danger--color, red)); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color, var(--cwc-control-checkbox--danger--color, red)); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--invalid--fill--hover, var(--cwc-control-checkbox--danger--fill--hover, darkred)); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color--hover, var(--cwc-control-checkbox--danger--color--hover, darkred)); }
-				:host .cwc-checkbox-container[invalid] .cwc-error { color: var(--cwc-control-checkbox--invalid--color, var(--cwc-control-checkbox--danger--color, red)); }
+				:host .cwc-checkbox-container[invalid] { fill: var(--cwc-control-checkbox--invalid--fill, red); }
+				:host .cwc-checkbox-container[invalid][boxed] { border: var(--cwc-control-checkbox--invalid--border, 1px solid red); }
+				:host .cwc-checkbox-container[invalid] .cwc-sub-content { color: var(--cwc-control-checkbox--invalid--color, red); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color, red); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--invalid--fill--hover, darkred); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color--hover, darkred); }
+				:host .cwc-checkbox-container[invalid] .cwc-error { color: var(--cwc-control-checkbox--invalid--color, red); }
 
 				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-checkbox--disabled--opacity, 0.6); }
 			</style>
@@ -312,6 +271,7 @@ class CWCControlCheckbox extends CustomHTMLElement {
      * @param {Event} ev Any event that kicks the function
 	 */
 	validate(value) {
+		value = value !== undefined ? value : this.value;
 		this.invalid = this.hasAttribute('required') ? (!value ? true : false) : false;
 
 		if (this.invalid) this.setAttribute('invalid', '');
