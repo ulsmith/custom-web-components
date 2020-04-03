@@ -51,6 +51,7 @@ class CWCControlButton extends CustomHTMLElement {
 		return html`
 			<style>	
 				:host { display: inline-block; }
+				:host { outline: var(--cwc-control-button--outline, none); }
 				
 				.cwc-control-button { 
 					box-sizing: border-box;
@@ -66,7 +67,7 @@ class CWCControlButton extends CustomHTMLElement {
 					font-size: var(--cwc-control-button--font-size, 14px);
 					font-family: var(--cwc-control-button--font-family, inherit);
 					cursor: var(--cwc-control-button--cursor, default);
-					outline: var(--cwc-control-button--outline, none);
+					outline: none;
 					box-shadow: var(--cwc-control-button--box-shadow, none);
 					display: inline-block;
 					pointer-events: none; 
@@ -80,7 +81,7 @@ class CWCControlButton extends CustomHTMLElement {
 				:host(:hover) .cwc-control-button { background: var(--cwc-control-button--background--hover, #ddd); box-shadow: var(--cwc-control-button--box-shadow--hover, none); }
 				:host(:focus) .cwc-control-button { background: var(--cwc-control-button--background--focus, #ddd); box-shadow: var(--cwc-control-button--box-shadow--focus, 0 0 0 1px grey); }
 				:host(:active) .cwc-control-button { background: var(--cwc-control-button--background--active, #bbb); box-shadow: var(--cwc-control-button--box-shadow--active, 0 0 0 2px grey); }			
-				:host([disabled]) .cwc-control-button { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-button--disabled--opacity, 0.6); }
+				:host([disabled]), :host([disabled]):hover, :host([disabled]):active, :host([disabled]):focus .cwc-control-button { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-button--disabled--opacity, 0.6); }
 			</style>
 
 			<button class="cwc-control-button" @click="${this._click.bind(this)}" type="${ifDefined(this.getAttribute('type') || undefined)}"><slot></slot></button>
