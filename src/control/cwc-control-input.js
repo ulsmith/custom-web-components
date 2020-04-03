@@ -46,11 +46,8 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-input--label--color
  * @style_variable --cwc-control-input--label--font-weight
  *
- * @style_variable --cwc-control-input--invalid--border - Drops back to danger if not set
- * @style_variable --cwc-control-input--invalid--color - Drops back to danger if not set
- *
- * @style_variable --cwc-control-input--[context]--border
- * @style_variable --cwc-control-input--[context]--color
+ * @style_variable --cwc-control-input--invalid--border
+ * @style_variable --cwc-control-input--invalid--color
  *
  * @style_variable --cwc-control-input--disabled--opacity
  * 
@@ -182,21 +179,9 @@ class CWCControlInput extends CustomHTMLElement {
 					right: 0px;
 				}
 
-				:host([context="primary"]) .cwc-input-container input { border: var(--cwc-control-input--primary--border, 1px solid blue); color: var(--cwc-control-input--primary--color, blue); }
-				:host([context="primary"]) .cwc-input-container textarea { border: var(--cwc-control-input--primary--border, 1px solid blue); color: var(--cwc-control-input--primary--color, blue); }
-
-				:host([context="success"]) .cwc-input-container input { border: var(--cwc-control-input--success--border, 1px solid green); color: var(--cwc-control-input--success--color, green); }
-				:host([context="success"]) .cwc-input-container textarea { border: var(--cwc-control-input--success--border, 1px solid green); color: var(--cwc-control-input--success--color, green); }
-
-				:host([context="warning"]) .cwc-input-container input { border: var(--cwc-control-input--warning--border, 1px solid orange); color: var(--cwc-control-input--warning--color, orange); }
-				:host([context="warning"]) .cwc-input-container textarea { border: var(--cwc-control-input--warning--border, 1px solid orange); color: var(--cwc-control-input--warning--color, orange); }
-
-				:host([context="danger"]) .cwc-input-container input { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
-				:host([context="danger"]) .cwc-input-container textarea { border: var(--cwc-control-input--danger--border, 1px solid red); color: var(--cwc-control-input--danger--color, red); }
-
-				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--invalid--border, var(--cwc-control-input--danger--border, 1px solid red)); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
-				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--invalid--border, var(--cwc-control-input--danger--border, 1px solid red)); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
-				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--danger--color, var(--cwc-control-input--danger--color, red)); }
+				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
+				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
+				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--invalid--color, red); }
 
 				:host([justify="center"]) .cwc-input-container { text-align: center; }
 				:host([justify="right"]) .cwc-input-container { text-align: right; }
