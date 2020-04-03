@@ -14,6 +14,8 @@ import '../icon/material/cwc-icon-material-general.js';
  * @method show() Show the help tip manually
  * @method hide() Hide the help tip manually
  * 
+ * @attribute {Flag} flip Swap help tip message to other side
+ * 
  * @style_variable --cwc-overlay-help--background
  * @style_variable --cwc-overlay-help--border
  * @style_variable --cwc-overlay-help--border-radius
@@ -21,7 +23,10 @@ import '../icon/material/cwc-icon-material-general.js';
  * @style_variable --cwc-overlay-help--color
  * @style_variable --cwc-overlay-help--font-size
  * @style_variable --cwc-overlay-help--padding
- *
+ * @style_variable --cwc-overlay-help--width
+ * 
+ * @style_variable --cwc-overlay-help--icon--width
+ * @style_variable --cwc-overlay-help--icon--height
  * @style_variable --cwc-overlay-help--icon--color
  * 
  * @slot root Single root slot for text to show in help tip
@@ -53,27 +58,30 @@ class CWCOverlayHelp extends CustomHTMLElement {
 			<style>
 				:host {
 					display: block;
-					width: 200px;
 					text-align: right;
+					position: relative;
 				}
 
 				.cwc-help {
+					position: absolute;
+					top: 0px;
+					right: 0px;
 					padding: 0px;
-					height: 16px;
-					width: 16px;
+					height: var(--cwc-overlay-help--icon--height, 20px);
+					width: var(--cwc-overlay-help--icon--width, 20px);
 					fill: var(--cwc-overlay-help--icon--color, black);
 				}
 
 				.cwc-helptip {
 					display: none;
 					position: absolute;
-					bottom: 30px;
-					right: -7px;
+					bottom: 10px;
+					right: -5px;
 					z-index: -1;
 					opacity: 0;
 					text-align: left;
 					transition: opacity 150ms linear;
-					max-width: 350px;
+					width: var(--cwc-overlay-help--width, 200px);
 					box-shadow: var(--cwc-overlay-help--box-shadow, 0px 0px 5px 0px grey);
 					border: var(--cwc-overlay-help--border, none);
 					border-radius: var(--cwc-overlay-help--border-radius, 0);
@@ -94,6 +102,10 @@ class CWCOverlayHelp extends CustomHTMLElement {
 					border-right: 5px solid transparent;
 					border-top: 5px solid var(--cwc-overlay-help--background, black);
 				}
+
+				:host([flip]) .cwc-help { right: unset; left: 0px; }
+				:host([flip]) .cwc-helptip { right: unset; left: -5px; }
+				:host([flip]) .cwc-pointer { right: unset; left: 15px; }
 			</style>
 
 
