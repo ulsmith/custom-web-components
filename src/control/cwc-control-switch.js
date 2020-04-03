@@ -221,6 +221,7 @@ class CWCControlSwitch extends CustomHTMLElement {
      * @param {Event} ev Any event that kicks the function
 	 */
 	validate(value) {
+		value = value !== undefined ? value : this.value;
 		this.invalid = this.hasAttribute('required') ? (!value ? true : false) : false;
 
 		if (this.invalid) this.setAttribute('invalid', '');
