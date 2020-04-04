@@ -43,11 +43,6 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-radio--invalid--fill
  * @style_variable --cwc-control-radio--invalid--color
  *
- * @style_variable --cwc-control-radio--[context]--fill
- * @style_variable --cwc-control-radio--[context]--color
- * @style_variable --cwc-control-radio--[context]--fill--hover
- * @style_variable --cwc-control-radio--[context]--color--hover
- *
  * @style_variable --cwc-control-radio--disabled--opacity
  * 
  * @slot root Single root slot to show all cwc-control-radio-option elements
@@ -152,20 +147,8 @@ class CWCControlRadio extends CustomHTMLElement {
 				:host .cwc-radio-buttons { fill: var(--cwc-control-radio--fill, black); color: var(--cwc-control-radio--color, black); }
 				:host(:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--fill--hover, black); color: var(--cwc-control-radio--color--hover, black); }
 				
-				:host([context="primary"]) .cwc-radio-buttons { fill: var(--cwc-control-radio--primary--fill, blue); color: var(--cwc-control-radio--primary--color, blue); }
-				:host([context="primary"]:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--primary--fill--hover, darkblue); color: var(--cwc-control-radio--primary--color--hover, darkblue); }
-				
-				:host([context="success"]) .cwc-radio-buttons { fill: var(--cwc-control-radio--success--fill, green); color: var(--cwc-control-radio--success--color, green); }
-				:host([context="success"]:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--success--fill--hover, darkgreen); color: var(--cwc-control-radio--success--color--hover, darkgreen); }
-				
-				:host([context="warning"]) .cwc-radio-buttons { fill: var(--cwc-control-radio--warning--fill, orange); color: var(--cwc-control-radio--warning--color, orange); }
-				:host([context="warning"]:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--warning--fill--hover, darkorange); color: var(--cwc-control-radio--warning--color--hover, darkorange); }
-				
-				:host([context="danger"]) .cwc-radio-buttons { fill: var(--cwc-control-radio--danger--fill, red); color: var(--cwc-control-radio--danger--color, red); }
-				:host([context="danger"]:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--danger--fill--hover, darkred); color: var(--cwc-control-radio--danger--color--hover, darkred); }
-
-				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--invalid--fill, var(--cwc-control-radio--danger--fill, red)); color: var(--cwc-control-radio--invalid--color, var(--cwc-control-radio--danger--color, red)); }
-				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-control-radio--invalid--color, var(--cwc-control-radio--danger--color, red)); }
+				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--invalid--fill, red); color: var(--cwc-control-radio--invalid--color, red); }
+				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-control-radio--invalid--color, red); }
 
 				:host([justify="center"]) .cwc-radio-container { text-align: center; }
 				:host([justify="right"]) .cwc-radio-container { text-align: right; }
