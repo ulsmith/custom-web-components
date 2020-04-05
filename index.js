@@ -1,7 +1,7 @@
-export * from './src/base/index.js';
-export * from './src/control/index.js';
-export * from './src/icon/index.js';
-export * from './src/layout/index.js';
-export * from './src/overlay/index.js';
-export * from './src/resource/index.js';
-export * from './src/style/index.js';
+import './src/base/index.js';
+import './src/control/index.js';
+import './src/icon/index.js';
+import './src/layout/index.js';
+import './src/overlay/index.js';
+import './src/resource/index.js';
+import './src/style/index.js';

@@ -1,1 +1,2 @@
-export * from './material/index.js';
+import './brand/index.js';
+import './material/index.js';

@@ -1,11 +1,4 @@
-import CWCResourceCrypto from './cwc-resource-crypto.js';
-import CWCResourceRequest from './cwc-resource-request.js';
-import CWCResourceRouter from './cwc-resource-router.js';
-import CWCResourceStore from './cwc-resource-store.js';
-
-export {
-    CWCResourceCrypto,
-    CWCResourceRequest,
-    CWCResourceRouter,
-    CWCResourceStore
-}
+import './cwc-resource-crypto.js';
+import './cwc-resource-request.js';
+import './cwc-resource-router.js';
+import './cwc-resource-store.js';

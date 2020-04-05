@@ -1,5 +1,1 @@
-import CWCBaseTag from './cwc-base-tag.js';
-
-export {
-    CWCBaseTag
-}
+import './cwc-base-tag.js';

@@ -1,5 +1,1 @@
-import CWCStyle from './cwc-style.js';
-
-export {
-    CWCStyle
-}
+import './cwc-style.js';
