@@ -8,9 +8,9 @@ import '../overlay/cwc-overlay-help.js';
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
- * 
+ *
  * @event change The value is updated
- * 
+ *
  * @method validate(Boolean value) The value on or off, true or false
  *
  * @property {string} value The initial value (overrides attribute value)
@@ -18,9 +18,8 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {String} label The control label
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} value The initial value, if set
- * @attribute {String} context The contaxt as primary, success, warning, danger
  * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} invalid The control is invalid
  * @attribute {Flag} required The control is required
  * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
  *
@@ -29,21 +28,15 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-switch--border-radius
  * @style_variable --cwc-control-switch--color
  * @style_variable --cwc-control-switch--text-align
- * 
+ *
  * @style_variable --cwc-control-switch--background--hover
- * 
+ *
  * @style_variable --cwc-control-switch--label--color
  * @style_variable --cwc-control-switch--label--font-weight
  * @style_variable --cwc-control-switch--label--text-align
  *
- * @style_variable --cwc-control-switch--[context]--border
- * @style_variable --cwc-control-switch--[context]--color
- * @style_variable --cwc-control-switch--[context]--background
- * @style_variable --cwc-control-switch--[context]--border--hover
- * @style_variable --cwc-control-switch--[context]--background--hover
- *
  * @style_variable --cwc-control-switch--disabled--opacity
- * 
+ *
  * @example
  * <cwc-control-switch label="A input" help="Blah blah blah" disabled></cwc-control-switch>
  */
@@ -133,26 +126,6 @@ class CWCControlSwitch extends CustomHTMLElement {
 				}
 
 				:host(:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--background--hover, black); }
-
-				:host([context="primary"]) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--primary--border, 1px solid blue); }
-				:host([context="primary"]) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { color: var(--cwc-control-switch--primary--color, white); background: var(--cwc-control-switch--primary--background, blue); }
-				:host([context="primary"]:hover) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--primary--border--hover, 1px solid darkblue); }
-				:host([context="primary"]:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--primary--background--hover, darkblue); }
-
-				:host([context="success"]) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--success--border, 1px solid green); }
-				:host([context="success"]) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { color: var(--cwc-control-switch--success--color, white); background: var(--cwc-control-switch--success--background, green); }
-				:host([context="success"]:hover) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--success--border--hover, 1px solid darkgreen); }
-				:host([context="success"]:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--success--background--hover, darkgreen); }
-
-				:host([context="warning"]) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--warning--border, 1px solid orange); }
-				:host([context="warning"]) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { color: var(--cwc-control-switch--warning--color, white); background: var(--cwc-control-switch--warning--background, orange); }
-				:host([context="warning"]:hover) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--warning--border--hover, 1px solid darkorange); }
-				:host([context="warning"]:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--warning--background--hover, darkorange); }
-
-				:host([context="danger"]) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--danger--border, 1px solid red); }
-				:host([context="danger"]) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { color: var(--cwc-control-switch--danger--color, white); background: var(--cwc-control-switch--danger--background, red); }
-				:host([context="danger"]:hover) .cwc-control-switch .cwc-switch-box { border: var(--cwc-control-switch--danger--border--hover, 1px solid darkred); }
-				:host([context="danger"]:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--danger--background--hover, darkred); }
 
 				:host([justify="center"]) .cwc-control-switch { text-align: center; }
 				:host([justify="right"]) .cwc-control-switch { text-align: right; }

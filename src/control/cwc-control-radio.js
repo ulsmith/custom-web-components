@@ -3,7 +3,7 @@ import '../icon/material/cwc-icon-material-general.js';
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * 
+ *
  * @public @name CWCControlRadio
  * @extends CustomHTMLElement
  * @description Custom Web Component, radio button
@@ -12,9 +12,9 @@ import '../overlay/cwc-overlay-help.js';
  * @license MIT
  *
  * @event change The value is updated
- * 
+ *
  * @method validate(String value) The value selected
- * 
+ *
  * @property {string} value The initial value (overrides attribute value)
  *
  * @attribute {String} label The checkbox label
@@ -22,10 +22,9 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {String} invalid-message The message to show when control is invalid
  * @attribute {String} value The initial value, if set
  * @attribute {String} help The help text to display with a little hover icon
- * @attribute {String} context The contaxt as primary, success, warning, danger
  * @attribute {String} justify The justification as left, right, center
  * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} invalid The control is invalid
  * @attribute {Flag} required The control is required
  * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
  *
@@ -44,7 +43,7 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-radio--invalid--color
  *
  * @style_variable --cwc-control-radio--disabled--opacity
- * 
+ *
  * @slot root Single root slot to show all cwc-control-radio-option elements
  *
  * @example
@@ -104,7 +103,7 @@ class CWCControlRadio extends CustomHTMLElement {
 				}
 
 				.cwc-radio-container [invisible] { opacity: 0; }
-				
+
 				.cwc-radio-container label {
 					display: block;
 					min-height: 20px;
@@ -114,8 +113,8 @@ class CWCControlRadio extends CustomHTMLElement {
 					text-align: var(--cwc-control-radio--label--text-align, left);
 					color: var(--cwc-control-radio--label--color, black);
 					font-weight: var(--cwc-control-radio--label--font-weight, normal);
-				}	
-				
+				}
+
 				.cwc-radio-container .cwc-radio-buttons {
 					font-size: 14px;
 					box-sizing: border-box;
@@ -146,13 +145,13 @@ class CWCControlRadio extends CustomHTMLElement {
 
 				:host .cwc-radio-buttons { fill: var(--cwc-control-radio--fill, black); color: var(--cwc-control-radio--color, black); }
 				:host(:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--fill--hover, black); color: var(--cwc-control-radio--color--hover, black); }
-				
+
 				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--invalid--fill, red); color: var(--cwc-control-radio--invalid--color, red); }
 				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-control-radio--invalid--color, red); }
 
 				:host([justify="center"]) .cwc-radio-container { text-align: center; }
 				:host([justify="right"]) .cwc-radio-container { text-align: right; }
-				
+
 				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-radio--disabled--opacity, 0.6); }
 			</style>
 
@@ -282,9 +281,9 @@ customElements.define('cwc-control-radio', CWCControlRadio);
  *
  * @attribute {String} value The initial value, if set
  * @attribute {Flag} selected Is this option selected
- * 
+ *
  * @slot root Single root slot to show option label/text/icon etc.
- * 
+ *
  * @example
  * <cwc-control-radio-option value="one" selected>One</cwc-control-radio-option>
  */
@@ -308,10 +307,10 @@ class CWCControlRadioOption extends CustomHTMLElement {
 	static template() {
 		return html`
 			<style>
-                :host { 
-					display: inline-block; 
-					width: fit-content; 
-					line-height: 40px; 
+                :host {
+					display: inline-block;
+					width: fit-content;
+					line-height: 40px;
 					height: 30px;
 					cursor: default;
 					user-select: none;
@@ -322,7 +321,7 @@ class CWCControlRadioOption extends CustomHTMLElement {
 					-moz-user-select: none;
 					-ms-user-select: none;
 				}
-				
+
 				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
 				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
 				.cwc-control-radio-option .cwc-radio-button-icon { display: inline-block; padding: 4px; fill: inherit; vertical-align: sub; }
@@ -358,7 +357,7 @@ class CWCControlRadioOption extends CustomHTMLElement {
 	 * @return {Array} Array of attribute names as strings
 	 */
 	static get observedAttributes() { return ['selected'] }
-	
+
 	/**
 	 * @public @name attributeChanged
 	 * @description Callback run when a custom elements attributes change

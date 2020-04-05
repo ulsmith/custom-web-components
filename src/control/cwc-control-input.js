@@ -11,12 +11,12 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @event [any input event] The standard input event happens, change, input, keydown etc.
  * @event validated The value is validated
- * 
+ *
  * @method focus() Set focus on the input box
  * @method validate(String value) The value in the input box
  *
  * @property {string} value The initial value (overrides attribute value)
- * 
+ *
  * @attribute {String} label The control label
  * @attribute {String} name The control name
  * @attribute {String} type The contorl type
@@ -24,13 +24,12 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} regex The regex value to validate against
  * @attribute {String} value The initial value, if set
- * @attribute {String} context The contaxt as primary, success, warning, danger
  * @attribute {String} justify The justification of content as left, right, center
  * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} invalid The control is invalid
  * @attribute {Flag} required The control is required
  * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
- * 
+ *
  * @style_variable --cwc-control-input--text-align
  * @style_variable --cwc-control-input--padding
  * @style_variable --cwc-control-input--border-radius
@@ -50,7 +49,7 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-input--invalid--color
  *
  * @style_variable --cwc-control-input--disabled--opacity
- * 
+ *
  * @example
  * <cwc-control-input
  * 		label="A input"
@@ -195,7 +194,7 @@ class CWCControlInput extends CustomHTMLElement {
 					<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
 				${this.getAttribute('type') === 'textarea' ? html`
-					<textarea 
+					<textarea
 						id="input"
 						name="${ifDefined(this.getAttribute('name') || undefined)}"
 						placeholder="${ifDefined(this.getAttribute('placeholder') || undefined)}"
@@ -206,7 +205,7 @@ class CWCControlInput extends CustomHTMLElement {
 						@keyup="${this._event.bind(this)}"
 					>${!this.value ? '' : this.value}</textarea>
 				` : html`
-					<input 
+					<input
 						id="input"
 						name="${ifDefined(this.getAttribute('name') || undefined)}"
 						type="${ifDefined(this.getAttribute('type') || undefined)}"
@@ -312,7 +311,7 @@ class CWCControlInput extends CustomHTMLElement {
 				this.dispatchEvent(new CustomEvent('validated', { detail: ev }));
 			}, 500);
 		}
-		
+
 		this.dispatchEvent(new CustomEvent(ev.type, { detail: ev }));
 	}
 }

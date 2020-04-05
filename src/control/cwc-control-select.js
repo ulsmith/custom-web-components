@@ -10,24 +10,23 @@ import '../overlay/cwc-overlay-help.js';
  * @license MIT
  *
  * @event change The value is updated
- * 
- * @method render() Re-render the options
- * @method validate(Mixed value) The value selected
  *
- * @property {Mixed} value The initial value (overrides attribute value)
- * 
+ * @method render() Re-render the options
+ * @method validate(String value) The value selected
+ *
+ * @property {String} value The initial value (overrides attribute value)
+ *
  * @attribute {String} label The control label
  * @attribute {String} name The control name
  * @attribute {String} justify [left, center, right] Justify options
  * @attribute {String} invalid-message The message to show when control is invalid
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} value The initial value, if set
- * @attribute {String} context The contaxt as primary, success, warning, danger
  * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} invalid The control is invalid
  * @attribute {Flag} required The control is required
  * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
- * 
+ *
  * @style_variable --cwc-control-select--background
  * @style_variable --cwc-control-select--border
  * @style_variable --cwc-control-select--border-radius
@@ -48,11 +47,8 @@ import '../overlay/cwc-overlay-help.js';
  * @style_variable --cwc-control-select--invalid--border - Drops back to danger if not set
  * @style_variable --cwc-control-select--invalid--color - Drops back to danger if not set
  *
- * @style_variable --cwc-control-select--[context]--border
- * @style_variable --cwc-control-select--[context]--color
- *
  * @style_variable --cwc-control-select--disabled--opacity
- * 
+ *
  * @example
  * <cwc-control-select
  * 		label="A input"
@@ -163,17 +159,12 @@ class CWCControlSelect extends CustomHTMLElement {
 
 				.cwc-control-select .cwc-help {
 					position: absolute;
-					top: 6px;
+					top: 0px;
 					right: 0px;
 				}
 
-				:host([context="primary"]) .cwc-control-select select { border: var(--cwc-control-select--primary--border, 1px solid blue) !important; color: var(--cwc-control-select--primary--color, blue) !important; }
-				:host([context="success"]) .cwc-control-select select { border: var(--cwc-control-select--success--border, 1px solid green) !important; color: var(--cwc-control-select--success--color, green) !important; }
-				:host([context="warning"]) .cwc-control-select select { border: var(--cwc-control-select--warning--border, 1px solid orange) !important; color: var(--cwc-control-select--warning--color, orange) !important; }
-				:host([context="danger"]) .cwc-control-select select { border: var(--cwc-control-select--danger--border, 1px solid red) !important; color: var(--cwc-control-select--danger--color, red) !important; }
-	
-				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--invalid--border, var(--cwc-control-select--danger--border, 1px solid red)) !important; color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) !important; }
-				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) }
+				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--invalid--border, 1px solid red) !important; color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) !important; }
+				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--invalid--color, red) }
 
 				:host([justify="center"]) .cwc-select-container { text-align: center; }
 				:host([justify="right"]) .cwc-select-container { text-align: right; }

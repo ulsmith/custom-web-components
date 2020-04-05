@@ -7,38 +7,38 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
- * 
+ *
  * @event change The value is updated
- * 
+ *
  * @method render() Re-render the options
  * @method validate(Array value) The value saved, an array of selections
  *
  * @attribute {String} label The control label
  * @attribute {String} value The initial value, if set
  * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} invalid The control is invalid
  * @attribute {Flag} required The control is required
  * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
  *
  * @style_variable --cwc-control-box--border
  * @style_variable --cwc-control-box--border-radius
- * 
+ *
  * @style_variable --cwc-control-box--label--color
  * @style_variable --cwc-control-box--label--font-weight
  * @style_variable --cwc-control-box--label--text-align
- * 
+ *
  * @style_variable --cwc-control-box--option--background
  * @style_variable --cwc-control-box--option--color
  * @style_variable --cwc-control-box--option--font-size
  * @style_variable --cwc-control-box--option--font-family
  * @style_variable --cwc-control-box--option--cursor
  * @style_variable --cwc-control-box--option--border-radius
- * 
+ *
  * @style_variable --cwc-control-box--option--background--selected
  * @style_variable --cwc-control-box--option--color--selected
- * 
+ *
  * @style_variable --cwc-control-box--disabled--opacity
- * 
+ *
  * @example
  * <cwc-control-box label="Hello" value="1" disabled invalid @change="${this.test.bind(this)}">
  * 		<option value="1">One</option>
@@ -84,7 +84,7 @@ class CWCControlBox extends CustomHTMLElement {
 				}
 
 				.container [invisible] { opacity: 0; }
-				
+
 				.container label {
 					display: block;
 					min-height: 20px;
@@ -94,7 +94,7 @@ class CWCControlBox extends CustomHTMLElement {
 					font-size: 14px;
 					overflow: hidden;
 				}
-				
+
 				.container .cwc-box-buttons {
 					display: flex;
 					flex-flow: row;
@@ -104,7 +104,7 @@ class CWCControlBox extends CustomHTMLElement {
 					padding: 1px;
 					box-sizing: border-box;
 				}
-				
+
  				.container .cwc-box-buttons .cwc-option {
  					flex: 1 1;
  					display: block;
@@ -121,16 +121,16 @@ class CWCControlBox extends CustomHTMLElement {
 					border-radius: var(--cwc-control-box--option--border-radius, 0);
 					outline: none;
 				}
-				 
+
 				:host([disabled]) .container .cwc-box-buttons .cwc-option {	pointer-events: none; cursor: not-allowed; }
 				:host([disabled]) {	opacity: var(--cwc-control-box--disabled--opacity, 0.6); }
-				
+
  				.container .cwc-box-buttons .cwc-option[selected] {
  					background: var(--cwc-control-box--option--background--selected, black);
  					color: var(--cwc-control-box--option--color--selected, white);
 					cursor: default;
  				}
-				
+
 			</style>
 
 			<div class="container" ?invalid="${this.invalid}">
@@ -165,7 +165,7 @@ class CWCControlBox extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid', 'required-asterisk', 'invalid-context'] }
+	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid', 'required-asterisk'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -202,11 +202,11 @@ class CWCControlBox extends CustomHTMLElement {
 	render() {
 		setTimeout(() => {
 			this.options = [];
-			
+
 			let options = this.querySelectorAll('option');
 			for (let i = 0; i < options.length; i++) {
 				let value = options[i].hasAttribute('value') ? options[i].getAttribute('value') : options[i].innerText;
-				this.options.push({ label: options[i].innerText, value: value, selected: value === this.value });				
+				this.options.push({ label: options[i].innerText, value: value, selected: value === this.value });
 			}
 
 			this.updateTemplate();
@@ -240,7 +240,7 @@ class CWCControlBox extends CustomHTMLElement {
 		this.validate(this.value);
 		this.updateTemplate();
 		this.dispatchEvent(new CustomEvent('change', { detail: ev }));
-		
+
 		ev.stopPropagation();
 	}
 
