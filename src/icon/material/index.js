@@ -1,5 +1,4 @@
 import CWCIconMaterialAv from './cwc-icon-material-av.js';
-import CWCIconMaterialBrand from './cwc-icon-material-brand.js';
 import CWCIconMaterialCommunication from './cwc-icon-material-communication.js';
 import CWCIconMaterialDevice from './cwc-icon-material-device.js';
 import CWCIconMaterialEditor from './cwc-icon-material-editor.js';
@@ -13,7 +12,6 @@ import CWCIconMaterialSocial from './cwc-icon-material-social.js';
 
 export {
     CWCIconMaterialAv,
-    CWCIconMaterialBrand,
     CWCIconMaterialCommunication,
     CWCIconMaterialDevice,
     CWCIconMaterialEditor,
