@@ -15,12 +15,10 @@ import '../icon/material/cwc-icon-material-image.js';
  * @attribute {Flag} collapsible The element can collapse and expand with a click
  *
  * @style_variable --cwc-layout-card--border
- * @style_variable --cwc-layout-card--border
  * @style_variable --cwc-layout-card--border-radius
  *
  * @style_variable --cwc-layout-card--header--padding
  * @style_variable --cwc-layout-card--header--background
- * @style_variable --cwc-layout-card--header--color
  * @style_variable --cwc-layout-card--header--color
  * @style_variable --cwc-layout-card--header--border-radius
  *
