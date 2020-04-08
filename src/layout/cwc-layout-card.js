@@ -21,6 +21,10 @@ import '../icon/material/cwc-icon-material-image.js';
  * @style_variable --cwc-layout-card--header--background
  * @style_variable --cwc-layout-card--header--color
  * @style_variable --cwc-layout-card--header--border-radius
+ * @style_variable --cwc-layout-card--header--open--padding
+ * @style_variable --cwc-layout-card--header--open--background
+ * @style_variable --cwc-layout-card--header--open--color
+ * @style_variable --cwc-layout-card--header--open--border-radius
  *
  * @style_variable --cwc-layout-card--body--padding
  * @style_variable --cwc-layout-card--body--background
@@ -109,9 +113,16 @@ class CwcLayoutCard extends CustomHTMLElement {
 					max-height: 0;
 					transition: max-height 0.15s ease-out;
 					overflow: hidden;
-					background: #d5d5d5;
 				}
 
+				:host([collapsible]) .header[open] { 
+					padding: var(--cwc-layout-card--header--open--padding, var(--cwc-layout-card--header--padding, 20px 40px 20px 20px));
+					background: var(--cwc-layout-card--header--open--background, var(--cwc-layout-card--header--background, #999));
+					color: var(--cwc-layout-card--header--open--color, var(--cwc-layout-card--header--color, #444));
+					fill: var(--cwc-layout-card--header--open--color, var(--cwc-layout-card--header--color, #444));
+					border-radius: var(--cwc-layout-card--header--open--border-radius, var(--cwc-layout-card--header--border-radius, 0px));
+				}
+				
 				:host([collapsible]) .wrapper[open] { max-height: 1500px; transition: max-height 0.25s ease-in; }
 
 				.wrapper .body {
@@ -138,7 +149,7 @@ class CwcLayoutCard extends CustomHTMLElement {
 			</style>
 
 			<div class="container">
-				<div class="header" @click="${this._expand.bind(this)}">
+				<div class="header" ?open="${this._open}" @click="${this._expand.bind(this)}">
 					<slot name="header"></slot>
 					<cwc-icon-material-general class="icon" name="${this._open ? 'unfoldLess' : 'unfoldMore'}" ?hidden="${this.hasAttribute('loading')}"></cwc-icon-material-general>
 					<cwc-icon-material-image class="icon loading" name="rotateRight" ?hidden="${!this.hasAttribute('loading')}"></cwc-icon-material-image>
