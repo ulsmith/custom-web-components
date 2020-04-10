@@ -5,14 +5,14 @@ import '../icon/material/cwc-icon-material-general.js';
 /**
  * @public @name CWCLayoutDockable
  * @extends CustomHTMLElement
- * @description Application Web Component, displays a structured menu to the left with auto dock to top on mobile
+ * @description Custom Web Component, displays a structured menu to the left with auto dock to top on mobile
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2018 Paul Smith (ulsmith.net)
  * @license MIT
  *
- * @event change The table has been ordered
+ * @event change The route has been changed
  * 
- * @method changeRoute(Object route, Event ev) Change the route to the one sent in
+ * @method changeRoute(Object route) Change the route to the one sent in
  * @method updateHeight(Event ev) Update the height of the menu and page area
  * @method toggleMenu(Boolean docked, Event ev) Toggle the menu docked/undocked
  * 
@@ -26,7 +26,42 @@ import '../icon/material/cwc-icon-material-general.js';
  * @property {Array[Object]} routes Array of routes to use for menu items
  *
  * @attribute {Flag} docked When the menu is docked (mobile)
- *
+ * 
+ * @style_variable --cwc-layout-dockable--menu--margin
+ * @style_variable --cwc-layout-dockable--menu--padding
+ * @style_variable --cwc-layout-dockable--menu--background
+ * @style_variable --cwc-layout-dockable--menu--color
+ * 
+ * @style_variable --cwc-layout-dockable--menu-header--padding
+ * @style_variable --cwc-layout-dockable--menu-header--color
+ * 
+ * @style_variable --cwc-layout-dockable--menu-routes--color
+ * @style_variable --cwc-layout-dockable--menu-routes--padding
+ * @style_variable --cwc-layout-dockable--menu-route--padding
+ * @style_variable --cwc-layout-dockable--menu-route--opacity
+ * @style_variable --cwc-layout-dockable--menu-route--background--hover
+ * @style_variable --cwc-layout-dockable--menu-route--selected--background
+ * @style_variable --cwc-layout-dockable--menu-route--link--padding
+ * @style_variable --cwc-layout-dockable--menu-button--width
+ * @style_variable --cwc-layout-dockable--menu-button--height
+ * @style_variable --cwc-layout-dockable--menu-button--border
+ * @style_variable --cwc-layout-dockable--menu-button--border-radius
+ * @style_variable --cwc-layout-dockable--menu-button--background
+ * @style_variable --cwc-layout-dockable--menu-button--bottom
+ * @style_variable --cwc-layout-dockable--menu-button--right
+ * @style_variable --cwc-layout-dockable--menu-button--opacity
+ * @style_variable --cwc-layout-dockable--menu-button--icon--width
+ * @style_variable --cwc-layout-dockable--menu-button--icon--height
+ * @style_variable --cwc-layout-dockable--menu-button--icon--padding
+ * @style_variable --cwc-layout-dockable--menu-button--icon--fill
+ * 
+ * @style_variable --cwc-layout-dockable--menu-footer--padding
+ * @style_variable --cwc-layout-dockable--menu-footer--color
+ * 
+ * @style_variable --cwc-layout-dockable--page--padding
+ * @style_variable --cwc-layout-dockable--page--background
+ * @style_variable --cwc-layout-dockable--page--color
+ * 
  * @slot menu-header The content area top of the menu
  * @slot menu-footer The content area bottom of the menu
  * @slot page The content area reserved as page area.
@@ -76,21 +111,62 @@ class CWCLayoutDockable extends CustomHTMLElement {
 
 				.cwc-layout-dockable { display: flex; flex-flow: row wrap; margin: 0; padding: 0; height: 100%; }
 				[hidden] { display: none !important; }
-				* { color: inherit; }
-				.structure-menu { display: block; flex: 1 1 250px; margin: 0; padding: 0; overflow-y: auto; box-sizing: border-box; background-color: #eee; color: #222; transition: left 0.4s ease-in-out; }
-				.structure-menu .structure-menu-box { display: flex; flex-flow: column; margin: 0; padding: 0; height: 100%; box-sizing: border-box; background-color: #eee; color: #222; }
-				.structure-menu .structure-menu-box .menu-header { flex: 1 1; padding: 15px; }
-				.structure-menu .structure-menu-box .menu-routes { flex: 50 1; padding: 0px; }
+
+				.structure-menu { 
+					display: block; 
+					flex: 1 1 250px; 
+					margin: 0; 
+					padding: 0; 
+					overflow-y: auto; 
+					box-sizing: border-box; 
+					transition: left 0.4s ease-in-out;
+				}
+
+				.structure-menu .structure-menu-box { 
+					display: flex; 
+					flex-flow: column; 
+					margin: var(--cwc-layout-dockable--menu--margin, 0); 
+					padding: var(--cwc-layout-dockable--menu--padding, 0); 
+					height: 100%; 
+					box-sizing: border-box; 
+					background: var(--cwc-layout-dockable--menu--background, #eee); 
+					color: var(--cwc-layout-dockable--menu--color, #222); 
+				}
+
+				.structure-menu .structure-menu-box .menu-header { flex: 1 1; padding: var(--cwc-layout-dockable--menu-header--padding, 15px); color: var(--cwc-layout-dockable--menu-header--color, var(--cwc-layout-dockable--menu--color, #222))}
+				.structure-menu .structure-menu-box .menu-routes { flex: 50 1; padding: var(--cwc-layout-dockable--menu-routes--padding, 0px); }
 				.structure-menu .structure-menu-box .menu-routes ul { margin: 0; padding: 0; list-style-type: none; }
-				.structure-menu .structure-menu-box .menu-routes ul li { cursor: pointer; opacity: 0.9; }
-				.structure-menu .structure-menu-box .menu-routes ul li[selected] { background: #33333311; }
-				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: #33333322; }
-				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: 15px; text-decoration: none; }
-				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: 15px; }
-				.structure-page { display: block; flex: 10 1 535px; overflow-y: auto; margin: 0; padding: 20px; box-sizing: border-box; background-color: #ddd; color: #222; }
-				.structure-page .icon-bars { display: none; width: 35px; height: 35px; border: 1px solid #888; border-radius: 50px; background-color: white; box-sizing: border-box; position: fixed; bottom: 15px; right: 15px; opacity: 0.6; cursor: pointer; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5); }
+				.structure-menu .structure-menu-box .menu-routes ul li { cursor: pointer; padding: var(--cwc-layout-dockable--menu-route--padding, 0px); opacity: var(--cwc-layout-dockable--menu-route--opacity, 0.9); }
+				.structure-menu .structure-menu-box .menu-routes ul li[selected] { background: var(--cwc-layout-dockable--menu-route--selected--background, #33333311); }
+				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: var(--cwc-layout-dockable--menu-route--background--hover, #33333322); }
+				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: var(--cwc-layout-dockable--menu-route--link--padding, 15px); text-decoration: none; color: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); }
+				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: var(--cwc-layout-dockable--menu-footer--padding, 15px); color: var(--cwc-layout-dockable--menu-footer--color, var(--cwc-layout-dockable--menu--color, #222))}
+				
+				.structure-page { display: block; flex: 10 1 535px; overflow-y: auto; margin: 0; padding: var(--cwc-layout-dockable--page--padding, 20px); box-sizing: border-box; background: var(--cwc-layout-dockable--page--background, #ddd); color: var(--cwc-layout-dockable--page--color, #222); }
+				.structure-page .icon-bars { 
+					display: none; 
+					width: var(--cwc-layout-dockable--menu-button--width, 35px);
+					height: var(--cwc-layout-dockable--menu-button--height, 35px);
+					border: var(--cwc-layout-dockable--menu-button--border, 1px solid #888);
+					border-radius: var(--cwc-layout-dockable--menu-button--border-radius, 50px);
+					background: var(--cwc-layout-dockable--menu-button--background, white);
+					box-sizing: border-box; 
+					position: fixed; 
+					bottom: var(--cwc-layout-dockable--menu-button--bottom, 15px);
+					right: var(--cwc-layout-dockable--menu-button--right, 15px);
+					opacity: var(--cwc-layout-dockable--menu-button--opacity, 0.6);
+					cursor: pointer;
+					box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5);
+				}
+
 				.structure-page .icon-bars:hover { opacity: 1; }
-				.structure-page .icon-bars .icon { width: 33px; height: 33px; padding: 5px; }
+
+				.structure-page .icon-bars .icon { 
+					width: var(--cwc-layout-dockable--menu-button--icon--width, 33px); 
+					height: var(--cwc-layout-dockable--menu-button--icon--height, 33px); 
+					padding: var(--cwc-layout-dockable--menu-button--icon--padding, 5px); 
+					fill: var(--cwc-layout-dockable--menu-button--icon--fill, #222);
+				}
 				
 				@media (max-width:799px) {
 					.structure-menu { position: fixed; top: 0px; left: 0px; z-index: 1000; width: 250px; min-height: 100%; opacity: 0.95; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5); }
