@@ -126,15 +126,7 @@ class CWCOverlay extends CustomHTMLElement {
 	 * @param {Mixed} newValue The new value
 	 */
 	attributeChanged(attribute, oldValue, newValue) { this.updateTemplate() }
-
-	/**
-	 * @public @name connected
-	 * @description Callback run once the custom element has been added to the DOM and template is rendered
-	 */
-	connected() { 
-		this.removeAttribute('visible');
-	}
-
+	
 	/**
      * @public @name show
 	 * @description Show the saving icon and self remove after X seconds
