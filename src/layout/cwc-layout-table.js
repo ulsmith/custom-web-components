@@ -13,13 +13,13 @@ import '../control/cwc-control-button.js';
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  *
- * @event order The table has been ordered
- * @event page The table page has changed by a direct page number input
- * @event start The table page has gone to the start
- * @event end The table page has gone to the end
- * @event back The table page has gone back one
- * @event forward The table page has gone forward one
- * @event {action} A table data event has been triggered, as set in table data [[{event: ...}]] returns row as detail
+ * @event order The table needs to order by external ordering, detail contains index of data to order and order.
+ * @event page The table needs to move to page by external pagination, detail contains page to move to.
+ * @event start The table needs to move to the start of the pages externally.
+ * @event end The table needs to move to the end of the pages externally.
+ * @event back The table needs to move back a page externally.
+ * @event forward The table needs to move forward a page externally.
+ * @event {action} A table data event has been triggered, as set in table data [[{event: ...}]] returns row as detail.
  * 
  * @property {Array[String|Object]} header An array (columns) of string table headings or objects ['One', {...}, ...]
  * @property {Number} header[].colspan Column span of heading as Number
@@ -47,27 +47,35 @@ import '../control/cwc-control-button.js';
  * @attribute {Number} page-count The amount pages calculated when paginating externally only
  * @attribute {Number} page The page you are currently on when paginating externally only
  * @attribute {Flag} loading The element is loading
- * @attribute {Flag} paginate-external The table is paginated, but externally, all pagination is set outside table
- * @attribute {Flag} paginate-internal The table is paginated internally, we feed it all the data and let it handle the pagination
+ * @attribute {Flag} paginate-external The table is paginated (replaces footer properties), but externally, all pagination is set outside table
+ * @attribute {Flag} paginate-internal The table is paginated internally (replaces footer properties), we feed it all the data and let it handle the pagination
  *
- * @style_variable --cwc-layout-card--border
- * @style_variable --cwc-layout-card--border
- * @style_variable --cwc-layout-card--border-radius
+ * @style_variable --cwc-layout-table--border
+ * @style_variable --cwc-layout-table--border-radius
  *
- * @style_variable --cwc-layout-card--header--padding
- * @style_variable --cwc-layout-card--header--background
- * @style_variable --cwc-layout-card--header--color
- * @style_variable --cwc-layout-card--header--border-radius
+ * @style_variable --cwc-layout-table--cell--empty--height
  *
- * @style_variable --cwc-layout-card--body--padding
- * @style_variable --cwc-layout-card--body--background
- * @style_variable --cwc-layout-card--body--color
+ * @style_variable --cwc-layout-table--header--background
+ * @style_variable --cwc-layout-table--header--color
+ * @style_variable --cwc-layout-table--header--border-radius
+ * @style_variable --cwc-layout-table--header--padding
  *
- * @style_variable --cwc-layout-card--footer--padding
- * @style_variable --cwc-layout-card--footer--background
- * @style_variable --cwc-layout-card--footer--color
- * @style_variable --cwc-layout-card--footer--border-radius
- * 
+ * @style_variable --cwc-layout-table--body--background
+ * @style_variable --cwc-layout-table--body--color
+ * @style_variable --cwc-layout-table--body--cell--padding
+ * @style_variable --cwc-layout-table--body--cell--event--padding
+ *
+ * @style_variable --cwc-layout-table--footer--background
+ * @style_variable --cwc-layout-table--footer--color
+ * @style_variable --cwc-layout-table--footer--fill
+ * @style_variable --cwc-layout-table--footer--cell--padding
+ * @style_variable --cwc-layout-table--footer--page-count--right
+ * @style_variable --cwc-layout-table--footer--page-count--padding
+ * @style_variable --cwc-layout-table--footer--page-count--border
+ * @style_variable --cwc-layout-table--footer--page-count--border-radius
+ * @style_variable --cwc-layout-table--footer--page-count--background
+ * @style_variable --cwc-layout-table--footer--page-count--color
+ *  
  * @example
  * <cwc-layout-card 
  * 		.header="${this._header}"
@@ -100,7 +108,7 @@ class CwcLayoutTable extends CustomHTMLElement {
 		this._pageCount = 1;
 		this._page = 1;
 
-		this.heading;
+		this.header;
 		this.body;
 		this.footer;
 
@@ -120,9 +128,10 @@ class CwcLayoutTable extends CustomHTMLElement {
 					border: var(--cwc-layout-table--border, 1px solid #ccc);
 					box-shadow: var(--cwc-layout-table--border, 0px 0px 6px -4px rgba(0,0,0,0.75));
 					border-radius: var(--cwc-layout-table--border-radius, 0px);
+					overflow: hidden;
 				}
 
-				table { width: 100%; border-collapse: collapse; border-style: hidden; }
+				table { width: calc(100% + 1px); border-collapse: collapse; border-style: hidden; }
 
 				table thead {
 					background: var(--cwc-layout-table--header--background, #999);
@@ -158,6 +167,12 @@ class CwcLayoutTable extends CustomHTMLElement {
 					border: 1px solid #d8d8d8;
 				}
 
+				table tfoot {
+					background: var(--cwc-layout-table--footer--background, whitesmoke);
+					color: var(--cwc-layout-table--footer--color, #444);
+					fill: var(--cwc-layout-table--footer--fill, var(--cwc-layout-table--footer--color, #444));
+				}
+
 				table tfoot tr td {
 					position: relative;
 					padding: var(--cwc-layout-table--footer--cell--padding, 20px);
@@ -175,9 +190,12 @@ class CwcLayoutTable extends CustomHTMLElement {
 
 				.page-count {
 					position: absolute;
-					right: var(--cwc-layout-table--footer--page-count--padding, 10px);
+					right: var(--cwc-layout-table--footer--page-count--right, 10px);
 					top: 50%;
 					transform: translateY(-50%);
+					padding: var(--cwc-layout-table--footer--page-count--padding, 10px);
+					border: var(--cwc-layout-table--footer--page-count--border, none);
+					border-radius: var(--cwc-layout-table--footer--page-count--border-radius, 0);
 					background: var(--cwc-layout-table--footer--page-count--background, #444);
 					color: var(--cwc-layout-table--footer--page-count--color, white);
 				}
@@ -244,7 +262,7 @@ class CwcLayoutTable extends CustomHTMLElement {
 				<table>
 					<thead>
 						<tr>
-							${this.heading && this.heading.length ? this.heading.map((h, i) => html`
+							${this.header && this.header.length ? this.header.map((h, i) => html`
 								<th
 									colspan="${ifDefined(h.colspan)}"
 									justify="${ifDefined(h.justify)}"
@@ -384,21 +402,21 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 */
 	_order(idx, ev) {		
 		// set direction
-		switch (this.heading[idx].order) {
-			case 'asc': this.heading[idx].order = 'desc'; break;
-			case 'desc': this.heading[idx].order = 'asc'; break;
-			case '': this.heading[idx].order = 'asc'; break;
+		switch (this.header[idx].order) {
+			case 'asc': this.header[idx].order = 'desc'; break;
+			case 'desc': this.header[idx].order = 'asc'; break;
+			case '': this.header[idx].order = 'asc'; break;
 		}
 		// remove other heading directions
-		for (let i = 0; i < this.heading.length; i++) if (i !== idx && this.heading[i].order) this.heading[i].order = '';
+		for (let i = 0; i < this.header.length; i++) if (i !== idx && this.header[i].order) this.header[i].order = '';
 
 		// event or order
-		this.dispatchEvent(new CustomEvent('order', { detail: { index: idx, order: this.heading[idx].order } }));
+		this.dispatchEvent(new CustomEvent('order', { detail: { index: idx, order: this.header[idx].order } }));
 		if (this.hasAttribute('paginate-external')) return;
 		else {
 			this.body = this.body.sort((a, b) => {
-				if (a[idx] < b[idx]) return this.heading[idx].order === 'asc' ? -1 : 1;
-				if (a[idx] > b[idx]) return this.heading[idx].order === 'asc' ? 1 : -1;
+				if (a[idx] < b[idx]) return this.header[idx].order === 'asc' ? -1 : 1;
+				if (a[idx] > b[idx]) return this.header[idx].order === 'asc' ? 1 : -1;
 				return 0;
 			});
 		}
