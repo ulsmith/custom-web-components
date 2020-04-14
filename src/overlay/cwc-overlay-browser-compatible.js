@@ -76,11 +76,11 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 				<div id="default-message" class="compatible">
 					<h1>
 						<cwc-icon-material-hardware class="icon" name="security"></cwc-icon-material-hardware>
-						Unfortunately we have stopped supporting IE11
+						Unfortunately we do not support IE11
 					</h1>
 					<h3>Find out why?</h3>
 					<p>
-						IE11 no longer supports upcoming web standards, we like web standards. We only support browsers that support web standards and offer perpetual upgrade paths. If you are using IE11 still, you should seriously think about installing a modern browser to help keep yourself secure and get more out of the web.
+						IE11 no longer supports upcoming web standards, we like web standards. We only support browsers that support web standards and offer perpetual upgrade paths. If you are using IE11 still, you should seriously think about installing a modern browser, to help keep yourself secure, getting more out of the web.
 						<a href="https://www.google.com/search?q=why+should+i+stop+using+ie11" target="_blank">Search online to find out more!</a>
 					</p>
 					<h3>What are the alternatives?</h3>
@@ -95,10 +95,10 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 					</p>
 					<h3>I simply must use IE11!</h3>
 					<p>
-						Well I am sorry, we will not degrade performance for other users just to support an ageing none compliant browser used by a very small demographic. Still insist? You can ignore this message and experience the raw unalterted IE11 result.
+						Well I am sorry, we will not degrade performance for other users, just to support an ageing, none compliant browser, used by a very small demographic. Still insist? You can ignore this message and experience the raw unalterted IE11 result.
 					</p>
 					<p>
-						<span class="remove" @click="${this._remove.bind(this)}">I understand, now remove this Message</span>
+						<span class="remove" @click="${this.remove.bind(this)}">I understand, now remove this Message.</span>
 					</p>
 				</div>
 			` : ''}
@@ -116,11 +116,12 @@ class CWCOverlayBrowserCompatible extends CustomHTMLElement {
 	templateUpdated() {
 		const slot = this.shadowRoot.querySelector('slot');
 		const defaultMessage = this.shadowRoot.querySelector('#default-message');
+		if (!slot || !defaultMessage) return;
 		slot.parentNode.style.display = slot.assignedNodes().length < 1 ? 'none' : 'block';
 		defaultMessage.style.display = slot.assignedNodes().length < 1 ? 'block' : 'none';
 	}
 
-	_remove() {
+	remove() {
 		this._ignore = true;
 		this._store.setItem('ignoreBrowserMessage', this._ignore);
 		this.updateTemplate();
