@@ -16,18 +16,21 @@ import '../icon/material/cwc-icon-material-general.js';
  * 
  * @attribute {Flag} flip Swap help tip message to other side
  * 
- * @style_variable --cwc-overlay-help--background
- * @style_variable --cwc-overlay-help--border
- * @style_variable --cwc-overlay-help--border-radius
- * @style_variable --cwc-overlay-help--box-shadow
- * @style_variable --cwc-overlay-help--color
- * @style_variable --cwc-overlay-help--font-size
- * @style_variable --cwc-overlay-help--padding
- * @style_variable --cwc-overlay-help--width
- * 
- * @style_variable --cwc-overlay-help--icon--width
- * @style_variable --cwc-overlay-help--icon--height
  * @style_variable --cwc-overlay-help--icon--color
+ * @style_variable --cwc-overlay-help--icon--height
+ * @style_variable --cwc-overlay-help--icon--width
+ * 
+ * @style_variable --cwc-overlay-help--helptip--background-color
+ * @style_variable --cwc-overlay-help--helptip--border
+ * @style_variable --cwc-overlay-help--helptip--border-radius
+ * @style_variable --cwc-overlay-help--helptip--box-shadow
+ * @style_variable --cwc-overlay-help--helptip--color
+ * @style_variable --cwc-overlay-help--helptip--font-size
+ * @style_variable --cwc-overlay-help--helptip--max-width
+ * @style_variable --cwc-overlay-help--helptip--padding
+ * @style_variable --cwc-overlay-help--helptip--width
+ *
+ * @style_variable --cwc-overlay-help--helptip-pointer--background-color
  * 
  * @slot root Single root slot for text to show in help tip
  * 
