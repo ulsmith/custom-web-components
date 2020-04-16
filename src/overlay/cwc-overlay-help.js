@@ -57,16 +57,16 @@ class CWCOverlayHelp extends CustomHTMLElement {
 		return html`
 			<style>
 				:host {
-					display: block;
-					text-align: right;
 					position: relative;
+					display: inline-block;
+					width: var(--cwc-overlay-help--icon--width, 20px);
+					height: var(--cwc-overlay-help--icon--height, 20px);
+					vertical-align: text-bottom;
 				}
 
 				.cwc-help {
-					position: absolute;
-					top: 0px;
-					right: 0px;
 					padding: 0px;
+					vertical-align: top;
 					height: var(--cwc-overlay-help--icon--height, 20px);
 					width: var(--cwc-overlay-help--icon--width, 20px);
 					fill: var(--cwc-overlay-help--icon--color, black);
@@ -75,20 +75,21 @@ class CWCOverlayHelp extends CustomHTMLElement {
 				.cwc-helptip {
 					display: none;
 					position: absolute;
-					bottom: 10px;
-					right: -5px;
+					bottom: calc(var(--cwc-overlay-help--icon--height, 20px) + 10px);
+					right: calc(calc(var(--cwc-overlay-help--icon--width, 20px) / 2) - 15px);
 					z-index: -1;
 					opacity: 0;
 					text-align: left;
 					transition: opacity 150ms linear;
-					width: var(--cwc-overlay-help--width, 200px);
-					box-shadow: var(--cwc-overlay-help--box-shadow, 0px 0px 5px 0px grey);
-					border: var(--cwc-overlay-help--border, none);
-					border-radius: var(--cwc-overlay-help--border-radius, 0);
-					background: var(--cwc-overlay-help--background, black);
-					font-size: var(--cwc-overlay-help--font-size, 14px);
-					color: var(--cwc-overlay-help--color, white);
-					padding: var(--cwc-overlay-help--padding, 10px);
+					width: var(--cwc-overlay-help--helptip--width, 200px);
+					max-width: var(--cwc-overlay-help--helptip--max-width, 200px);
+					box-shadow: var(--cwc-overlay-help--helptip--box-shadow, 0px 0px 5px 0px grey);
+					border: var(--cwc-overlay-help--helptip--border, none);
+					border-radius: var(--cwc-overlay-help--helptip--border-radius, 0);
+					background-color: var(--cwc-overlay-help--helptip--background-color, black);
+					font-size: var(--cwc-overlay-help--helptip--font-size, 14px);
+					color: var(--cwc-overlay-help--helptip--color, white);
+					padding: var(--cwc-overlay-help--helptip--padding, 10px);
 				}
 
 				.cwc-pointer {
@@ -100,16 +101,15 @@ class CWCOverlayHelp extends CustomHTMLElement {
 					margin-left: -5px;
 					border-left: 5px solid transparent;
 					border-right: 5px solid transparent;
-					border-top: 5px solid var(--cwc-overlay-help--background, black);
+					border-top: 5px solid var(--cwc-overlay-help--helptip-pointer--background-color, var(--cwc-overlay-help--helptip--background-color, black));
 				}
 
-				:host([flip]) .cwc-help { right: unset; left: 0px; }
-				:host([flip]) .cwc-helptip { right: unset; left: -5px; }
+				:host([flip]) .cwc-helptip { right: unset; left: calc(calc(var(--cwc-overlay-help--icon--width, 20px) / 2) - 15px); }
 				:host([flip]) .cwc-pointer { right: unset; left: 15px; }
 			</style>
 
 
-			<cwc-icon-material-general id="help" class="cwc-help" name="info"></cwc-icon-material-general>
+			<cwc-icon-material-general id="help" class="cwc-help" name="help"></cwc-icon-material-general>
 
 			<div id="helptip" class="cwc-helptip">
 				<slot></slot>
