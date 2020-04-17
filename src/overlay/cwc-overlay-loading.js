@@ -14,19 +14,24 @@ import '../icon/material/cwc-icon-material-image.js';
  *
  * @method show() Show the loading overlay manually
  * @method hide() Hide the loading overlay manually
- * 
+ *
  * @attribute {String} src The uses an image of your choice as the spinner, defaults to spinner icon
  * @attribute {Flag} static The loading overlay is statically placed inline with other content
  * @attribute {Flag} visible The loading overlay is visible
  * @attribute {Flag} show-on-load The loading overlay is shown when loaded
  *
- * @style_variable --cwc-overlay-loading--background
- * @style_variable --cwc-overlay-loading--border
- * @style_variable --cwc-overlay-loading--box-shadow
- * @style_variable --cwc-overlay-loading--padding
- * @style_variable --cwc-overlay-loading--speed
+ * @style_variable --cwc-overlay-loading--height
+ * @style_variable --cwc-overlay-loading--width
  * @style_variable --cwc-overlay-loading--z-index
- * 
+ * @style_variable --cwc-overlay-loading--box-shadow
+ * @style_variable --cwc-overlay-loading--border
+ * @style_variable --cwc-overlay-loading--padding
+ * @style_variable --cwc-overlay-loading--background
+ * @style_variable --cwc-overlay-loading--speed
+ * @style_variable --cwc-overlay-loading--icon--fill
+ *
+ * @slot Root slot [optional] to use own image/icon, turns off defaul ticon
+ *
  * @example
  * <cwc-overlay-loading show-on-load></cwc-overlay-loading>
  */
@@ -46,14 +51,14 @@ class CWCOverlayLoading extends CustomHTMLElement {
 					position: fixed;
 					top: 50%;
 					left: 50%;
-					margin-top: -60px;
-					margin-left: -60px;
-					width: 120px;
-					height: 120px;
+					margin-top: calc(-0.5 * var(--cwc-overlay-loading--height, 120px));
+					margin-left: calc(-0.5 * var(--cwc-overlay-loading--width, 120px));
+					width: var(--cwc-overlay-loading--width, 120px);
+					height: var(--cwc-overlay-loading--height, 120px);
 					z-index: var(--cwc-overlay-loading--z-index, 1000);
 					box-shadow: var(--cwc-overlay-loading--box-shadow, 0px 0px 15px 0px rgba(0,0,0,0.55));
 					border: var(--cwc-overlay-loading--border, none);
-					border-radius: 80px;
+					border-radius: var(--cwc-overlay-loading--width, 100px);
 					padding: var(--cwc-overlay-loading--padding, 10px);
 					box-sizing: border-box;
 					background: var(--cwc-overlay-loading--background, white);
@@ -65,17 +70,11 @@ class CWCOverlayLoading extends CustomHTMLElement {
 				}
 
 				:host([static]) {
-					opacity: 0;
 					position: static;
 					top: 0;
 					left: 0;
 					margin-top: 0;
 					margin-left: 0;
-					animation-name: loading;
-					animation-duration: 750ms;
-					animation-iteration-count: infinite;
-					animation-timing-function: ease-in-out;
-					transition: opacity var(--cwc-overlay-loading--speed, 250ms) ease-in-out;
 				}
 
 				:host([visible]) {
@@ -88,6 +87,7 @@ class CWCOverlayLoading extends CustomHTMLElement {
 				.loading .icon {
 					width: 100%;
 					height: 100%;
+					fill: var(--cwc-overlay-loading--icon--fill, #222);
 				}
 
 				@keyframes loading {
@@ -100,11 +100,8 @@ class CWCOverlayLoading extends CustomHTMLElement {
 
 			<div class="cwc-overlay-loading">
 				<div class="loading" ?fade="${!this._loading}" ?hidden="${this._loaded}">
-					${this.hasAttribute('src') ?
-						html`<img class="loading" ?fade="${!this._loading}" ?hidden="${this._loaded}" src="${this.getAttribute('src')}">`
-						:
-						html`<cwc-icon-material-image class="icon" name="rotateRight"></cwc-icon-material-hardware>`
-					}
+					<slot></slot>
+					<cwc-icon-material-image class="icon" name="rotateRight"></cwc-icon-material-hardware>
 				</div>
 			</div>
         `;
@@ -117,6 +114,11 @@ class CWCOverlayLoading extends CustomHTMLElement {
 	connected() {
 		if (this.hasAttribute('show-on-load')) this.show();
 		else this.removeAttribute('visible');
+	}
+
+	templateUpdated() {
+		const slot = this.shadowRoot.querySelector('slot');
+		this.shadowRoot.querySelector('cwc-icon-material-image').style.display = slot.assignedNodes().length > 0 ? 'none' : 'inline-block';
 	}
 
 	/**
