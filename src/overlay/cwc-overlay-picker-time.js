@@ -1,6 +1,6 @@
 import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
 import '../icon/material/cwc-icon-material-general.js';
-import './cwc-overlay.js';
+import './cwc-overlay-modal.js';
 import '../control/cwc-control-input.js';
 import '../control/cwc-control-button.js';
 
@@ -242,7 +242,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					</cwc-control-button>
 				</div>
 
-				<cwc-overlay id="picker" @hide="${this._closed.bind(this)}">
+				<cwc-overlay-modal id="picker" @hide="${this._closed.bind(this)}">
 					<div class="cwc-picker-controls">
 						<div class="cwc-bar-box">
 							<div class="cwc-time-bar cwc-left">
@@ -295,7 +295,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 						<cwc-control-button class="cwc-bottom-button" @click="${this._now.bind(this)}">Now</cwc-control-button>
 						<cwc-control-button class="cwc-bottom-button" @click="${this.hide.bind(this)}">Close</cwc-control-button>
 					</div>
-				</cwc-overlay>
+				</cwc-overlay-modal>
 			</div>
         `;
 	}

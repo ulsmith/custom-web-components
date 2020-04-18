@@ -10,4 +10,3 @@ import './cwc-overlay-picker-year.js';
 import './cwc-overlay-saving.js';
 import './cwc-overlay-to-top.js';
 import './cwc-overlay-tooltip.js';
-import './cwc-overlay.js';
