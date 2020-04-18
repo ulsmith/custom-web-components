@@ -17,14 +17,19 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  *
  * @attribute {Flag} visible The loading overlay is visible
  * 
- * @style_variable --cwc-overlay--background
- * @style_variable --cwc-overlay--border
- * @style_variable --cwc-overlay--border-radius
- * @style_variable --cwc-overlay--box-shadow
- * @style_variable --cwc-overlay--padding
- * @style_variable --cwc-overlay--z-index
- * @style_variable --cwc-overlay--backdrop--background
- * @style_variable --cwc-overlay--backdrop--opacity
+ * @style_variable cwc-overlay--backdrop--background
+ * @style_variable cwc-overlay--backdrop--opacity
+ * @style_variable cwc-overlay--background
+ * @style_variable cwc-overlay--border
+ * @style_variable cwc-overlay--border-radius
+ * @style_variable cwc-overlay--box-shadow
+ * @style_variable cwc-overlay--height
+ * @style_variable cwc-overlay--max-height
+ * @style_variable cwc-overlay--max-width
+ * @style_variable cwc-overlay--overflow
+ * @style_variable cwc-overlay--padding
+ * @style_variable cwc-overlay--width
+ * @style_variable cwc-overlay--z-index
  * 
  * @slot Single root slot for content to place in the overlay
  *
@@ -46,8 +51,8 @@ class CWCOverlay extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
-        return html`
+	static template() {
+		return html`
 			<style>
 				:host {
 					display: none;
@@ -99,6 +104,11 @@ class CWCOverlay extends CustomHTMLElement {
 					border: var(--cwc-overlay--border, none);
 					border-radius: var(--cwc-overlay--border-radius, 0);
 					box-shadow: var(--cwc-overlay--box-shadow, 0px 0px 15px 0px grey);
+					width: var(--cwc-overlay--width, auto);
+					height: var(--cwc-overlay--height, auto);
+					max-width: var(--cwc-overlay--max-width, unset);
+					max-height: var(--cwc-overlay--max-height, unset);
+					overflow: var(--cwc-overlay--overflow, auto);
 				}
 			</style>
 
@@ -126,7 +136,7 @@ class CWCOverlay extends CustomHTMLElement {
 	 * @param {Mixed} newValue The new value
 	 */
 	attributeChanged(attribute, oldValue, newValue) { this.updateTemplate() }
-	
+
 	/**
      * @public @name show
 	 * @description Show the saving icon and self remove after X seconds
