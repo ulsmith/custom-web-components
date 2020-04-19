@@ -12,51 +12,47 @@ import './cwc-control-button.js';
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
  *
- * @event show The date picker has been shown
- * @event hide The date picker has been hidden
+ * @event show The year picker has been shown
+ * @event hide The year picker has been hidden
  * @event change The the value has changed, with event detail as the value
  *
- * @method show() Show the date picker manually
- * @method hide() Hide the date picker manually
+ * @method show() Show the year picker manually
+ * @method hide() Hide the year picker manually
  *
- * @property {String} format The date format to use
+ * @property {String} format The year format to use
  * @property {String} label The label to use for the input box
- * @property {String} value The selected date formatted
- * @property {Boolean} required The label to use for the input box
- * @property {Boolean} disabled The label to use for the input box
- * @property {Boolean} invalid The label to use for the input box
- * @property {Date} selected The current selected date from the picker
+ * @property {String} value The selected year formatted
  *
- * @attribute {String} format The date format to use
+ * @attribute {String} format The year format to use
  * @attribute {String} label The label to use for the input box
  * @attribute {String} placeholder The placeholder text in the input box
  * @attribute {String} help The help tip text
- * @attribute {Flag} required The label to use for the input box
- * @attribute {Flag} disabled The label to use for the input box
- * @attribute {Flag} invalid The label to use for the input box
- * @attribute {Flag} validate-on-load The current selected date from the picker
+ * @attribute {Flag} required Is the control required
+ * @attribute {Flag} disabled Is the control disabled
+ * @attribute {Flag} invalid Is the control invalid
+ * @attribute {Flag} validate-on-load Validate the control on load
  *
  * @style_variable @inherits All cwc-control-button variables inherited
  * @style_variable @inherits All cwc-control-input variables inherited
  * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-control-year--input--padding, 4px 25px 4px 4px);
- * @style_variable --cwc-control-year--button-open--background);
- * @style_variable --cwc-control-year--button-open--color);
- * @style_variable --cwc-control-year--button-open--border);
- * @style_variable --cwc-control-year--button-open--outline);
- * @style_variable --cwc-control-year--button-open--background--hover);
- * @style_variable --cwc-control-year--button-open--background--focus);
- * @style_variable --cwc-control-year--button-open--background--active);
- * @style_variable --cwc-control-year--button-open--box-shadow--hover);
- * @style_variable --cwc-control-year--button-open--box-shadow--focus);
- * @style_variable --cwc-control-year--button-open--box-shadow--active);
- * @style_variable --cwc-control-time--icon--margin, 0); }
- * @style_variable --cwc-control-year--selectable--border, 1px solid #ccc);
- * @style_variable --cwc-control-year--selectable--background, #ddd);
- * @style_variable --cwc-control-year--selectable--color, #999);
- * @style_variable --cwc-control-year--selectable--border-radius, 0px);
- * @style_variable --cwc-control-year--selectable--color, #999);
+ * @style_variable --cwc-control-year--input--padding
+ * @style_variable --cwc-control-year--button-open--background
+ * @style_variable --cwc-control-year--button-open--color
+ * @style_variable --cwc-control-year--button-open--border
+ * @style_variable --cwc-control-year--button-open--outline
+ * @style_variable --cwc-control-year--button-open--background--hover
+ * @style_variable --cwc-control-year--button-open--background--focus
+ * @style_variable --cwc-control-year--button-open--background--active
+ * @style_variable --cwc-control-year--button-open--box-shadow--hover
+ * @style_variable --cwc-control-year--button-open--box-shadow--focus
+ * @style_variable --cwc-control-year--button-open--box-shadow--active
+ * @style_variable --cwc-control-year--icon--margin
+ * @style_variable --cwc-control-year--selectable--border
+ * @style_variable --cwc-control-year--selectable--background
+ * @style_variable --cwc-control-year--selectable--color
+ * @style_variable --cwc-control-year--selectable--border-radius
+ * @style_variable --cwc-control-year--selectable--color
  * 
  * @example
  * <cwc-control-year format="yyyy"></cwc-control-year>
@@ -153,7 +149,7 @@ class CWCControlYear extends CustomHTMLElement {
 
 				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
 				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-control-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-time--icon--margin, 0); }
+				.cwc-control-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-year--icon--margin, 0); }
 				.cwc-control-year .cwc-picker-controls { position: relative; }
 
 				.cwc-control-year .cwc-year-bar {
