@@ -14,6 +14,7 @@ import './cwc-control-button.js';
  *
  * @event show The modal has been shown
  * @event hide The modal has been hidden
+ * @event change The the value has changed, with event detail as the value
  *
  * @method show() Show the modal manually
  * @method hide() Hide the modal manually
