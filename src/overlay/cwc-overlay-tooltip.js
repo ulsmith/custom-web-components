@@ -16,14 +16,17 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * 
  * @attribute {String} for Text that matches the closest element name attribute for which it relates
  * 
- * @style_variable --cwc-overlay-tooltip--background
+ * @style_variable --cwc-overlay-tooltip--transition-time
+ * @style_variable --cwc-overlay-tooltip--max-width
+ * @style_variable --cwc-overlay-tooltip--box-shadow
  * @style_variable --cwc-overlay-tooltip--border
  * @style_variable --cwc-overlay-tooltip--border-radius
- * @style_variable --cwc-overlay-tooltip--box-shadow
+ * @style_variable --cwc-overlay-tooltip--background
  * @style_variable --cwc-overlay-tooltip--color
- * @style_variable --cwc-overlay-tooltip--font-size
  * @style_variable --cwc-overlay-tooltip--padding
- * @style_variable --cwc-overlay-tooltip--transition-time
+ * @style_variable --cwc-overlay-tooltip--font-size
+ * @style_variable --cwc-overlay-tooltip--font-weight
+ * @style_variable --cwc-overlay-tooltip--text-align
  *
  * @slot Single root slot for content in the saving component
  * 
@@ -49,8 +52,8 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
-        return html`
+	static template() {
+		return html`
 			<style>
 				:host {
 					position: fixed;
@@ -58,7 +61,7 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 					z-index: -1;
 					opacity: 0;
 					transition: opacity var(--cwc-overlay-tooltip--transition-time, 150ms) linear;
-					max-width: 250px;
+					max-width: var(--cwc-overlay-tooltip--max-width, 250px);
 				}
 
 				.tooltip {
@@ -69,6 +72,8 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 					color: var(--cwc-overlay-tooltip--color, white);
 					padding: var(--cwc-overlay-tooltip--padding, 5px 10px);
 					font-size: var(--cwc-overlay-tooltip--font-size, 14px);
+					font-weight: var(--cwc-overlay-tooltip--font-weight, normal);
+					text-align: var(--cwc-overlay-tooltip--text-align, left);
 				}
 			</style>
 
@@ -132,7 +137,7 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 
 		if (ev && ev.type === 'mouseover' && ev.target.getAttribute('name') !== this.getAttribute('for')) {
 			let node;
-			
+
 			for (let i = 0; i < ev.path.length; i++) {
 				if (!ev.path[i].getAttribute) continue;
 				if (ev.path[i].getAttribute('name') === this.getAttribute('for')) node = ev.path[i];
@@ -146,9 +151,10 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 		clearTimeout(this._actionTimeout);
 		this._actionTimeout = setTimeout(() => {
 			this.style.display = 'block';
-			this.style.zIndex = 1000;	
-			this.style.top = ev.clientY + 12 + 'px';
-			this.style.left = ev.clientX + 12 + 'px';
+			this.style.zIndex = 1000;
+			this.style.top = ev.clientY - this.offsetHeight - 25 + 'px';
+			let posx = ev.clientX - (this.offsetWidth / 2);
+			this.style.left = posx < 0 ? 10 : (posx + this.offsetWidth > window.innerWidth ? window.innerWidth - this.offsetWidth - 10 : posx) + 'px';
 
 			setTimeout(() => this.style.opacity = 1, 25);
 		}, 150);
@@ -169,7 +175,7 @@ class CWCOverlayTooltip extends CustomHTMLElement {
 				if (!ev.path[i].getAttribute) continue;
 				if (ev.path[i].getAttribute('name') === this.getAttribute('for')) node = ev.path[i];
 			}
-			
+
 			if (!node) return;
 		}
 

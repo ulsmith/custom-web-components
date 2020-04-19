@@ -4,7 +4,7 @@ import '../icon/material/cwc-icon-material-general.js';
 /**
  * @public @name CWCOverlayToTop
  * @extends CustomHTMLElement
- * @description Application Web Component, common component, overlay top top button
+ * @description Custom Web Component, common component, overlay top top button
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
@@ -15,11 +15,25 @@ import '../icon/material/cwc-icon-material-general.js';
  *
  * @method show() Show the to-top manually
  * @method hide() Hide the to-top manually
- * 
+ *
+ * @style_variable --cwc-overlay-to-top--top
+ * @style_variable --cwc-overlay-to-top--bottom
+ * @style_variable --cwc-overlay-to-top--right
+ * @style_variable --cwc-overlay-to-top--left
+ * @style_variable --cwc-overlay-to-top--width
+ * @style_variable --cwc-overlay-to-top--height
  * @style_variable --cwc-overlay-to-top--transition-time
+ * @style_variable --cwc-overlay-to-top--transform
+ * @style_variable --cwc-overlay-to-top--width
+ * @style_variable --cwc-overlay-to-top--height
+ * @style_variable --cwc-overlay-to-top--fill
+ * @style_variable --cwc-overlay-to-top--padding
  * @style_variable --cwc-overlay-to-top--background
+ * @style_variable --cwc-overlay-to-top--border
+ * @style_variable --cwc-overlay-to-top--border-radius
  * @style_variable --cwc-overlay-to-top--box-shadow
  * @style_variable --cwc-overlay-to-top--opacity
+ * @style_variable --cwc-overlay-to-top--cursor
  * 
  * @example
  * <cwc-overlay-to-top></cwc-overlay-to-top>
@@ -41,31 +55,35 @@ class CWCOverlayToTop extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
-        return html`
+	static template() {
+		return html`
 			<style>
 				:host {
 					opacity: 0;
 					position: fixed;
-					bottom: 10px;
-					left: 50%;
-					width: 50px;
-					height: 50px;
-					margin-left: -25px;
+					top: var(--cwc-overlay-to-top--top, unset);
+					bottom: var(--cwc-overlay-to-top--bottom, 10px);
+					right: var(--cwc-overlay-to-top--right, unset);
+					left: var(--cwc-overlay-to-top--left, 50%);
+					width: var(--cwc-overlay-to-top--width, 50px);
+					height: var(--cwc-overlay-to-top--height, 50px);
 					transition: opacity var(--cwc-overlay-to-top--transition-time, 100ms) ease-in-out;
+					transform: var(--cwc-overlay-to-top--transform, translateX(-50%));
 				}
 
 				.cwc-totop {
 					display: block;
-					height: 50px;
-					width: 50px;
-					fill: white;
-					padding: 10px;
+					height: var(--cwc-overlay-to-top--width, 50px);
+					width: var(--cwc-overlay-to-top--height, 50px);
+					fill: var(--cwc-overlay-to-top--fill, white);
+					padding: var(--cwc-overlay-to-top--padding, 10px);
 					background: var(--cwc-overlay-to-top--background, #4b7cb9);
-					border-radius: 50px;
+					border: var(--cwc-overlay-to-top--border, 50px);
+					border-radius: var(--cwc-overlay-to-top--border-radius, 50px);
 					box-sizing: border-box;
 					box-shadow: var(--cwc-overlay-to-top--box-shadow, 0px 0px 20px -4px rgba(0,0,0,0.75));
 					opacity: var(--cwc-overlay-to-top--opacity, 0.8);
+					cursor: var(--cwc-overlay-to-top--cursor, pointer);
 				}
 			</style>
 

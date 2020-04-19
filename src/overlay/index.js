@@ -4,6 +4,5 @@ import './cwc-overlay-help.js';
 import './cwc-overlay-loading.js';
 import './cwc-overlay-modal.js';
 import './cwc-overlay-notify.js';
-import './cwc-overlay-saving.js';
 import './cwc-overlay-to-top.js';
 import './cwc-overlay-tooltip.js';
