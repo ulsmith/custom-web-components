@@ -25,16 +25,18 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @style_variable --cwc-overlay-notify--box-shadow
  * @style_variable --cwc-overlay-notify--color
  * @style_variable --cwc-overlay-notify--fill
+ * @style_variable --cwc-overlay-notify--height
  * @style_variable --cwc-overlay-notify--left
+ * @style_variable --cwc-overlay-notify--max-height
+ * @style_variable --cwc-overlay-notify--max-width
+ * @style_variable --cwc-overlay-notify--min-height
+ * @style_variable --cwc-overlay-notify--min-width
+ * @style_variable --cwc-overlay-notify--padding
  * @style_variable --cwc-overlay-notify--right
  * @style_variable --cwc-overlay-notify--top
  * @style_variable --cwc-overlay-notify--transform
+ * @style_variable --cwc-overlay-notify--width
  * @style_variable --cwc-overlay-notify--z-index
- *
- * @style_variable --cwc-overlay-notify--[context]--background
- * @style_variable --cwc-overlay-notify--[context]--color
- * @style_variable --cwc-overlay-notify--[context]--fill
- * @style_variable --cwc-overlay-notify--[context]--border
  * 
  * @slot Single root slot, to add a message to the notify component
  * 
@@ -59,25 +61,24 @@ class CWCOverlayNotify extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
+	static template() {
 		return html`
 			<style>
 				:host {
 					display: none;
 					opacity: 0;
-					margin-left: 20px;
 					position: fixed;
-					width: fit-content;
-					height: fit-content;
-					min-height: 20px;
-					max-height: 500px;
-					min-width: 20px;
-					max-width: 500px;
+					width: var(--cwc-overlay-notify--width, fit-content);
+					height: var(--cwc-overlay-notify--height, fit-content);
+					min-height: var(--cwc-overlay-notify--min-height, 20px);
+					max-height: var(--cwc-overlay-notify--max-height, 500px);
+					min-width: var(--cwc-overlay-notify--min-width, 20px);
+					max-width: var(--cwc-overlay-notify--max-width, 500px);
 					z-index: -1;
 					transition: opacity 190ms ease-in-out;
-					top: var(--cwc-overlay-notify--top, auto);
+					top: var(--cwc-overlay-notify--top, unset);
 					bottom: var(--cwc-overlay-notify--bottom, 20px);
-					left: var(--cwc-overlay-notify--left, auto);
+					left: var(--cwc-overlay-notify--left, unset);
 					right: var(--cwc-overlay-notify--right, 20px);
 					transform: var(--cwc-overlay-notify--transform, none);
 					border-radius: var(--cwc-overlay-notify--border-radius, 0);
@@ -89,22 +90,25 @@ class CWCOverlayNotify extends CustomHTMLElement {
 				}
 
 				:host([visible]) { display: block; z-index: var(--cwc-overlay-notify--z-index, 1001); }
-				:host([context="primary"]) { background: var(--cwc-overlay-notify--primary--background, blue); color: var(--cwc-overlay-notify--primary--color, white); fill: var(--cwc-overlay-notify--primary--fill, white); border: var(--cwc-overlay-notify--primary--border, none); }
-				:host([context="success"]) { background: var(--cwc-overlay-notify--success--background, green); color: var(--cwc-overlay-notify--success--color, white); fill: var(--cwc-overlay-notify--success--fill, white); border: var(--cwc-overlay-notify--success--border, none); }
-				:host([context="warning"]) { background: var(--cwc-overlay-notify--warning--background, orange); color: var(--cwc-overlay-notify--warning--color, white); fill: var(--cwc-overlay-notify--warning--fill, white); border: var(--cwc-overlay-notify--warning--border, none); }
-				:host([context="danger"]) { background: var(--cwc-overlay-notify--danger--background, red); color: var(--cwc-overlay-notify--danger--color, white); fill: var(--cwc-overlay-notify--danger--fill, white); border: var(--cwc-overlay-notify--danger--border, none); }
 
 				.message {
 					display: block;
-					min-height: 20px;
-					max-height: 500px;
-					min-width: 20px;
-					max-width: 500px;
+					min-height: inherit;
+					max-height: inherit;
+					min-width: inherit;
+					max-width: inherit;
 					width: fit-content;
 					height: fit-content;
-					border-radius: 5px;
-					padding: 10px;
+					padding: var(--cwc-overlay-notify--padding, 10px);
 					box-sizing: border-box;
+				}
+
+				:host([jiggle]) { animation: jiggle 0.2s 1; }
+
+				@keyframes jiggle {
+					0% { transform: var(--cwc-overlay-notify--transform, translate(0)) scale(1.1); }
+					20% { transform: var(--cwc-overlay-notify--transform, translate(0)) scale(1.1); }
+					100% { transform: var(--cwc-overlay-notify--transform, translate(0)) scale(1); }
 				}
 			</style>
 
@@ -145,19 +149,20 @@ class CWCOverlayNotify extends CustomHTMLElement {
 	 * @param {Number} timeout (optional) The milliseconds of time to auto timeout
 	 */
 	show(timeout) {
-		// auto hide it
-		clearTimeout(this._showing);
-
 		this.dispatchEvent(new CustomEvent('show'));
 		this.setAttribute('visible', '');
 
+		if (this._showing) this.setAttribute('jiggle', '');
+
+		clearTimeout(this._showing);
 		setTimeout(() => {
 			this.style.opacity = 1;
+			this.removeAttribute('jiggle');
 
 			if (!timeout && !this._timeout) return;
 
 			this._showing = setTimeout(() => this.hide(), parseInt(timeout || this._timeout));
-		}, 50);
+		}, 200);
 	}
 
 	/**
