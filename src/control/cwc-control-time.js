@@ -20,19 +20,16 @@ import './cwc-control-button.js';
  *
  * @property {String} format The date format to use
  * @property {String} label The label to use for the input box
- * @property {String} value The selected date formatted
- * @property {Boolean} required The label to use for the input box
- * @property {Boolean} disabled The label to use for the input box
- * @property {Boolean} invalid The label to use for the input box
+ * @property {String} value The selected time formatted
  *
- * @attribute {String} format The date format to use
+ * @attribute {String} format The time format to use
  * @attribute {String} label The label to use for the input box
  * @attribute {String} placeholder The placeholder text in the input box
  * @attribute {String} help The help tip text
- * @attribute {Flag} required The label to use for the input box
- * @attribute {Flag} disabled The label to use for the input box
- * @attribute {Flag} invalid The label to use for the input box
- * @attribute {Flag} validate-on-load The current selected date from the picker
+ * @attribute {Flag} required Is the control required
+ * @attribute {Flag} disabled Is the control disabled
+ * @attribute {Flag} invalid Is the control invalid
+ * @attribute {Flag} validate-on-load Validate the control on load
  *
  * @style_variable @inherits All cwc-control-button variables inherited
  * @style_variable @inherits All cwc-control-input variables inherited
