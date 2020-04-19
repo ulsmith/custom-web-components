@@ -1,13 +1,13 @@
 import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
 import '../icon/material/cwc-icon-material-general.js';
-import './cwc-overlay-modal.js';
-import '../control/cwc-control-input.js';
-import '../control/cwc-control-button.js';
+import '../overlay/cwc-overlay-modal.js';
+import './cwc-control-input.js';
+import './cwc-control-button.js';
 
 /**
- * @public @name CWCOverlayPickerYear
+ * @public @name CWCControlYear
  * @extends CustomHTMLElement
- * @description Custom Web Component, overlay picker letting you pick a year
+ * @description Custom Web Component, year input with overlay picker letting you pick a year
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
@@ -38,15 +38,15 @@ import '../control/cwc-control-button.js';
  *
  * @style_variable @inherits All cwc-contorl-input variables inherited
  * 
- * @style_variable --cwc-overlay-picker-year--selectable--background
- * @style_variable --cwc-overlay-picker-year--selectable--border
- * @style_variable --cwc-overlay-picker-year--selectable--border-radius
- * @style_variable --cwc-overlay-picker-year--selectable--color
+ * @style_variable --cwc-control-year--selectable--background
+ * @style_variable --cwc-control-year--selectable--border
+ * @style_variable --cwc-control-year--selectable--border-radius
+ * @style_variable --cwc-control-year--selectable--color
  * 
  * @example
- * <cwc-overlay-picker-year format="yyyy"></cwc-overlay-picker-year>
+ * <cwc-control-year format="yyyy"></cwc-control-year>
  */
-class CWCOverlayPickerYear extends CustomHTMLElement {
+class CWCControlYear extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -86,7 +86,7 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 				:host { display: block; width: 100%; }
 				[hidden] { display: none !important; }
 
-				.cwc-overlay-picker-year .cwc-picker-box {
+				.cwc-control-year .cwc-picker-box {
 					position: relative;
 					width: 200px;
 					height: 230px;
@@ -97,7 +97,7 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					user-select: none;
 				}
 
-				.cwc-overlay-picker-year .cwc-bar-box {
+				.cwc-control-year .cwc-bar-box {
 					position: absolute;
 					top: 50%;
 					left: 50%;
@@ -108,23 +108,23 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					height: 230px;
 				}
 
-				.cwc-overlay-picker-year .cwc-inputs { width: 100%; display: inline-block; position: relative; }
+				.cwc-control-year .cwc-inputs { width: 100%; display: inline-block; position: relative; }
 
-				.cwc-overlay-picker-year .cwc-inputs .cwc-input {
+				.cwc-control-year .cwc-inputs .cwc-input {
 					width: 100%;
 					display: inline-block;
 					padding: 0 40px 0 0;
 					box-sizing: border-box;
-					--cwc-control-input--padding: var(--cwc-overlay-picker-year--input--padding, 4px 25px 4px 4px);
+					--cwc-control-input--padding: var(--cwc-control-year--input--padding, 4px 25px 4px 4px);
 				}
 
-				.cwc-overlay-picker-year .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
-				.cwc-overlay-picker-year .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
-				.cwc-overlay-picker-year .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-overlay-picker-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
-				.cwc-overlay-picker-year .cwc-picker-controls { position: relative; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
+				.cwc-control-year .cwc-picker-controls { position: relative; }
 
-				.cwc-overlay-picker-year .cwc-year-bar {
+				.cwc-control-year .cwc-year-bar {
 					position: absolute;
 					top: 50%;
 					z-index: 0;
@@ -136,13 +136,13 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					text-align: center;
 					font-size: 10px;
 					text-transform: uppercase;
-					border: var(--cwc-overlay-picker-year--selectable--border, 1px solid #ccc);
-					background: var(--cwc-overlay-picker-year--selectable--background, #ddd);
-					color: var(--cwc-overlay-picker-year--selectable--color, #999);
-					border-radius: var(--cwc-overlay-picker-year--selectable--border-radius, 0px);
+					border: var(--cwc-control-year--selectable--border, 1px solid #ccc);
+					background: var(--cwc-control-year--selectable--background, #ddd);
+					color: var(--cwc-control-year--selectable--color, #999);
+					border-radius: var(--cwc-control-year--selectable--border-radius, 0px);
 				}
 
-				.cwc-overlay-picker-year .cwc-picker-year-box-mask {
+				.cwc-control-year .cwc-picker-year-box-mask {
 					margin: 0;
 					padding: 0;
 					width: 190px;
@@ -152,21 +152,21 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					overflow: hidden;
 				}
 
-				.cwc-overlay-picker-year .cwc-picker-year-box {
+				.cwc-control-year .cwc-picker-year-box {
 					height: 160px;
 					width: 250px;
 					box-sizing: border-box;
 					overflow-y: scroll;
 				}
 
-				.cwc-overlay-picker-year .cwc-years {
+				.cwc-control-year .cwc-years {
 					padding-top: 50px;
 					padding-bottom: 50px;
 					height: fit-content;
 					float: left;
 				}
 
-				.cwc-overlay-picker-year .cwc-years .cwc-year {
+				.cwc-control-year .cwc-years .cwc-year {
 					display: block;
 					float: left;
 					height: 40px;
@@ -177,10 +177,10 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					-moz-user-select: none;
 					-ms-user-select: none;
 					user-select: none;
-					color: var(--cwc-overlay-picker-year--selectable--color, #999);
+					color: var(--cwc-control-year--selectable--color, #999);
 				}
 
-				.cwc-overlay-picker-year .cwc-arrow {
+				.cwc-control-year .cwc-arrow {
 				    position: absolute;
 					left: 50%;
 					height: 30px;
@@ -196,10 +196,10 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					margin-left: -15px;
 				}
 
-				.cwc-overlay-picker-year .cwc-arrow[up] { top: 0px; }
-				.cwc-overlay-picker-year .cwc-arrow[down] { bottom: 0px; }
+				.cwc-control-year .cwc-arrow[up] { top: 0px; }
+				.cwc-control-year .cwc-arrow[down] { bottom: 0px; }
 
-				.cwc-overlay-picker-year .cwc-bottom-controls {
+				.cwc-control-year .cwc-bottom-controls {
 					display: flex;
 					flex-flow: row;
 					margin: 5px -5px -5px -5px;
@@ -207,11 +207,11 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 					z-index: 100;
 				}
 
-				.cwc-overlay-picker-year .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
+				.cwc-control-year .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
 			</style>
 
 
-			<div class="cwc-overlay-picker-year">
+			<div class="cwc-control-year">
 				<div class="cwc-inputs">
 					<cwc-control-input
 						type="text"
@@ -523,4 +523,4 @@ class CWCOverlayPickerYear extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-overlay-picker-year', CWCOverlayPickerYear);
+customElements.define('cwc-control-year', CWCControlYear);

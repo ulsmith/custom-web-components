@@ -1,13 +1,13 @@
 import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
 import '../icon/material/cwc-icon-material-general.js';
-import './cwc-overlay-modal.js';
-import '../control/cwc-control-input.js';
-import '../control/cwc-control-button.js';
+import '../overlay/cwc-overlay-modal.js';
+import './cwc-control-input.js';
+import './cwc-control-button.js';
 
 /**
- * @public @name CWCOverlayPickerTime
+ * @public @name CWCControlTime
  * @extends CustomHTMLElement
- * @description Custom Web Component, overlay picker letting you pick a time
+ * @description Custom Web Component, time input with overlay picker letting you pick a time
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
@@ -36,15 +36,15 @@ import '../control/cwc-control-button.js';
  *
  * @style_variable @inherits All cwc-contorl-input variables inherited
  * 
- * @style_variable --cwc-overlay-picker-time--selectable--background
- * @style_variable --cwc-overlay-picker-time--selectable--border
- * @style_variable --cwc-overlay-picker-time--selectable--border-radius
- * @style_variable --cwc-overlay-picker-time--selectable--color
+ * @style_variable --cwc-control-time--selectable--background
+ * @style_variable --cwc-control-time--selectable--border
+ * @style_variable --cwc-control-time--selectable--border-radius
+ * @style_variable --cwc-control-time--selectable--color
  * 
  * @example
- * <cwc-overlay-picker-time format="hh:mm:ss"></cwc-overlay-picker-time>
+ * <cwc-control-time format="hh:mm:ss"></cwc-control-time>
  */
-class CWCOverlayPickerTime extends CustomHTMLElement {
+class CWCControlTime extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -86,7 +86,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 
 				[hidden] { display: none !important; }
 
-				.cwc-overlay-picker-time .cwc-picker-box {
+				.cwc-control-time .cwc-picker-box {
 					position: relative;
 					width: 220px;
 					height: 230px;
@@ -97,24 +97,24 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					user-select: none;
 				}
 
-				.cwc-overlay-picker-time .cwc-inputs { width: 100%; display: inline-block; position: relative; }
+				.cwc-control-time .cwc-inputs { width: 100%; display: inline-block; position: relative; }
 
-				.cwc-overlay-picker-time .cwc-inputs .cwc-input {
+				.cwc-control-time .cwc-inputs .cwc-input {
 					width: 100%;
 					display: inline-block;
 					padding: 0 40px 0 0;
 					box-sizing: border-box;
-					--cwc-control-input--padding: var(--cwc-overlay-picker-time--input--padding, 4px 25px 4px 4px);
+					--cwc-control-input--padding: var(--cwc-control-time--input--padding, 4px 25px 4px 4px);
 				}
 
-				.cwc-overlay-picker-time .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
-				.cwc-overlay-picker-time .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
-				.cwc-overlay-picker-time .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-overlay-picker-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
-				.cwc-overlay-picker-time .cwc-picker-controls { position: relative; }
-				.cwc-overlay-picker-time .cwc-control-box { padding: 10px; margin: 0; text-align: center; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
+				.cwc-control-time .cwc-picker-controls { position: relative; }
+				.cwc-control-time .cwc-control-box { padding: 10px; margin: 0; text-align: center; }
 
-				.cwc-overlay-picker-time .cwc-bar-box {
+				.cwc-control-time .cwc-bar-box {
 					position: absolute;
 					top: 50%;
 					left: 50%;
@@ -125,13 +125,13 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					height: 230px;
 				}
 
-				.cwc-overlay-picker-time .cwc-time-bar {
+				.cwc-control-time .cwc-time-bar {
 					position: absolute;
 					top: 50%;
 					z-index: 0;
-					border: var(--cwc-overlay-picker-time--selectable--border, 1px solid #ccc);
-					background: var(--cwc-overlay-picker-time--selectable--background, #ddd);
-					color: var(--cwc-overlay-picker-time--selectable--color, #999);
+					border: var(--cwc-control-time--selectable--border, 1px solid #ccc);
+					background: var(--cwc-control-time--selectable--background, #ddd);
+					color: var(--cwc-control-time--selectable--color, #999);
 					padding: 0;
 					margin-top: -35px;
 					height: 70px;
@@ -140,14 +140,14 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					text-align: center;
 					font-size: 10px;
 					text-transform: uppercase;
-					border-radius: var(--cwc-overlay-picker-time--selectable--border-radius, 0px);
+					border-radius: var(--cwc-control-time--selectable--border-radius, 0px);
 				}
 
-				.cwc-overlay-picker-time .cwc-time-bar.cwc-left { left: 0px; }
-				.cwc-overlay-picker-time .cwc-time-bar.cwc-middle { left: 50%; margin-left: -35px; }
-				.cwc-overlay-picker-time .cwc-time-bar.cwc-right { right: 0px; }
+				.cwc-control-time .cwc-time-bar.cwc-left { left: 0px; }
+				.cwc-control-time .cwc-time-bar.cwc-middle { left: 50%; margin-left: -35px; }
+				.cwc-control-time .cwc-time-bar.cwc-right { right: 0px; }
 
-				.cwc-overlay-picker-time .cwc-picker-time-box-mask {
+				.cwc-control-time .cwc-picker-time-box-mask {
 					margin: 0;
 					padding: 0;
 					width: 70px;
@@ -158,7 +158,7 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					display: inline-block;
 				}
 
-				.cwc-overlay-picker-time .cwc-picker-time-box {
+				.cwc-control-time .cwc-picker-time-box {
 					display: inline-block;
 					height: 160px;
 					width: 110px;
@@ -166,28 +166,28 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					overflow-y: scroll;
 				}
 
-				.cwc-overlay-picker-time .cwc-hours, .cwc-overlay-picker-time .cwc-minutes, .cwc-overlay-picker-time .cwc-seconds {
+				.cwc-control-time .cwc-hours, .cwc-control-time .cwc-minutes, .cwc-control-time .cwc-seconds {
 					padding-top: 50px;
     				padding-bottom: 50px;
 					height: fit-content;
 					float: left;
 				}
 
-				.cwc-overlay-picker-time .cwc-hours .cwc-hour, .cwc-overlay-picker-time .cwc-minutes .cwc-minute, .cwc-overlay-picker-time .cwc-seconds .cwc-second {
+				.cwc-control-time .cwc-hours .cwc-hour, .cwc-control-time .cwc-minutes .cwc-minute, .cwc-control-time .cwc-seconds .cwc-second {
 					display: block;
 					float: left;
 					height: 40px;
 					line-height: 40px;
 					font-size: 40px;
 					margin: 10px 0px 10px 13px;
-					color: var(--cwc-overlay-picker-time--selectable--color, #999);
+					color: var(--cwc-control-time--selectable--color, #999);
 					-webkit-user-select: none;
 					-moz-user-select: none;
 					-ms-user-select: none;
 					user-select: none;
 				}
 
-				.cwc-overlay-picker-time .cwc-arrow {
+				.cwc-control-time .cwc-arrow {
 				    position: absolute;
 					height: 30px;
 					width: 30px;
@@ -201,13 +201,13 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					color: #444;
 				}
 
-				.cwc-overlay-picker-time .cwc-arrow[up] { top: 0px; }
-				.cwc-overlay-picker-time .cwc-arrow[down] { bottom: 0px; }
-				.cwc-overlay-picker-time .cwc-arrow[hour] { left: 20px; }
-				.cwc-overlay-picker-time .cwc-arrow[minute] { left: 50%; margin-left: -15px; }
-				.cwc-overlay-picker-time .cwc-arrow[second] { right: 20px; }
+				.cwc-control-time .cwc-arrow[up] { top: 0px; }
+				.cwc-control-time .cwc-arrow[down] { bottom: 0px; }
+				.cwc-control-time .cwc-arrow[hour] { left: 20px; }
+				.cwc-control-time .cwc-arrow[minute] { left: 50%; margin-left: -15px; }
+				.cwc-control-time .cwc-arrow[second] { right: 20px; }
 
-				.cwc-overlay-picker-time .cwc-bottom-controls {
+				.cwc-control-time .cwc-bottom-controls {
 					display: flex;
 					flex-flow: row;
 					margin: 5px -5px -5px -5px;
@@ -215,10 +215,10 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 					z-index: 100;
 				}
 
-				.cwc-overlay-picker-time .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
+				.cwc-control-time .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
 			</style>
 
-			<div class="cwc-overlay-picker-time">
+			<div class="cwc-control-time">
 				<div class="cwc-inputs">
 					<cwc-control-input
 						id="input"
@@ -651,4 +651,4 @@ class CWCOverlayPickerTime extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-overlay-picker-time', CWCOverlayPickerTime);
+customElements.define('cwc-control-time', CWCControlTime);

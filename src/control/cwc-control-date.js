@@ -1,13 +1,13 @@
 import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
 import '../icon/material/cwc-icon-material-general.js';
-import './cwc-overlay-modal.js';
-import '../control/cwc-control-input.js';
-import '../control/cwc-control-button.js';
+import '../overlay/cwc-overlay-modal.js';
+import './cwc-control-input.js';
+import './cwc-control-button.js';
 
 /**
- * @public @name CWCOverlayPickerDate
+ * @public @name CWCControlDate
  * @extends CustomHTMLElement
- * @description Custom Web Component, overlay picker letting you pick a date
+ * @description Custom Web Component, date input with overlay picker letting you pick a date with UI
  * @author Paul Smith <p@ulsmith.net>
  * @copyright 2020 and up Custom Web Component <custom-web-component.net> <ulsmith.net> <p@ulsmith.net>
  * @license MIT
@@ -40,69 +40,69 @@ import '../control/cwc-control-button.js';
  * @style_variable @inherits All cwc-control-input variables inherited
  * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-overlay-picker-date--icon--margin
+ * @style_variable --cwc-control-date--icon--margin
  * 
- * @style_variable --cwc-overlay-picker-date--input--padding
+ * @style_variable --cwc-control-date--input--padding
  * 
- * @style_variable --cwc-overlay-picker-date--selectable--border-radius
+ * @style_variable --cwc-control-date--selectable--border-radius
  * 
- * @style_variable --cwc-overlay-picker-date--selected-day--border
- * @style_variable --cwc-overlay-picker-date--selected-day--background
- * @style_variable --cwc-overlay-picker-date--selected-day--color
+ * @style_variable --cwc-control-date--selected-day--border
+ * @style_variable --cwc-control-date--selected-day--background
+ * @style_variable --cwc-control-date--selected-day--color
  * 
- * @style_variable --cwc-overlay-picker-date--selected-month--border
- * @style_variable --cwc-overlay-picker-date--selected-month--background
- * @style_variable --cwc-overlay-picker-date--selected-month--color
+ * @style_variable --cwc-control-date--selected-month--border
+ * @style_variable --cwc-control-date--selected-month--background
+ * @style_variable --cwc-control-date--selected-month--color
  * 
- * @style_variable --cwc-overlay-picker-date--selected-year--border
- * @style_variable --cwc-overlay-picker-date--selected-year--background
- * @style_variable --cwc-overlay-picker-date--selected-year--color
+ * @style_variable --cwc-control-date--selected-year--border
+ * @style_variable --cwc-control-date--selected-year--background
+ * @style_variable --cwc-control-date--selected-year--color
  * 
- * @style_variable --cwc-overlay-picker-date--button-open--background
- * @style_variable --cwc-overlay-picker-date--button-open--color
- * @style_variable --cwc-overlay-picker-date--button-open--border
- * @style_variable --cwc-overlay-picker-date--button-open--outline
- * @style_variable --cwc-overlay-picker-date--button-open--background--hover
- * @style_variable --cwc-overlay-picker-date--button-open--background--focus
- * @style_variable --cwc-overlay-picker-date--button-open--background--active
- * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--hover
- * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--focus
- * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--active
- * @style_variable --cwc-overlay-picker-date--button-open--height
+ * @style_variable --cwc-control-date--button-open--background
+ * @style_variable --cwc-control-date--button-open--color
+ * @style_variable --cwc-control-date--button-open--border
+ * @style_variable --cwc-control-date--button-open--outline
+ * @style_variable --cwc-control-date--button-open--background--hover
+ * @style_variable --cwc-control-date--button-open--background--focus
+ * @style_variable --cwc-control-date--button-open--background--active
+ * @style_variable --cwc-control-date--button-open--box-shadow--hover
+ * @style_variable --cwc-control-date--button-open--box-shadow--focus
+ * @style_variable --cwc-control-date--button-open--box-shadow--active
+ * @style_variable --cwc-control-date--button-open--height
  * 
- * @style_variable --cwc-overlay-picker-date--button-today--background
- * @style_variable --cwc-overlay-picker-date--button-today--color
- * @style_variable --cwc-overlay-picker-date--button-today--border
- * @style_variable --cwc-overlay-picker-date--button-today--outline
- * @style_variable --cwc-overlay-picker-date--button-today--background--hover
- * @style_variable --cwc-overlay-picker-date--button-today--background--focus
- * @style_variable --cwc-overlay-picker-date--button-today--background--active
- * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--hover
- * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--focus
- * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--active
+ * @style_variable --cwc-control-date--button-today--background
+ * @style_variable --cwc-control-date--button-today--color
+ * @style_variable --cwc-control-date--button-today--border
+ * @style_variable --cwc-control-date--button-today--outline
+ * @style_variable --cwc-control-date--button-today--background--hover
+ * @style_variable --cwc-control-date--button-today--background--focus
+ * @style_variable --cwc-control-date--button-today--background--active
+ * @style_variable --cwc-control-date--button-today--box-shadow--hover
+ * @style_variable --cwc-control-date--button-today--box-shadow--focus
+ * @style_variable --cwc-control-date--button-today--box-shadow--active
  * 
- * @style_variable --cwc-overlay-picker-date--button-close--background
- * @style_variable --cwc-overlay-picker-date--button-close--color
- * @style_variable --cwc-overlay-picker-date--button-close--border
- * @style_variable --cwc-overlay-picker-date--button-close--outline
- * @style_variable --cwc-overlay-picker-date--button-close--background--hover
- * @style_variable --cwc-overlay-picker-date--button-close--background--focus
- * @style_variable --cwc-overlay-picker-date--button-close--background--active
- * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--hover
- * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--focus
- * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--active
+ * @style_variable --cwc-control-date--button-close--background
+ * @style_variable --cwc-control-date--button-close--color
+ * @style_variable --cwc-control-date--button-close--border
+ * @style_variable --cwc-control-date--button-close--outline
+ * @style_variable --cwc-control-date--button-close--background--hover
+ * @style_variable --cwc-control-date--button-close--background--focus
+ * @style_variable --cwc-control-date--button-close--background--active
+ * @style_variable --cwc-control-date--button-close--box-shadow--hover
+ * @style_variable --cwc-control-date--button-close--box-shadow--focus
+ * @style_variable --cwc-control-date--button-close--box-shadow--active
  * 
  * @example
- * <cwc-overlay-picker-date 
+ * <cwc-control-date 
  * 		format="dd/mm/yyyy"
  * 		label="Date"
  * 		placeholder="Input Date"
  * 		required
  * 		disabled
  * 		validate-on-load
- * ></cwc-overlay-picker-date>
+ * ></cwc-control-date>
  */
-class CWCOverlayPickerDate extends CustomHTMLElement {
+class CWCControlDate extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -145,40 +145,40 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 
 				[hidden] { display: none !important; }
 
-				.cwc-overlay-picker-date { padding: 0; color: #222; }
-				.cwc-overlay-picker-date .cwc-inputs { width: 100%; display: inline-block; position: relative; }
+				.cwc-control-date { padding: 0; color: #222; }
+				.cwc-control-date .cwc-inputs { width: 100%; display: inline-block; position: relative; }
 				
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button { 
-					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-open--background);
-					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-open--color);
-					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-open--border);
-					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-open--outline);
+				.cwc-control-date .cwc-inputs .cwc-icon-button { 
+					--cwc-control-button--background: var(--cwc-control-date--button-open--background);
+					--cwc-control-button--color: var(--cwc-control-date--button-open--color);
+					--cwc-control-button--border: var(--cwc-control-date--button-open--border);
+					--cwc-control-button--outline: var(--cwc-control-date--button-open--outline);
 					
-					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-open--background--hover);
-					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-open--background--focus);
-					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-open--background--active);
+					--cwc-control-button--background--hover: var(--cwc-control-date--button-open--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-control-date--button-open--background--focus);
+					--cwc-control-button--background--active: var(--cwc-control-date--button-open--background--active);
 
-					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-open--box-shadow--hover);
-					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-open--box-shadow--focus);
-					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-open--box-shadow--active);
+					--cwc-control-button--box-shadow--hover: var(--cwc-control-date--button-open--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-control-date--button-open--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-control-date--button-open--box-shadow--active);
 					--cwc-control-button--padding: 2px; 
 					position: absolute; 
 					top: 20px; 
 				}
 				
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; height: var(--cwc-overlay-picker-date--button-open--height, 30px); }
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
+				.cwc-control-date .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; height: var(--cwc-control-date--button-open--height, 30px); }
+				.cwc-control-date .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; margin: var(--cwc-control-date--icon--margin, 0); }
+				.cwc-control-date .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-date--icon--margin, 0); }
 
-				.cwc-overlay-picker-date .cwc-inputs .cwc-input { 
+				.cwc-control-date .cwc-inputs .cwc-input { 
 					width: 100%; 
 					display: inline-block; 
 					padding: 0 40px 0 0; 
 					box-sizing: border-box; 
-					--cwc-control-input--padding: var(--cwc-overlay-picker-date--input--padding, 4px 25px 4px 4px);
+					--cwc-control-input--padding: var(--cwc-control-date--input--padding, 4px 25px 4px 4px);
 				}
 				
-				.cwc-overlay-picker-date .cwc-box {
+				.cwc-control-date .cwc-box {
 					margin: 0;
 					padding: 0;
 					width: 260px;
@@ -187,7 +187,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					z-index: 1001;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box {
+				.cwc-control-date .cwc-box .cwc-control-box {
 					display: inline-block;
 					padding: 0px;
 					margin: 0;
@@ -198,7 +198,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					float: left;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls {
 					padding: 0px;
 					height: 30px;
 					-webkit-touch-callout: none; /* iOS Safari */
@@ -208,7 +208,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					user-select: none;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-month {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-month {
 					vertical-align: super;
 					line-height: 20px;
 					box-shadow: 0 0px 5px 0px #444;
@@ -223,7 +223,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					font-size: 14px;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-year {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-year {
 					vertical-align: super;
 					line-height: 20px;
 					box-shadow: 0 0px 5px 0px #444;
@@ -238,9 +238,9 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					font-size: 14px;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-month[selected], .cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-year[selected] { background-color: #ddd; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-month[selected], .cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-year[selected] { background-color: #ddd; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon {
 					height: 30px;
 					width: 30px;
 					box-shadow: 0 0px 5px 0px #444;
@@ -253,10 +253,10 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					fill: #222;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[back] { float: left; }
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[forward] { float: right; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[back] { float: left; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[forward] { float: right; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days {
 					list-style-type: none;
 					margin: 0;
 					margin: 10px 0;
@@ -267,7 +267,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					flex-flow: row wrap;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li {
 					border: 1px solid #ccc;
 					background-color: #eee;
 					color: #555;
@@ -285,21 +285,21 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					-moz-user-select: none; /* Firefox */
 					-ms-user-select: none; /* Internet Explorer/Edge */
 					user-select: none;
-					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+					border-radius: var(--cwc-control-date--selectable--border-radius, 0px);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+7), .cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+6) { background-color: #ddd; }
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[today] { font-weight: bold; color: #000; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+7), .cwc-control-date .cwc-box .cwc-control-box .cwc-days li:nth-child(7n+6) { background-color: #ddd; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li[today] { font-weight: bold; color: #000; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[selected] {
-					border: var(--cwc-overlay-picker-date--selected-day--border, 1px solid #1b741b);
-					background: var(--cwc-overlay-picker-date--selected-day--background, #0f990f);
-					color: var(--cwc-overlay-picker-date--selected-day--color, white);
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li[selected] {
+					border: var(--cwc-control-date--selected-day--border, 1px solid #1b741b);
+					background: var(--cwc-control-date--selected-day--background, #0f990f);
+					color: var(--cwc-control-date--selected-day--color, white);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li[disabled] { opacity: 0.6; cursor: not-allowed; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li[disabled] { opacity: 0.6; cursor: not-allowed; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li .cwc-day {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li .cwc-day {
 					margin: 0;
 					padding: 0;
 					display: block;
@@ -307,7 +307,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					line-height: 14px;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-days li .cwc-date {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-days li .cwc-date {
 					margin: 0;
 					padding: 0;
 					display: block;
@@ -315,7 +315,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					line-height: 20px;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-months {
 					list-style-type: none;
 					padding: 0;
 					margin: 10px 0;
@@ -325,7 +325,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					flex-flow: row wrap;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-months li {
 					border: 1px solid #ccc;
 				    background-color: #ddd;
 					color: #222;
@@ -343,18 +343,18 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					-moz-user-select: none; /* Firefox */
 					-ms-user-select: none; /* Internet Explorer/Edge */
 					user-select: none;
-					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+					border-radius: var(--cwc-control-date--selectable--border-radius, 0px);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li[today] { font-weight: bold; color: black; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-months li[today] { font-weight: bold; color: black; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-months li[selected] {
-					border: var(--cwc-overlay-picker-date--selected-month--border, 1px solid #ea5121);
-					background: var(--cwc-overlay-picker-date--selected-month--background, #ff7448);
-					color: var(--cwc-overlay-picker-date--selected-month--color, white);
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-months li[selected] {
+					border: var(--cwc-control-date--selected-month--border, 1px solid #ea5121);
+					background: var(--cwc-control-date--selected-month--background, #ff7448);
+					color: var(--cwc-control-date--selected-month--color, white);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-years {
 					list-style-type: none;
 					padding: 0;
 					margin: 10px 0;
@@ -364,7 +364,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					flex-flow: row wrap;
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li {
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-years li {
 					border: 1px solid #ccc;
 				    background-color: #ddd;
 					color: #222;
@@ -382,66 +382,66 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					-moz-user-select: none; /* Firefox */
 					-ms-user-select: none; /* Internet Explorer/Edge */
 					user-select: none;
-					border-radius: var(--cwc-overlay-picker-date--selectable--border-radius, 0px);
+					border-radius: var(--cwc-control-date--selectable--border-radius, 0px);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li[today] { font-weight: bold; color: black; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-years li[today] { font-weight: bold; color: black; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-years li[selected] {
-					border: var(--cwc-overlay-picker-date--selected-year--border, 1px solid #ea5121);
-					background: var(--cwc-overlay-picker-date--selected-year--background, #ff7448);
-					color: var(--cwc-overlay-picker-date--selected-year--color, white);
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-years li[selected] {
+					border: var(--cwc-control-date--selected-year--border, 1px solid #ea5121);
+					background: var(--cwc-control-date--selected-year--background, #ff7448);
+					color: var(--cwc-control-date--selected-year--color, white);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls { display: flex; flex-flow: row; margin: -5px; }
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-bottom-controls { display: flex; flex-flow: row; margin: -5px; }
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; }
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-today { 
-					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-today--background);
-					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-today--color);
-					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-today--border);
-					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-today--outline);
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-today { 
+					--cwc-control-button--background: var(--cwc-control-date--button-today--background);
+					--cwc-control-button--color: var(--cwc-control-date--button-today--color);
+					--cwc-control-button--border: var(--cwc-control-date--button-today--border);
+					--cwc-control-button--outline: var(--cwc-control-date--button-today--outline);
 					
-					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-today--background--hover);
-					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-today--background--focus);
-					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-today--background--active);
+					--cwc-control-button--background--hover: var(--cwc-control-date--button-today--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-control-date--button-today--background--focus);
+					--cwc-control-button--background--active: var(--cwc-control-date--button-today--background--active);
 
-					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-today--box-shadow--hover);
-					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-today--box-shadow--focus);
-					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-today--box-shadow--active);
+					--cwc-control-button--box-shadow--hover: var(--cwc-control-date--button-today--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-control-date--button-today--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-control-date--button-today--box-shadow--active);
 				}
 
-				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-close {
-					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-close--background);
-					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-close--color);
-					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-close--border);
-					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-close--outline);
+				.cwc-control-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-close {
+					--cwc-control-button--background: var(--cwc-control-date--button-close--background);
+					--cwc-control-button--color: var(--cwc-control-date--button-close--color);
+					--cwc-control-button--border: var(--cwc-control-date--button-close--border);
+					--cwc-control-button--outline: var(--cwc-control-date--button-close--outline);
 					
-					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-close--background--hover);
-					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-close--background--focus);
-					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-close--background--active);
+					--cwc-control-button--background--hover: var(--cwc-control-date--button-close--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-control-date--button-close--background--focus);
+					--cwc-control-button--background--active: var(--cwc-control-date--button-close--background--active);
 
-					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-close--box-shadow--hover);
-					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-close--box-shadow--focus);
-					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-close--box-shadow--active);
+					--cwc-control-button--box-shadow--hover: var(--cwc-control-date--button-close--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-control-date--button-close--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-control-date--button-close--box-shadow--active);
 				}
 
         		@media (max-width: 550px) {
-                    .cwc-overlay-picker-date .cwc-box { width: 260px; }
-					.cwc-overlay-picker-date .cwc-box .cwc-date-box { width: 100%; height: 80px; margin-bottom: 10px; }
-					.cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date { height: fit-content; position: initial; width: 100%; margin-top: 0; }
+                    .cwc-control-date .cwc-box { width: 260px; }
+					.cwc-control-date .cwc-box .cwc-date-box { width: 100%; height: 80px; margin-bottom: 10px; }
+					.cwc-control-date .cwc-box .cwc-date-box .cwc-full-date { height: fit-content; position: initial; width: 100%; margin-top: 0; }
 
-					.cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-day, .cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-year, .cwc-overlay-picker-date .cwc-box .cwc-date-box .cwc-full-date .cwc-date {
+					.cwc-control-date .cwc-box .cwc-date-box .cwc-full-date .cwc-day, .cwc-control-date .cwc-box .cwc-date-box .cwc-full-date .cwc-year, .cwc-control-date .cwc-box .cwc-date-box .cwc-full-date .cwc-date {
 						font-size: 20px;
 						line-height: 26px;
 						display: inline-block;
 					}
 
-					.cwc-overlay-picker-date .cwc-box .date-box .cwc-controls .cwc-icon { margin: 5px 2px; }
+					.cwc-control-date .cwc-box .date-box .cwc-controls .cwc-icon { margin: 5px 2px; }
 				}
 			</style>
 			
-			<div class="cwc-overlay-picker-date">
+			<div class="cwc-control-date">
 				<div class="cwc-inputs">
 					<cwc-control-input
 						type="text"
@@ -997,4 +997,4 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-overlay-picker-date', CWCOverlayPickerDate);
+customElements.define('cwc-control-date', CWCControlDate);
