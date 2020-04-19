@@ -36,12 +36,27 @@ import './cwc-control-button.js';
  * @attribute {Flag} invalid The label to use for the input box
  * @attribute {Flag} validate-on-load The current selected date from the picker
  *
- * @style_variable @inherits All cwc-contorl-input variables inherited
+ * @style_variable @inherits All cwc-control-button variables inherited
+ * @style_variable @inherits All cwc-control-input variables inherited
+ * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-control-year--selectable--background
- * @style_variable --cwc-control-year--selectable--border
- * @style_variable --cwc-control-year--selectable--border-radius
- * @style_variable --cwc-control-year--selectable--color
+ * @style_variable --cwc-control-year--input--padding, 4px 25px 4px 4px);
+ * @style_variable --cwc-control-year--button-open--background);
+ * @style_variable --cwc-control-year--button-open--color);
+ * @style_variable --cwc-control-year--button-open--border);
+ * @style_variable --cwc-control-year--button-open--outline);
+ * @style_variable --cwc-control-year--button-open--background--hover);
+ * @style_variable --cwc-control-year--button-open--background--focus);
+ * @style_variable --cwc-control-year--button-open--background--active);
+ * @style_variable --cwc-control-year--button-open--box-shadow--hover);
+ * @style_variable --cwc-control-year--button-open--box-shadow--focus);
+ * @style_variable --cwc-control-year--button-open--box-shadow--active);
+ * @style_variable --cwc-control-time--icon--margin, 0); }
+ * @style_variable --cwc-control-year--selectable--border, 1px solid #ccc);
+ * @style_variable --cwc-control-year--selectable--background, #ddd);
+ * @style_variable --cwc-control-year--selectable--color, #999);
+ * @style_variable --cwc-control-year--selectable--border-radius, 0px);
+ * @style_variable --cwc-control-year--selectable--color, #999);
  * 
  * @example
  * <cwc-control-year format="yyyy"></cwc-control-year>
@@ -80,7 +95,7 @@ class CWCControlYear extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
+	static template() {
 		return html`
 			<style>
 				:host { display: block; width: 100%; }
@@ -118,10 +133,27 @@ class CWCControlYear extends CustomHTMLElement {
 					--cwc-control-input--padding: var(--cwc-control-year--input--padding, 4px 25px 4px 4px);
 				}
 
-				.cwc-control-year .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button  { 
+					--cwc-control-button--background: var(--cwc-control-year--button-open--background);
+					--cwc-control-button--color: var(--cwc-control-year--button-open--color);
+					--cwc-control-button--border: var(--cwc-control-year--button-open--border);
+					--cwc-control-button--outline: var(--cwc-control-year--button-open--outline);
+					
+					--cwc-control-button--background--hover: var(--cwc-control-year--button-open--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-control-year--button-open--background--focus);
+					--cwc-control-button--background--active: var(--cwc-control-year--button-open--background--active);
+
+					--cwc-control-button--box-shadow--hover: var(--cwc-control-year--button-open--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-control-year--button-open--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-control-year--button-open--box-shadow--active);
+					--cwc-control-button--padding: 2px; 
+					position: absolute; 
+					top: 20px; 
+				}
+
 				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
 				.cwc-control-year .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-control-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
+				.cwc-control-year .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-time--icon--margin, 0); }
 				.cwc-control-year .cwc-picker-controls { position: relative; }
 
 				.cwc-control-year .cwc-year-bar {
@@ -236,15 +268,15 @@ class CWCControlYear extends CustomHTMLElement {
 				</div>
 
 				<cwc-overlay-modal id="picker" @hide="${this._closed.bind(this)}">
-					<div class="cwc-picker-controls">
+					<div class="cwc-picker-controls" slot="body">
 						<div class="cwc-bar-box">
 							<div class="cwc-year-bar">
 								<span>Year</span>
 							</div>
 						</div>
 						<div class="cwc-picker-box">
-							<span class="cwc-arrow" up @click="${this._move.bind(this, 'up')}">${GeneralIcons.arrowDropUp}</span>
-							<span class="cwc-arrow" down @click="${this._move.bind(this, 'down')}">${GeneralIcons.arrowDropDown}</span>
+							<cwc-icon-material-general name="arrowDropUp" class="cwc-arrow" up @click="${this._move.bind(this, 'up')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropDown" class="cwc-arrow" down @click="${this._move.bind(this, 'down')}"></cwc-icon-material-general>
 							<div class="cwc-picker-year-box-mask">
 								<div id="scroll" class="cwc-picker-year-box" @scroll="${this._scrolling.bind(this)}">
 									<div id="years" class="cwc-years">
@@ -455,26 +487,10 @@ class CWCControlYear extends CustomHTMLElement {
 
 		switch (string.toLowerCase()) {
 			case 'today': case 'now': case 'current': break;
-			case '+1': case 'next year': date.setFullYear(date.getFullYear() + 1); break;
-			case '-1': case 'last year': date.setFullYear(date.getFullYear() - 1); break;
-			case '+2': date.setFullYear(date.getFullYear() + 2); break;
-			case '-2': date.setFullYear(date.getFullYear() - 2); break;
-			case '+3': date.setFullYear(date.getFullYear() + 3); break;
-			case '-3': date.setFullYear(date.getFullYear() - 3); break;
-			case '+4': date.setFullYear(date.getFullYear() + 4); break;
-			case '-4': date.setFullYear(date.getFullYear() - 4); break;
-			case '+5': date.setFullYear(date.getFullYear() + 5); break;
-			case '-5': date.setFullYear(date.getFullYear() - 5); break;
-			case '+6': date.setFullYear(date.getFullYear() + 6); break;
-			case '-6': date.setFullYear(date.getFullYear() - 6); break;
-			case '+7': date.setFullYear(date.getFullYear() + 7); break;
-			case '-7': date.setFullYear(date.getFullYear() - 7); break;
-			case '+8': date.setFullYear(date.getFullYear() + 8); break;
-			case '-8': date.setFullYear(date.getFullYear() - 8); break;
-			case '+9': date.setFullYear(date.getFullYear() + 9); break;
-			case '-9': date.setFullYear(date.getFullYear() - 9); break;
-			case '+10': case 'next decade': date.setFullYear(date.getFullYear() + 10); break;
-			case '-10': case 'last decade': date.setFullYear(date.getFullYear() - 10); break;
+			case 'next year': date.setFullYear(date.getFullYear() + 1); break;
+			case 'last year': date.setFullYear(date.getFullYear() - 1); break;
+			case 'next decade': date.setFullYear(date.getFullYear() + 10); break;
+			case 'last decade': date.setFullYear(date.getFullYear() - 10); break;
 			default:
 				if (string.length == 4) date.setFullYear(string);
 				else if (string.length == 2) date.setYear(string);
@@ -482,7 +498,7 @@ class CWCControlYear extends CustomHTMLElement {
 
 				// choose today
 				if (date.toString() == 'Invalid Date') date = new Date();
-			break;
+				break;
 		}
 
 		return date;
@@ -512,7 +528,7 @@ class CWCControlYear extends CustomHTMLElement {
 			.replace('yyyy', '[0-9]{4}')
 			.replace('yy', '[0-9]{2}');
 
-		return '^' + parsed + '$';
+		return '^' + parsed + '$|^today$|^now$|^current$|^next year$|^last year$|^next decade$|^last decade';
 	}
 
 	_now() {
