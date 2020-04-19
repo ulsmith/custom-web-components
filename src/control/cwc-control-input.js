@@ -178,6 +178,8 @@ class CWCControlInput extends CustomHTMLElement {
 					right: 0px;
 				}
 
+				.cwc-input-container .cwc-help .help-tip { vertical-align: top; }
+
 				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
 				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
 				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--invalid--color, red); }
@@ -191,7 +193,7 @@ class CWCControlInput extends CustomHTMLElement {
 			<div class="cwc-input-container" ?invalid="${this.hasAttribute('invalid')}">
 				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
-					<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
+					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
 				${this.getAttribute('type') === 'textarea' ? html`
 					<textarea

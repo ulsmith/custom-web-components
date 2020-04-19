@@ -30,7 +30,7 @@ import './cwc-control-button.js';
  * @attribute {String} format The date format to use
  * @attribute {String} label The label to use for the input box
  * @attribute {String} placeholder The placeholder text in the input box
- * @attribute {String} context The context of the input box as primary, secondary, success, warning, danger
+ * @attribute {String} help The help tip text
  * @attribute {Flag} required The label to use for the input box
  * @attribute {Flag} disabled The label to use for the input box
  * @attribute {Flag} invalid The label to use for the input box
@@ -220,8 +220,7 @@ class CWCControlYear extends CustomHTMLElement {
 						label="${ifDefined(this.label)}"
 						regex="${ifDefined(this._pattern(this.format))}"
 						invalid-message="${this.format}"
-					    context="${this.hasAttribute('context') ? this.getAttribute('context') : ''}"
-					    invalid-context="${this.hasAttribute('invalid-context') ? this.getAttribute('invalid-context') : ''}"
+						help="${ifDefined(this.getAttribute('help') || undefined)}"
 						?disabled="${this.disabled}"
 						?required="${this.required}"
 						?required-asterisk="${this.hasAttribute('required-asterisk')}"

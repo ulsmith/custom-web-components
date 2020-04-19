@@ -125,6 +125,8 @@ class CWCControlSwitch extends CustomHTMLElement {
 					right: 0px;
 				}
 
+				.cwc-control-switch .cwc-help .help-tip { vertical-align: top; }
+
 				:host(:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--background--hover, black); }
 
 				:host([justify="center"]) .cwc-control-switch { text-align: center; }
@@ -136,7 +138,7 @@ class CWCControlSwitch extends CustomHTMLElement {
 			<div class="cwc-control-switch">
 				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
-					<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
+					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
 				<div class="cwc-switch-box" @click="${this._change.bind(this)}">
 					<div class="cwc-switch-blob" ?on="${this.value}">${this.value ? 'ON' : 'OFF'}</div>

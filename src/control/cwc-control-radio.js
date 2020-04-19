@@ -143,6 +143,8 @@ class CWCControlRadio extends CustomHTMLElement {
 					right: 0px;
 				}
 
+				.cwc-radio-container .cwc-help .help-tip { vertical-align: top; }
+
 				:host .cwc-radio-buttons { fill: var(--cwc-control-radio--fill, black); color: var(--cwc-control-radio--color, black); }
 				:host(:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--fill--hover, black); color: var(--cwc-control-radio--color--hover, black); }
 
@@ -158,7 +160,7 @@ class CWCControlRadio extends CustomHTMLElement {
 			<div class="cwc-radio-container" ?invalid="${this.hasAttribute('invalid')}">
 				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-asterisk') ? ' *' : ''}</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
-					<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
+					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
 				<div id="radio-buttons" class="cwc-radio-buttons" @change="${this._change.bind(this)}">
 					<slot></slot>

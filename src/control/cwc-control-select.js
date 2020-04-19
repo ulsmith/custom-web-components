@@ -163,6 +163,8 @@ class CWCControlSelect extends CustomHTMLElement {
 					right: 0px;
 				}
 
+				.cwc-control-select .cwc-help .help-tip { vertical-align: top; }
+
 				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--invalid--border, 1px solid red) !important; color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) !important; }
 				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--invalid--color, red) }
 
@@ -176,7 +178,7 @@ class CWCControlSelect extends CustomHTMLElement {
 				<div class="cwc-select-container">
 					<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
 					<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
-						<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
+						<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 					</div>
 					<select @change="${this._change.bind(this)}" name="${!this.getAttribute('name')}" .value="${this.value}" ?disabled="${this.hasAttribute('disabled')}"></select>
 					<span class="cwc-error">${this.hasAttribute('invalid-message') ? this.getAttribute('invalid-message') : (this.hasAttribute('required') ? 'Required' : 'Invalid')}</span>
