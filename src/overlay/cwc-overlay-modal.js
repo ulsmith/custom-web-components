@@ -287,6 +287,9 @@ class CWCOverlayModal extends CustomHTMLElement {
 		this.dispatchEvent(new CustomEvent('show'));
 		this.setAttribute('visible', '');
 
+		this.scrollable = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+
 		setTimeout(() => {
 			this.style.opacity = 1;
 		}, 50);
@@ -304,6 +307,7 @@ class CWCOverlayModal extends CustomHTMLElement {
 
 		this.dispatchEvent(new CustomEvent('hide'));
 		this.style.opacity = 0;
+		document.body.style.overflow = this.scrollable;
 
 		setTimeout(() => this.removeAttribute('visible'), 200);
 	}
