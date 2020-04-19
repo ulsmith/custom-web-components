@@ -31,29 +31,66 @@ import '../control/cwc-control-button.js';
  * @attribute {String} format The date format to use
  * @attribute {String} label The label to use for the input box
  * @attribute {String} placeholder The placeholder text in the input box
- * @attribute {String} context The context of the input box as primary, secondary, success, warning, danger
  * @attribute {Flag} required The label to use for the input box
  * @attribute {Flag} disabled The label to use for the input box
  * @attribute {Flag} invalid The label to use for the input box
  * @attribute {Flag} validate-on-load The current selected date from the picker
  * 
- * @style_variable @inherits All cwc-contorl-input variables inherited
+ * @style_variable @inherits All cwc-control-button variables inherited
+ * @style_variable @inherits All cwc-control-input variables inherited
+ * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-overlay-picker-date--button-open--height
- * @style_variable --cwc-overlay-picker-date--selectable--border-radius
  * @style_variable --cwc-overlay-picker-date--icon--margin
  * 
- * @style_variable --cwc-overlay-picker-date--selected-day--background
+ * @style_variable --cwc-overlay-picker-date--input--padding
+ * 
+ * @style_variable --cwc-overlay-picker-date--selectable--border-radius
+ * 
  * @style_variable --cwc-overlay-picker-date--selected-day--border
+ * @style_variable --cwc-overlay-picker-date--selected-day--background
  * @style_variable --cwc-overlay-picker-date--selected-day--color
  * 
- * @style_variable --cwc-overlay-picker-date--selected-month--background
  * @style_variable --cwc-overlay-picker-date--selected-month--border
+ * @style_variable --cwc-overlay-picker-date--selected-month--background
  * @style_variable --cwc-overlay-picker-date--selected-month--color
  * 
- * @style_variable --cwc-overlay-picker-date--selected-year--background
  * @style_variable --cwc-overlay-picker-date--selected-year--border
+ * @style_variable --cwc-overlay-picker-date--selected-year--background
  * @style_variable --cwc-overlay-picker-date--selected-year--color
+ * 
+ * @style_variable --cwc-overlay-picker-date--button-open--background
+ * @style_variable --cwc-overlay-picker-date--button-open--color
+ * @style_variable --cwc-overlay-picker-date--button-open--border
+ * @style_variable --cwc-overlay-picker-date--button-open--outline
+ * @style_variable --cwc-overlay-picker-date--button-open--background--hover
+ * @style_variable --cwc-overlay-picker-date--button-open--background--focus
+ * @style_variable --cwc-overlay-picker-date--button-open--background--active
+ * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--hover
+ * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--focus
+ * @style_variable --cwc-overlay-picker-date--button-open--box-shadow--active
+ * @style_variable --cwc-overlay-picker-date--button-open--height
+ * 
+ * @style_variable --cwc-overlay-picker-date--button-today--background
+ * @style_variable --cwc-overlay-picker-date--button-today--color
+ * @style_variable --cwc-overlay-picker-date--button-today--border
+ * @style_variable --cwc-overlay-picker-date--button-today--outline
+ * @style_variable --cwc-overlay-picker-date--button-today--background--hover
+ * @style_variable --cwc-overlay-picker-date--button-today--background--focus
+ * @style_variable --cwc-overlay-picker-date--button-today--background--active
+ * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--hover
+ * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--focus
+ * @style_variable --cwc-overlay-picker-date--button-today--box-shadow--active
+ * 
+ * @style_variable --cwc-overlay-picker-date--button-close--background
+ * @style_variable --cwc-overlay-picker-date--button-close--color
+ * @style_variable --cwc-overlay-picker-date--button-close--border
+ * @style_variable --cwc-overlay-picker-date--button-close--outline
+ * @style_variable --cwc-overlay-picker-date--button-close--background--hover
+ * @style_variable --cwc-overlay-picker-date--button-close--background--focus
+ * @style_variable --cwc-overlay-picker-date--button-close--background--active
+ * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--hover
+ * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--focus
+ * @style_variable --cwc-overlay-picker-date--button-close--box-shadow--active
  * 
  * @example
  * <cwc-overlay-picker-date 
@@ -92,7 +129,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 		this.label = this.hasAttribute('label') ? this.getAttribute('label') : 'Date';
 		this.required = this.hasAttribute('required') ? true : false;
 		this.disabled = this.hasAttribute('disabled') ? true : false;
-		
+
 		this._open;
 	}
 
@@ -101,7 +138,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
+	static template() {
 		return html`
 			<style>
 				:host { display: block; width: 100%; }
@@ -110,10 +147,28 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 
 				.cwc-overlay-picker-date { padding: 0; color: #222; }
 				.cwc-overlay-picker-date .cwc-inputs { width: 100%; display: inline-block; position: relative; }
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button { 
+					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-open--background);
+					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-open--color);
+					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-open--border);
+					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-open--outline);
+					
+					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-open--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-open--background--focus);
+					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-open--background--active);
+
+					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-open--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-open--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-open--box-shadow--active);
+					--cwc-control-button--padding: 2px; 
+					position: absolute; 
+					top: 20px; 
+				}
+				
 				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; height: var(--cwc-overlay-picker-date--button-open--height, 30px); }
 				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
-				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
+				.cwc-overlay-picker-date .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-overlay-picker-date--icon--margin, 0); }
 
 				.cwc-overlay-picker-date .cwc-inputs .cwc-input { 
 					width: 100%; 
@@ -154,6 +209,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 				}
 
 				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-month {
+					vertical-align: super;
 					line-height: 20px;
 					box-shadow: 0 0px 5px 0px #444;
 					padding: 5px 10px;
@@ -163,10 +219,12 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					display: inline-block;
 					box-sizing: border-box;
 					color: #222;
+					background: #eee;
 					font-size: 14px;
 				}
 
 				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-year {
+					vertical-align: super;
 					line-height: 20px;
 					box-shadow: 0 0px 5px 0px #444;
 					padding: 5px 10px;
@@ -176,6 +234,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					display: inline-block;
 					box-sizing: border-box;
 					color: #222;
+					background: #eee;
 					font-size: 14px;
 				}
 
@@ -190,7 +249,8 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 					cursor: pointer;
 					display: inline-block;
 					box-sizing: border-box;
-					color: #444;
+					background: #eee;
+					fill: #222;
 				}
 
 				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-controls .cwc-icon[back] { float: left; }
@@ -336,6 +396,36 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls { display: flex; flex-flow: row; margin: -5px; }
 				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; }
 
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-today { 
+					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-today--background);
+					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-today--color);
+					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-today--border);
+					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-today--outline);
+					
+					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-today--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-today--background--focus);
+					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-today--background--active);
+
+					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-today--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-today--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-today--box-shadow--active);
+				}
+
+				.cwc-overlay-picker-date .cwc-box .cwc-control-box .cwc-bottom-controls .cwc-bottom-button.button-close {
+					--cwc-control-button--background: var(--cwc-overlay-picker-date--button-close--background);
+					--cwc-control-button--color: var(--cwc-overlay-picker-date--button-close--color);
+					--cwc-control-button--border: var(--cwc-overlay-picker-date--button-close--border);
+					--cwc-control-button--outline: var(--cwc-overlay-picker-date--button-close--outline);
+					
+					--cwc-control-button--background--hover: var(--cwc-overlay-picker-date--button-close--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-overlay-picker-date--button-close--background--focus);
+					--cwc-control-button--background--active: var(--cwc-overlay-picker-date--button-close--background--active);
+
+					--cwc-control-button--box-shadow--hover: var(--cwc-overlay-picker-date--button-close--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-overlay-picker-date--button-close--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-overlay-picker-date--button-close--box-shadow--active);
+				}
+
         		@media (max-width: 550px) {
                     .cwc-overlay-picker-date .cwc-box { width: 260px; }
 					.cwc-overlay-picker-date .cwc-box .cwc-date-box { width: 100%; height: 80px; margin-bottom: 10px; }
@@ -376,16 +466,16 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 				</div>
 
 				<cwc-overlay-modal id="picker" class="cwc-picker" @hide="${this._closed.bind(this)}">
-					<div class="cwc-box">
+					<div class="cwc-box" slot="body">
 						<div class="cwc-control-box">
 							<div class="cwc-controls">
-								<span class="cwc-icon" back @click="${this._back.bind(this)}" ?hidden="${this.mode == 'month'}">${GeneralIcons.chevronLeft}</span>
+								<cwc-icon-material-general name="chevronLeft" class="cwc-icon" back @click="${this._back.bind(this)}" ?hidden="${this.mode == 'month'}"></cwc-icon-material-general>
 								<span class="cwc-month" @click="${this._changeMode.bind(this, 'month')}" ?selected="${this.mode == 'month'}">
 									${this._formatDate('mmmm', this.date)}
 								</span><span class="cwc-year" @click="${this._changeMode.bind(this, 'year')}" ?selected="${this.mode == 'year'}">
 									${this._formatDate('yyyy', this.date)}
 								</span>
-								<span class="cwc-icon" forward @click="${this._forward.bind(this)}" ?hidden="${this.mode == 'month'}">${GeneralIcons.chevronRight}</span>
+								<cwc-icon-material-general name="chevronRight" class="cwc-icon" forward @click="${this._forward.bind(this)}" ?hidden="${this.mode == 'month'}"></cwc-icon-material-general>
 							</div>
 							<ul class="cwc-days" ?hidden="${this.mode != 'day'}">
 								${this.days ? this.days.map((day, idx) => html`
@@ -415,9 +505,9 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 									</li>
 								`) : ''}
 							</ul>
-							<div class="bottom-controls">
-								<cwc-control-button class="cwc-bottom-button" @click="${this._today.bind(this)}">Today</cwc-control-button>
-								<cwc-control-button class="cwc-bottom-button" @click="${this.hide.bind(this)}">Close</cwc-control-button>
+							<div class="cwc-bottom-controls">
+								<cwc-control-button class="cwc-bottom-button button-today" @click="${this._today.bind(this)}">Today</cwc-control-button>
+								<cwc-control-button class="cwc-bottom-button button-close" @click="${this.hide.bind(this)}">Close</cwc-control-button>
 							</div>
 						</div>
 					</div>
@@ -558,7 +648,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 
 		if (this.invalid) this.setAttribute('invalid', '');
 		else this.removeAttribute('invalid');
-		
+
 		this.updateTemplate();
 	}
 
@@ -601,7 +691,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 		this.date.setFullYear(this.today.getFullYear());
 		this.date = new Date(this.date);
 		this._createMonth();
-		
+
 		this.mode = 'day';
 		this.updateTemplate();
 	}
@@ -728,7 +818,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 	_selectDay(idx, disabled, ev) {
 		// set selected
 		if (disabled) return;
-		this.selected = new Date(this.days[parseInt(idx)].date);		
+		this.selected = new Date(this.days[parseInt(idx)].date);
 		this.hide();
 	}
 
@@ -839,16 +929,16 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 
 		switch (string.toLowerCase()) {
 			case 'today': case 'now': case 'current': break;
-			case 'tomorrow': newDate.setDate(this.today.getDate() +1); break;
-			case 'yesterday': newDate.setDate(this.today.getDate() -1); break;
-			case 'next week': newDate.setDate(this.today.getDate() +7); break;
-			case 'fortnight': case 'next 2 weeks': newDate.setDate(this.today.getDate() +14); break;
-			case 'last week': newDate.setDate(this.today.getDate() -7); break;
-			case 'last 2 weeks': newDate.setDate(this.today.getDate() -14); break;
-			case 'last month': newDate.setMonth(this.today.getMonth() -1); break;
-			case 'next month': newDate.setMonth(this.today.getMonth() +1); break;
-			case 'last year': newDate.setFullYear(this.today.getFullYear() -1); break;
-			case 'next year': newDate.setFullYear(this.today.getFullYear() +1); break;
+			case 'tomorrow': newDate.setDate(this.today.getDate() + 1); break;
+			case 'yesterday': newDate.setDate(this.today.getDate() - 1); break;
+			case 'next week': newDate.setDate(this.today.getDate() + 7); break;
+			case 'fortnight': case 'next 2 weeks': newDate.setDate(this.today.getDate() + 14); break;
+			case 'last week': newDate.setDate(this.today.getDate() - 7); break;
+			case 'last 2 weeks': newDate.setDate(this.today.getDate() - 14); break;
+			case 'last month': newDate.setMonth(this.today.getMonth() - 1); break;
+			case 'next month': newDate.setMonth(this.today.getMonth() + 1); break;
+			case 'last year': newDate.setFullYear(this.today.getFullYear() - 1); break;
+			case 'next year': newDate.setFullYear(this.today.getFullYear() + 1); break;
 			default:
 				let fParts = this.format.toLowerCase().split(/\s|\\|\/|\-/);
 				let dParts = string.split(/\s|\\|\/|\-/);
@@ -860,7 +950,7 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 				let dd = fParts.indexOf('dd');
 				let ds = fParts.indexOf('ds');
 				let d = fParts.indexOf('d');
-				
+
 				let mmmm = fParts.indexOf('mmmm');
 				let mmm = fParts.indexOf('mmm');
 				let mm = fParts.indexOf('mm');
@@ -872,14 +962,14 @@ class CWCOverlayPickerDate extends CustomHTMLElement {
 				if (dd >= 0) newDate.setDate(parseInt(dParts[dd]));
 				else if (d >= 0) newDate.setDate(parseInt(dParts[d]));
 
-				if (mm >= 0) newDate.setMonth(parseInt(dParts[mm]) -1);
-				else if (m >= 0) newDate.setMonth(parseInt(dParts[m]) -1);
+				if (mm >= 0) newDate.setMonth(parseInt(dParts[mm]) - 1);
+				else if (m >= 0) newDate.setMonth(parseInt(dParts[m]) - 1);
 
 				if (yyyy >= 0) newDate.setFullYear(parseInt(dParts[yyyy]));
 				else if (yy >= 0) newDate.setYear(parseInt(dParts[yy]));
 
 				if (isNaN(newDate.getTime())) newDate = new Date();
-			break;
+				break;
 		}
 
 		return newDate;
