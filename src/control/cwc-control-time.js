@@ -34,10 +34,28 @@ import './cwc-control-button.js';
  * @attribute {Flag} invalid The label to use for the input box
  * @attribute {Flag} validate-on-load The current selected date from the picker
  *
- * @style_variable @inherits All cwc-contorl-input variables inherited
+ * @style_variable @inherits All cwc-control-button variables inherited
+ * @style_variable @inherits All cwc-control-input variables inherited
+ * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-control-time--selectable--background
+ * @style_variable --cwc-control-time--input--padding
+ * 
+ * @style_variable --cwc-control-time--button-open--background
+ * @style_variable --cwc-control-time--button-open--color
+ * @style_variable --cwc-control-time--button-open--border
+ * @style_variable --cwc-control-time--button-open--outline
+ * @style_variable --cwc-control-time--button-open--background--hover
+ * @style_variable --cwc-control-time--button-open--background--focus
+ * @style_variable --cwc-control-time--button-open--background--active
+ * @style_variable --cwc-control-time--button-open--box-shadow--hover
+ * @style_variable --cwc-control-time--button-open--box-shadow--focus
+ * @style_variable --cwc-control-time--button-open--box-shadow--active
+ * 
+ * @style_variable --cwc-control-time--icon--margin
+ * 
  * @style_variable --cwc-control-time--selectable--border
+ * @style_variable --cwc-control-time--selectable--background
+ * @style_variable --cwc-control-time--selectable--color
  * @style_variable --cwc-control-time--selectable--border-radius
  * @style_variable --cwc-control-time--selectable--color
  * 
@@ -61,9 +79,9 @@ class CWCControlTime extends CustomHTMLElement {
 		this.position = { hour: 0, minute: 0, second: 0 };
 		this.scrolling = [];
 
-		this.hours = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-		this.minutes = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59];
-		this.seconds = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59];
+		this.hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+		this.minutes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+		this.seconds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
 
 		this.value;
 		this.date;
@@ -79,7 +97,7 @@ class CWCControlTime extends CustomHTMLElement {
 	 * @description Template function to return web component UI
 	 * @return {TemplateResult} HTML template result
 	 */
-    static template() {
+	static template() {
 		return html`
 			<style>
 				:host { display: block; width: 100%; }
@@ -107,10 +125,27 @@ class CWCControlTime extends CustomHTMLElement {
 					--cwc-control-input--padding: var(--cwc-control-time--input--padding, 4px 25px 4px 4px);
 				}
 
-				.cwc-control-time .cwc-inputs .cwc-icon-button { padding: 0px; position: absolute; top: 20px; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button  { 
+					--cwc-control-button--background: var(--cwc-control-time--button-open--background);
+					--cwc-control-button--color: var(--cwc-control-time--button-open--color);
+					--cwc-control-button--border: var(--cwc-control-time--button-open--border);
+					--cwc-control-button--outline: var(--cwc-control-time--button-open--outline);
+					
+					--cwc-control-button--background--hover: var(--cwc-control-time--button-open--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-control-time--button-open--background--focus);
+					--cwc-control-button--background--active: var(--cwc-control-time--button-open--background--active);
+
+					--cwc-control-button--box-shadow--hover: var(--cwc-control-time--button-open--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-control-time--button-open--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-control-time--button-open--box-shadow--active);
+					--cwc-control-button--padding: 2px; 
+					position: absolute; 
+					top: 20px; 
+				}
+
 				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
 				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-control-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 28px; width: 28px; }
+				.cwc-control-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-time--icon--margin, 0); }
 				.cwc-control-time .cwc-picker-controls { position: relative; }
 				.cwc-control-time .cwc-control-box { padding: 10px; margin: 0; text-align: center; }
 
@@ -243,7 +278,7 @@ class CWCControlTime extends CustomHTMLElement {
 				</div>
 
 				<cwc-overlay-modal id="picker" @hide="${this._closed.bind(this)}">
-					<div class="cwc-picker-controls">
+					<div class="cwc-picker-controls" slot="body">
 						<div class="cwc-bar-box">
 							<div class="cwc-time-bar cwc-left">
 								<span>Hours</span>
@@ -256,12 +291,12 @@ class CWCControlTime extends CustomHTMLElement {
 							</div>
 						</div>
 						<div class="cwc-picker-box">
-							<span class="cwc-arrow" hour up @click="${this._move.bind(this, 'hour', 'up')}">${GeneralIcons.arrowDropUp}</span>
-							<span class="cwc-arrow" hour down @click="${this._move.bind(this, 'hour', 'down')}">${GeneralIcons.arrowDropDown}</span>
-							<span class="cwc-arrow" minute up @click="${this._move.bind(this, 'minute', 'up')}">${GeneralIcons.arrowDropUp}</span>
-							<span class="cwc-arrow" minute down @click="${this._move.bind(this, 'minute', 'down')}">${GeneralIcons.arrowDropDown}</span>
-							<span class="cwc-arrow" second up @click="${this._move.bind(this, 'second', 'up')}">${GeneralIcons.arrowDropUp}</span>
-							<span class="cwc-arrow" second down @click="${this._move.bind(this, 'second', 'down')}">${GeneralIcons.arrowDropDown}</span>
+							<cwc-icon-material-general name="arrowDropUp" class="cwc-arrow" hour up @click="${this._move.bind(this, 'hour', 'up')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropDown" class="cwc-arrow" hour down @click="${this._move.bind(this, 'hour', 'down')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropUp" class="cwc-arrow" minute up @click="${this._move.bind(this, 'minute', 'up')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropDown" class="cwc-arrow" minute down @click="${this._move.bind(this, 'minute', 'down')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropUp" class="cwc-arrow" second up @click="${this._move.bind(this, 'second', 'up')}"></cwc-icon-material-general>
+							<cwc-icon-material-general name="arrowDropDown" class="cwc-arrow" second down @click="${this._move.bind(this, 'second', 'down')}"></cwc-icon-material-general>
 							<div class="cwc-picker-time-box-mask">
 								<div id="scrollhour" class="cwc-picker-time-box" hour @scroll="${this._scrolling.bind(this, 'hour')}">
 									<div id="hours" class="cwc-hours">
@@ -541,32 +576,32 @@ class CWCControlTime extends CustomHTMLElement {
 			case 'current':
 				// set format
 				return this._dateToTime(new Date());
-			break;
+				break;
 			case 'dinner':
 			case 'noon':
 				date.setHours(12);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'early':
 				date.setHours(6);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'morning':
 				date.setHours(8);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'afternoon':
 				date.setHours(14);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'tonight':
 			case 'night':
 			case 'evening':
@@ -574,22 +609,22 @@ class CWCControlTime extends CustomHTMLElement {
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'late':
 				date.setHours(22);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			case 'midnight':
 				date.setHours(0);
 				date.setMinutes(0);
 				date.setSeconds(0);
 				return this._dateToTime(date);
-			break;
+				break;
 			default:
 				return string;
-			break;
+				break;
 		}
 	}
 
