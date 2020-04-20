@@ -1,7 +1,7 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
 
 /**
- * @public @name CWCResourceRouter
+ * @public @name CWCLayoutRouter
  * @extends CustomHTMLElement
  * @description Custom Web Component, adds dynamic lazy routing (deactivated) via push state URL or hashtag.
  * Loads the component into the router when URL matches and permissions met if set
@@ -13,6 +13,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * 
  * @property {Object} route The route selected { component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' }
  * @property {Array[Object]} routes The routes to use as array of objects [{ component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' },...]
+ * @property {Array[Object.String]} routes[].src (optional) The full src path to the component, if you wish to dynamically import, omit if loading all routes manually
  * @property {Array[Object.String]} routes[].component The component to display when route matched such as my-component
  * @property {Array[Object.String]} routes[].path The url path to match such as some/url would match http://yoursite.com/some/url
  * @property {Array[Object.String]} routes[].prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
@@ -31,9 +32,9 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @attribute {Flag} redirect Flag to tell the system to redirect the default page to it's actual route or show it as empty in the url
  * 
  * @example HTML
- * <cwc-resource-router .route="${this.route}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-resource-router>
+ * <cwc-layout-router .route="${this.route}" .routes="${this.routes}" default="test" not-found="404" push-state redirect></cwc-layout-router>
  */
-class CWCResourceRouter extends CustomHTMLElement {
+class CWCLayoutRouter extends CustomHTMLElement {
 	/**
 	 * @public @constructor @name constructor
 	 * @description Process called function triggered when component is instantiated (but not ready or in DOM, must call super() first)
@@ -61,7 +62,7 @@ class CWCResourceRouter extends CustomHTMLElement {
 	 * this.updateTemplate(); // updates the template and topically re-renders changes
 	 */
 	static template() {
-		return html`<div id="cwc-resource-router"></div>`;
+		return html`<div id="cwc-layout-router"></div>`;
 	}
 
 	/**
@@ -186,11 +187,16 @@ class CWCResourceRouter extends CustomHTMLElement {
 		this._selected = selected;
 		this.route = selected;
 
+		// if component was not loaded in routes file, 
 		if (!customElements.get(selected.component)) {
-			// this is for when modules importing is universally excepted
-			import(selected.src).then(() => this._paintRoute(selected.component));
+			import(selected.src)
+				.then(() => this._paintRoute(selected.component))
+				.catch((error) => {
+					console.log(error);
+					throw Error('Component not loaded. Must provide a full src path to component in route to dynamically load component from src. Alternatively, load all route components manually in routes file.');
+				});
 		} else this._paintRoute(selected.component);
-		
+
 		// persist history/location
 		if (this.hasAttribute('push-state')) {
 			// should we redirect default to path
@@ -214,4 +220,4 @@ class CWCResourceRouter extends CustomHTMLElement {
 }
 
 // define the new custom element
-customElements.define('cwc-resource-router', CWCResourceRouter);
+customElements.define('cwc-layout-router', CWCLayoutRouter);
