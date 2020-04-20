@@ -22,7 +22,7 @@ import '../icon/material/cwc-icon-material-general.js';
  * @property {Object} route.prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
  * @property {Object} route.label The label to use when displaying links in the menu
  * @property {Object} route.hidden Do not show the route in the menu
- * @property {Object} route.permission The permission you need to have to view the route with cwc-resource-router
+ * @property {Object} route.permission The permission you need to have to view the route with cwc-layout-router
  * @property {Array[Object]} routes Array of routes to use for menu items
  *
  * @attribute {Flag} docked When the menu is docked (mobile)

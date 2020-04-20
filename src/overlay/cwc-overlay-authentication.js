@@ -1,6 +1,6 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
-import CWCResourceRequest from '../resource/cwc-resource-request.js';
-import CWCResourceStore from '../resource/cwc-resource-store.js';
+import CWCResourceRequest from '../resource/CWCResourceRequest.js';
+import CWCResourceStore from '../resource/CWCResourceStore.js';
 
 import '../icon/material/cwc-icon-material-general.js';
 
@@ -18,7 +18,7 @@ import '../icon/material/cwc-icon-material-general.js';
  * @method authenticate() Open the authenticate overlay and wait fo rauthentication to happen
  * @method terminate() Log the user out and terminate authentication
  * 
- * @property {Object} route The route object form cwc-resource-router
+ * @property {Object} route The route object form cwc-layout-router
  *
  * @attribute {String} reset-route The route/path to the reset endpoint on the api
  * @attribute {String} register-route The route/path to the register endpoint on the api

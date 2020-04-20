@@ -1,7 +1,7 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
 import '../../../@webcomponents/shadycss/custom-style-interface.min.js';
 
-import Request from '../resource/cwc-resource-request.js';
+import CWCResourceRequest from '../resource/CWCResourceRequest.js';
 
 /**
  * @public @name CWCStyle
@@ -44,7 +44,7 @@ class CWCStyle extends CustomHTMLElement {
 		let url = this.getAttribute('href');
 		url = (['.', '/'].indexOf(url.charAt(0)) < 0 ? '/' : '') + url;
 
-		let request = new Request('cwc-style');
+		let request = new CWCResourceRequest('cwc-style');
 		request.scheme = '';
 		request.baseUrl = '';
 		

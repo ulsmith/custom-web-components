@@ -1,5 +1,5 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
-import CWCResourceStore from '../resource/cwc-resource-store.js';
+import CWCResourceStore from '../resource/CWCResourceStore.js';
 
 import '../icon/material/cwc-icon-material-hardware.js';
 
