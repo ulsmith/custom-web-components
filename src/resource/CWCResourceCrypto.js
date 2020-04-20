@@ -248,35 +248,4 @@ export default class CWCResourceCrypto {
 		s = Utf8Encode(s);
 		return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
 	}
-
-	/**
-	 * @public @static @name passwordHash
-	 * @description Create a password hash
-	 * @param {String} text The string to hash
-	 * @param {String} hash The hash of the salt used
-	 * @return {String} A hash of the string with salt hash at front
-	 */
-	static passwordHash(text, salt) {
-		// hash the text
-		let textHash = Crypto.sha256(text);
-
-		// set where salt will appear in hash
-		let saltStart = text.length;
-
-		// if no salt given create random one //
-		if (!salt) salt = Crypto.sha256(Math.random().toString());
-
-		// add salt into text hash at pass length position and hash it //
-		let textHashStart, textHashEnd, outHash;
-		if (saltStart > 0 && saltStart < salt.length) {
-			textHashStart = textHash.substring(0, saltStart);
-			textHashEnd = textHash.substring(saltStart, salt.length);
-			outHash = Crypto.sha256(textHashEnd + salt + textHashStart);
-		}
-		else if (saltStart > (salt.length -1)) outHash = Crypto.sha256(textHash + salt);
-		else outHash = Crypto.sha256(salt + textHash);
-
-		// put salt at front of hash //
-		return salt + outHash;
-	}
 }
