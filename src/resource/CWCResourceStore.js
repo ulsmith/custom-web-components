@@ -21,10 +21,10 @@ export default class CWCResourceStore {
 	}
 
 	/**
-	 * @public @name getItem
-	 * @description Get an thing from local storage, data can be stored as objects with a key and have child objects, you can retrieve them as such too
-	 * @param {String} key The key for the item to get, can be dot notated to get all children of parent
-	 * @return {Object} The data object to get
+	 * @public @name hasItem
+	 * @description Has a thing from local storage ben set
+	 * @param {String} key The key for the item to check
+	 * @return {Boolean} Does the item exist
 	 */
 	hasItem(key) {
 		// blank key
@@ -36,9 +36,9 @@ export default class CWCResourceStore {
 
 	/**
 	 * @public @name getItem
-	 * @description Get an thing from local storage, data can be stored as objects with a key and have child objects, you can retrieve them as such too
-	 * @param {String} key The key for the item to get, can be dot notated to get all children of parent
-	 * @return {Object} The data object to get
+	 * @description Get a thing from local storage
+	 * @param {String} key The key for the item to get
+	 * @return {Mixed} The data to get
 	 */
 	getItem(key) {
 		// blank key
@@ -46,16 +46,14 @@ export default class CWCResourceStore {
 
 		// full key exists
 		if (localStorage[this.baseName + '.store.' + key] !== undefined) return JSON.parse(localStorage[this.baseName + '.store.' + key]);
-
-		return undefined;
 	}
 
 	/**
 	 * @public @name setItem
-	 * @description Set a value on local storage, you can save pretty much anything and you can save things as an object with child objects
-	 * @param {String} key The key for the item to get, can be dot notated to get all children of parent
-	 * @param {Mixed} value the value to store
-	 * @return {Boolean} Was it successfull or not in sotring
+	 * @description Set a value on local storage
+	 * @param {String} key The key for the item to set
+	 * @param {Mixed} value The value to store such as object, string, number
+	 * @return {Boolean} Was it successfull or not
 	 */
 	setItem(key, value) {
 		// blank key or value
@@ -63,14 +61,14 @@ export default class CWCResourceStore {
 
 		localStorage[this.baseName + '.store.' + key] = JSON.stringify(value);
 
-		return;
+		return true;
 	}
 
 	/**
 	 * @public @name deleteItem
-	 * @description Delete a value from local storage, you can delete single items or item and children if they have any
-	 * @param {String} key The key for the item to get, can be dot notated to get all children of parent
-	 * @return Array Web component api onbservations
+	 * @description Delete a value from local storage
+	 * @param {String} key The key for the item to get
+	 * @return Boolean If the data was removed
 	 */
 	deleteItem(key) {
 		// blank key or value

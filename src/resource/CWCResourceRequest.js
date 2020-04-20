@@ -26,13 +26,11 @@ export default class CWCResourceRequest {
 	/**
 	 * @public @name ajax
 	 * @description Perform an ajax request
-	 * 
 	 * @param {String} type The request type such as GET, POST...
 	 * @param {String} url The url to make the request to
 	 * @param {Mixed} data Any payload data to go with the request
 	 * @param {Objcet} headers Any headers to send
-	 * 
-	 * @return {Promise} a promies that is resolved when the request is fullfilled
+	 * @return {Promise} a promise that is resolved when the request is fullfilled
 	 */
 	ajax(type, url, data, headers) {
 		var scope = this;
@@ -91,15 +89,12 @@ export default class CWCResourceRequest {
 	/**
 	 * @public @name get
 	 * @description Perform a get request
-	 *
 	 * @param {String} path The path to perform the request on (adds to scheme + baseUrl)
-	 * @param {Number} id Any id to append to the path for REST style requests
-	 * 
-	 * @return {Promise} A promised resolved on completion of request
+	 * @return {Promise} A promise resolved on completion of request
 	 */
-	get(path, id) {
+	get(path) {
 		var headers = { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'Cache-Control': 'no-store', 'Pragma': 'no-cache', 'Expires': '0' };
-		return this.ajax('GET', this.scheme + this.baseUrl + (!!path ? '/' + path : '') + (typeof id !== 'undefined' && id !== null ? '/' + id : ''), null, headers);
+		return this.ajax('GET', this.scheme + this.baseUrl + (!!path ? '/' + path : ''), null, headers);
 	}
 
 	/**
@@ -127,7 +122,7 @@ export default class CWCResourceRequest {
 		var headers = { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'Cache-Control': 'no-store', 'Pragma': 'no-cache', 'Expires': '0' };
 		try { data = JSON.stringify(data); }
 		catch (e) { }
-		return this.ajax('PATCH', this.scheme + this.baseUrl + '/' + path, data, headers);
+		return this.ajax('PATCH', this.scheme + this.baseUrl + (!!path ? '/' + path : ''), data, headers);
 	}
 
 	/**
@@ -167,12 +162,11 @@ export default class CWCResourceRequest {
 	 * @public @name delete
 	 * @description Perform a delete request
 	 * @param {String} path The path to perform the request on (adds to scheme + baseUrl)
-	 * @param {Number} id Any id to append to the path for REST style requests
 	 * @return {Promise} A promised resolved on completion of request
 	 */
-	delete(path, id) {
+	delete(path) {
 		var headers = { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', 'Cache-Control': 'no-store', 'Pragma': 'no-cache', 'Expires': '0' };
-		return this.ajax('DELETE', this.scheme + this.baseUrl + '/' + path + (typeof id !== 'undefined' && id !== null ? '/' + id : ''), null, headers);
+		return this.ajax('DELETE', this.scheme + this.baseUrl + (!!path ? '/' + path : ''), null, headers);
 	}
 
 	/**
@@ -225,7 +219,7 @@ export default class CWCResourceRequest {
 	setBaseUrl(value) {
 		if (value === undefined || value.length == 0) {
 			this.baseUrl = window.location.host;
-			this.scheme = 'http://';
+			this.scheme = 'https://';
 		} else if (value.indexOf('https://') == 0) {
 			if (value.charAt(value.length - 1) === '/') value = value.substring(0, value.length - 1);
 			this.baseUrl = value.replace('https://', '');
@@ -237,7 +231,7 @@ export default class CWCResourceRequest {
 		} else {
 			if (value.charAt(value.length - 1) === '/') value = value.substring(0, value.length - 1);
 			this.baseUrl = value;
-			this.scheme = 'http://';
+			this.scheme = 'https://';
 		}
 	}
 }
