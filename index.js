@@ -4,4 +4,3 @@ import './src/icon/index.js';
 import './src/layout/index.js';
 import './src/overlay/index.js';
 import './src/resource/index.js';
-import './src/style/index.js';
