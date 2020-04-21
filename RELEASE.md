@@ -1,6 +1,10 @@
 Custom Web Components
 =======================
 
+# 1.4.0
+
+Fundamental change to move some components around, fix a lot of the bugs and also change resources to class files
+
 # 1.2.0
 
 CHanges due to upissue with CWC
