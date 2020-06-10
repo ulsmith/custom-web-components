@@ -3,7 +3,7 @@ import '../icon/material/cwc-icon-material-general.js';
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * @public @name CWCControlCheckbox
+ * @public @name CWCCaptureCheckbox
  * @extends CustomHTMLElement
  * @description Custom Web Component, checkbox for forms
  * @author Paul Smith <p@ulsmith.net>
@@ -19,46 +19,49 @@ import '../overlay/cwc-overlay-help.js';
  * @attribute {String} label The checkbox label
  * @attribute {String} checked-message The message to show when checked
  * @attribute {String} unchecked-message The message to show when not checked
- * @attribute {String} invalid-message The message to show when control is invalid
+ * @attribute {String} invalid-message The message to show when capture is invalid
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} value The initial value, if set
  * @attribute {String} context The contaxt as primary, secondary, success, warning, danger
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid (uses danger context styling if invalid styling not set)
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid (uses danger context styling if invalid styling not set)
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-checkbox--border
- * @style_variable --cwc-control-checkbox--border-radius
- * @style_variable --cwc-control-checkbox--color
- * @style_variable --cwc-control-checkbox--float
- * @style_variable --cwc-control-checkbox--fill
- * @style_variable --cwc-control-checkbox--font-size
- * @style_variable --cwc-control-checkbox--font-weight
- * @style_variable --cwc-control-checkbox--font-style
- * @style_variable --cwc-control-checkbox--font-family
- * @style_variable --cwc-control-checkbox--text-align
+ * @style_variable --cwc-capture-checkbox--border
+ * @style_variable --cwc-capture-checkbox--border-radius
+ * @style_variable --cwc-capture-checkbox--color
+ * @style_variable --cwc-capture-checkbox--float
+ * @style_variable --cwc-capture-checkbox--fill
+ * @style_variable --cwc-capture-checkbox--font-size
+ * @style_variable --cwc-capture-checkbox--font-weight
+ * @style_variable --cwc-capture-checkbox--font-style
+ * @style_variable --cwc-capture-checkbox--font-family
+ * @style_variable --cwc-capture-checkbox--padding
+ * @style_variable --cwc-capture-checkbox--text-align
  *
- * @style_variable --cwc-control-checkbox--color--hover
- * @style_variable --cwc-control-checkbox--fill--hover
+ * @style_variable --cwc-capture-checkbox--color--hover
+ * @style_variable --cwc-capture-checkbox--fill--hover
  *
- * @style_variable --cwc-control-checkbox--label--text-align
- * @style_variable --cwc-control-checkbox--label--color
- * @style_variable --cwc-control-checkbox--label--font-size
- * @style_variable --cwc-control-checkbox--label--font-weight
- * @style_variable --cwc-control-checkbox--label--font-style
- * @style_variable --cwc-control-checkbox--label--font-family
+ * @style_variable --cwc-capture-checkbox--label--text-align
+ * @style_variable --cwc-capture-checkbox--label--color
+ * @style_variable --cwc-capture-checkbox--label--font-size
+ * @style_variable --cwc-capture-checkbox--label--font-weight
+ * @style_variable --cwc-capture-checkbox--label--font-style
+ * @style_variable --cwc-capture-checkbox--label--font-family
+ * 
+ * @style_variable --cwc-capture-checkbox--icon--padding
  *
- * @style_variable --cwc-control-checkbox--invalid--fill
- * @style_variable --cwc-control-checkbox--invalid--border
- * @style_variable --cwc-control-checkbox--invalid--color
- * @style_variable --cwc-control-checkbox--invalid--fill--hover
- * @style_variable --cwc-control-checkbox--invalid--color--hover
+ * @style_variable --cwc-capture-checkbox--invalid--fill
+ * @style_variable --cwc-capture-checkbox--invalid--border
+ * @style_variable --cwc-capture-checkbox--invalid--color
+ * @style_variable --cwc-capture-checkbox--invalid--fill--hover
+ * @style_variable --cwc-capture-checkbox--invalid--color--hover
  *
- * @style_variable --cwc-control-checkbox--disabled--opacity
+ * @style_variable --cwc-capture-checkbox--disabled--opacity
  * 
  * @example
- * <cwc-control-checkbox 
+ * <cwc-capture-checkbox 
  * 		label="A Checkbox" 
  * 		checked-message="Checked" 
  * 		unchecked-message="Not Checked" 
@@ -69,9 +72,9 @@ import '../overlay/cwc-overlay-help.js';
  * 		invalid 
  * 		required 
  * 		validate-on-load
- * ></cwc-control-checkbox>
+ * ></cwc-capture-checkbox>
  */
-class CWCControlCheckbox extends CustomHTMLElement {
+class CWCCaptureCheckbox extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -96,7 +99,7 @@ class CWCControlCheckbox extends CustomHTMLElement {
 					display: inline-block;
 					width: 100%;
 					height: inherit;
-					fill: var(--cwc-control-checkbox--fill, black);
+					fill: var(--cwc-capture-checkbox--fill, black);
 					box-sizing: border-box;
 				}
 
@@ -107,14 +110,14 @@ class CWCControlCheckbox extends CustomHTMLElement {
 					width: inherit;
 					height: inherit;
 					display: block;
-					padding: 10px;
+					padding: var(--cwc-capture-checkbox--padding, 0);
 					box-sizing: border-box;
-					text-align: var(--cwc-control-checkbox--text-align, left);
+					text-align: var(--cwc-capture-checkbox--text-align, left);
 				}
 
 				.cwc-checkbox-container[boxed] { 
-					border-radius: var(--cwc-control-checkbox--border-radius, 0);
-					border: var(--cwc-control-checkbox--border, 1px solid black);
+					border-radius: var(--cwc-capture-checkbox--border-radius, 0);
+					border: var(--cwc-capture-checkbox--border, 1px solid black);
 				}
 
 				.cwc-checkbox-container [invisible] { opacity: 0; }
@@ -123,13 +126,12 @@ class CWCControlCheckbox extends CustomHTMLElement {
 				.cwc-checkbox-container label {
 					display: block;
 					height: 18px;
-					padding-left: 3px;
-					text-align: var(--cwc-control-checkbox--label--text-align, left);
-					color: var(--cwc-control-checkbox--label--color, black);
-					font-size: var(--cwc-control-checkbox--label--font-size, 14px);
-					font-weight: var(--cwc-control-checkbox--label--font-weight, normal);
-					font-style: var(--cwc-control-checkbox--label--font-style, normal);
-					font-family: var(--cwc-control-checkbox--label--font-family, inherit);
+					text-align: var(--cwc-capture-checkbox--label--text-align, left);
+					color: var(--cwc-capture-checkbox--label--color, black);
+					font-size: var(--cwc-capture-checkbox--label--font-size, 14px);
+					font-weight: var(--cwc-capture-checkbox--label--font-weight, normal);
+					font-style: var(--cwc-capture-checkbox--label--font-style, normal);
+					font-family: var(--cwc-capture-checkbox--label--font-family, inherit);
 				}
 
 				.cwc-checkbox-container .cwc-checkbox-holder {
@@ -144,26 +146,26 @@ class CWCControlCheckbox extends CustomHTMLElement {
 				}
 
 				.cwc-checkbox-container .cwc-checkbox-holder:hover {
-					color: var(--cwc-control-checkbox--color--hover, black);
-					fill: var(--cwc-control-checkbox--fill--hover, black);
+					color: var(--cwc-capture-checkbox--color--hover, black);
+					fill: var(--cwc-capture-checkbox--fill--hover, black);
 				}
 
 				.cwc-checkbox-container .cwc-checkbox-holder .cwc-checkbox { 
-					float: var(--cwc-control-checkbox--float, left);
-					display: inline-block;
+					float: var(--cwc-capture-checkbox--float, left);
+					display: block;
 					fill: inherit;
-					padding: 4px;
+					padding: var(--cwc-capture-checkbox--icon--padding, 2px);
 				}
 
 				.cwc-checkbox-container .cwc-checkbox-holder .cwc-check-message {
 					color: inherit;
 					line-height: 30px;
 					padding: 5px;
-					color: var(--cwc-control-checkbox--color, black);
-					font-size: var(--cwc-control-checkbox--font-size, 14px);
-					font-weight: var(--cwc-control-checkbox--font-weight, normal);
-					font-style: var(--cwc-control-checkbox--font-style, normal);
-					font-family: var(--cwc-control-checkbox--font-family, inherit);
+					color: var(--cwc-capture-checkbox--color, black);
+					font-size: var(--cwc-capture-checkbox--font-size, 14px);
+					font-weight: var(--cwc-capture-checkbox--font-weight, normal);
+					font-style: var(--cwc-capture-checkbox--font-style, normal);
+					font-family: var(--cwc-capture-checkbox--font-family, inherit);
 				}
 
 				.cwc-checkbox-container[boxed] .cwc-sub-content { 
@@ -171,10 +173,10 @@ class CWCControlCheckbox extends CustomHTMLElement {
 					height: fit-content;
 					box-sizing: border-box;
 					padding: 5px;
-					color: var(--cwc-control-checkbox--color, black);
-					font-size: var(--cwc-control-checkbox--font-size, 14px);
-					font-family: var(--cwc-control-checkbox--font-family, inherit);
-					font-style: var(--cwc-control-checkbox--font-style, italic);
+					color: var(--cwc-capture-checkbox--color, black);
+					font-size: var(--cwc-capture-checkbox--font-size, 14px);
+					font-family: var(--cwc-capture-checkbox--font-family, inherit);
+					font-style: var(--cwc-capture-checkbox--font-style, italic);
 				}
 				
 				.cwc-checkbox-container .cwc-error {
@@ -196,20 +198,22 @@ class CWCControlCheckbox extends CustomHTMLElement {
 					right: 2px;
 				}
 
-				:host .cwc-checkbox-container[invalid] { fill: var(--cwc-control-checkbox--invalid--fill, red); }
-				:host .cwc-checkbox-container[invalid][boxed] { border: var(--cwc-control-checkbox--invalid--border, 1px solid red); }
-				:host .cwc-checkbox-container[invalid] .cwc-sub-content { color: var(--cwc-control-checkbox--invalid--color, red); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color, red); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover { fill: var(--cwc-control-checkbox--invalid--fill--hover, darkred); }
-				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-control-checkbox--invalid--color--hover, darkred); }
-				:host .cwc-checkbox-container[invalid] .cwc-error { color: var(--cwc-control-checkbox--invalid--color, red); }
+				:host .cwc-checkbox-container[invalid] { fill: var(--cwc-capture-checkbox--invalid--fill, red); }
+				:host .cwc-checkbox-container[invalid][boxed] { border: var(--cwc-capture-checkbox--invalid--border, 1px solid red); }
+				:host .cwc-checkbox-container[invalid] .cwc-sub-content { color: var(--cwc-capture-checkbox--invalid--color, red); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder .cwc-check-message { color: var(--cwc-capture-checkbox--invalid--color, red); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover { fill: var(--cwc-capture-checkbox--invalid--fill--hover, darkred); }
+				:host .cwc-checkbox-container[invalid] .cwc-checkbox-holder:hover .cwc-check-message { color: var(--cwc-capture-checkbox--invalid--color--hover, darkred); }
+				:host .cwc-checkbox-container[invalid] .cwc-error { color: var(--cwc-capture-checkbox--invalid--color, red); }
 
-				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-checkbox--disabled--opacity, 0.6); }
+				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-capture-checkbox--disabled--opacity, 0.6); }
 			</style>
 
 			<div class="cwc-checkbox-container" ?invalid="${this.hasAttribute('invalid')}" ?boxed="${this.hasAttribute('detail')}">
 				<div class="cwc-sub-content" ?hidden="${!this.hasAttribute('detail')}">${this.getAttribute('detail')}</div>
-				<label ?hidden="${!this.hasAttribute('label') || (!this.hasAttribute('checked-message') && !this.hasAttribute('unchecked-message'))}">${this.getAttribute('label')}</label>
+				<label ?hidden="${!this.hasAttribute('label') || (!this.hasAttribute('checked-message') && !this.hasAttribute('unchecked-message'))}">
+					${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+				</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
 					<cwc-overlay-help>${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
@@ -300,4 +304,4 @@ class CWCControlCheckbox extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-checkbox', CWCControlCheckbox);
+customElements.define('cwc-capture-checkbox', CWCCaptureCheckbox);

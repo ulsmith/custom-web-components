@@ -2,7 +2,7 @@ import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-componen
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * @public @name CWCControlInput
+ * @public @name CWCCaptureInput
  * @extends CustomHTMLElement
  * @description Custom Web Component, input box for forms
  * @author Paul Smith <p@ulsmith.net>
@@ -17,41 +17,42 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @property {string} value The initial value (overrides attribute value)
  *
- * @attribute {String} label The control label
- * @attribute {String} name The control name
- * @attribute {String} type The contorl type
- * @attribute {String} invalid-message The message to show when control is invalid
+ * @attribute {String} label The capture label
+ * @attribute {String} name The capture name
+ * @attribute {String} type The capture type
+ * @attribute {String} placeholder The capture type
+ * @attribute {String} invalid-message The message to show when capture is invalid
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} regex The regex value to validate against
  * @attribute {String} value The initial value, if set
  * @attribute {String} justify The justification of content as left, right, center
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-input--text-align
- * @style_variable --cwc-control-input--padding
- * @style_variable --cwc-control-input--border-radius
- * @style_variable --cwc-control-input--border
- * @style_variable --cwc-control-input--color
- * @style_variable --cwc-control-input--background
- * @style_variable --cwc-control-input--font-size
- * @style_variable --cwc-control-input--font-weight
- * @style_variable --cwc-control-input--font-style
- * @style_variable --cwc-control-input--font-family
+ * @style_variable --cwc-capture-input--text-align
+ * @style_variable --cwc-capture-input--padding
+ * @style_variable --cwc-capture-input--border-radius
+ * @style_variable --cwc-capture-input--border
+ * @style_variable --cwc-capture-input--color
+ * @style_variable --cwc-capture-input--background
+ * @style_variable --cwc-capture-input--font-size
+ * @style_variable --cwc-capture-input--font-weight
+ * @style_variable --cwc-capture-input--font-style
+ * @style_variable --cwc-capture-input--font-family
  *
- * @style_variable --cwc-control-input--label--text-align
- * @style_variable --cwc-control-input--label--color
- * @style_variable --cwc-control-input--label--font-weight
+ * @style_variable --cwc-capture-input--label--text-align
+ * @style_variable --cwc-capture-input--label--color
+ * @style_variable --cwc-capture-input--label--font-weight
  *
- * @style_variable --cwc-control-input--invalid--border
- * @style_variable --cwc-control-input--invalid--color
+ * @style_variable --cwc-capture-input--invalid--border
+ * @style_variable --cwc-capture-input--invalid--color
  *
- * @style_variable --cwc-control-input--disabled--opacity
+ * @style_variable --cwc-capture-input--disabled--opacity
  *
  * @example
- * <cwc-control-input
+ * <cwc-capture-input
  * 		label="A input"
  * 		name="something"
  * 		type="text"
@@ -62,9 +63,9 @@ import '../overlay/cwc-overlay-help.js';
  * 		invalid
  * 		required
  * 		validate-on-load
- * ></cwc-control-input>
+ * ></cwc-capture-input>
  */
-class CWCControlInput extends CustomHTMLElement {
+class CWCCaptureInput extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -103,7 +104,7 @@ class CWCControlInput extends CustomHTMLElement {
 					padding: 20px 0 12px 0;
 					box-sizing: border-box;
 					position: relative;
-					text-align: var(--cwc-control-input--text-align, left);
+					text-align: var(--cwc-capture-input--text-align, left);
 				}
 
 				.cwc-input-container label {
@@ -115,9 +116,9 @@ class CWCControlInput extends CustomHTMLElement {
 					height: 20px;
 					font-size: 14px;
 					overflow: hidden;
-					text-align: var(--cwc-control-input--label--text-align, left);
-					color: var(--cwc-control-input--label--color, black);
-					font-weight: var(--cwc-control-input--label--font-weight, normal);
+					text-align: var(--cwc-capture-input--label--text-align, left);
+					color: var(--cwc-capture-input--label--color, black);
+					font-weight: var(--cwc-capture-input--label--font-weight, normal);
 				}
 
 				.cwc-input-container input {
@@ -125,16 +126,16 @@ class CWCControlInput extends CustomHTMLElement {
 					width: 100%;
 					background-color: transparent;
 					display: block;
-					padding: var(--cwc-control-input--padding, 4px);
-					border-radius: var(--cwc-control-input--border-radius, 0);
-					border: var(--cwc-control-input--border, 1px solid black);
-					color: var(--cwc-control-input--color, black);
-					background: var(--cwc-control-input--background, white);
-					height: var(--cwc-control-input--height, 30px);
-					font-size: var(--cwc-control-input--font-size, 13px);
-					font-weight: var(--cwc-control-input--font-weight, normal);
-					font-style: var(--cwc-control-input--font-style, normal);
-					font-family: var(--cwc-control-input--font-family, inherit);
+					padding: var(--cwc-capture-input--padding, 4px);
+					border-radius: var(--cwc-capture-input--border-radius, 0);
+					border: var(--cwc-capture-input--border, 1px solid black);
+					color: var(--cwc-capture-input--color, black);
+					background: var(--cwc-capture-input--background, white);
+					height: var(--cwc-capture-input--height, 30px);
+					font-size: var(--cwc-capture-input--font-size, 13px);
+					font-weight: var(--cwc-capture-input--font-weight, normal);
+					font-style: var(--cwc-capture-input--font-style, normal);
+					font-family: var(--cwc-capture-input--font-family, inherit);
 					min-height: 30px;
 				}
 
@@ -147,15 +148,15 @@ class CWCControlInput extends CustomHTMLElement {
 					display: block;
 					height: 100%;
 					min-height: 30px;
-					padding: var(--cwc-control-input--padding, 4px);
-					border-radius: var(--cwc-control-input--border-radius, 0);
-					border: var(--cwc-control-input--border, 1px solid black);
-					color: var(--cwc-control-input--color, black);
-					background: var(--cwc-control-input--background, white);
-					font-size: var(--cwc-control-input--font-size, 13px);
-					font-weight: var(--cwc-control-input--font-weight, normal);
-					font-style: var(--cwc-control-input--font-style, normal);
-					font-family: var(--cwc-control-input--font-family, inherit);
+					padding: var(--cwc-capture-input--padding, 4px);
+					border-radius: var(--cwc-capture-input--border-radius, 0);
+					border: var(--cwc-capture-input--border, 1px solid black);
+					color: var(--cwc-capture-input--color, black);
+					background: var(--cwc-capture-input--background, white);
+					font-size: var(--cwc-capture-input--font-size, 13px);
+					font-weight: var(--cwc-capture-input--font-weight, normal);
+					font-style: var(--cwc-capture-input--font-style, normal);
+					font-family: var(--cwc-capture-input--font-family, inherit);
 				}
 
 				.cwc-input-container .cwc-error {
@@ -180,18 +181,20 @@ class CWCControlInput extends CustomHTMLElement {
 
 				.cwc-input-container .cwc-help .help-tip { vertical-align: top; }
 
-				:host .cwc-input-container[invalid] input { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
-				:host .cwc-input-container[invalid] textarea { border: var(--cwc-control-input--invalid--border, 1px solid red); color: var(--cwc-control-input--invalid--color, var(--cwc-control-input--danger--color, red)); }
-				:host .cwc-input-container .cwc-error { color: var(--cwc-control-input--invalid--color, red); }
+				:host .cwc-input-container[invalid] input { border: var(--cwc-capture-input--invalid--border, 1px solid red); color: var(--cwc-capture-input--invalid--color, var(--cwc-capture-input--danger--color, red)); }
+				:host .cwc-input-container[invalid] textarea { border: var(--cwc-capture-input--invalid--border, 1px solid red); color: var(--cwc-capture-input--invalid--color, var(--cwc-capture-input--danger--color, red)); }
+				:host .cwc-input-container .cwc-error { color: var(--cwc-capture-input--invalid--color, red); }
 
 				:host([justify="center"]) .cwc-input-container { text-align: center; }
 				:host([justify="right"]) .cwc-input-container { text-align: right; }
 
-				:host([disabled]) {	pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-input--disabled--opacity, 0.6); }
+				:host([disabled]) {	pointer-events: none; cursor: not-allowed; opacity: var(--cwc-capture-input--disabled--opacity, 0.6); }
 			</style>
 
 			<div class="cwc-input-container" ?invalid="${this.hasAttribute('invalid')}">
-				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
+				<label ?hidden="${!this.hasAttribute('label')}">
+					${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+				</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
 					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
@@ -246,7 +249,7 @@ class CWCControlInput extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['label', 'name', 'type', 'invalid-message', 'required', 'regex', 'disabled', 'invalid'] }
+	static get observedAttributes() { return ['label', 'name', 'type', 'invalid-message', 'required', 'regex', 'disabled', 'invalid', 'required-marker'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -319,4 +322,4 @@ class CWCControlInput extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-input', CWCControlInput);
+customElements.define('cwc-capture-input', CWCCaptureInput);

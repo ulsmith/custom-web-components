@@ -2,7 +2,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * @public @name CWCControlSwitch
+ * @public @name CWCCaptureSwitch
  * @extends CustomHTMLElement
  * @description Custom Web Component, switch for forms and configs
  * @author Paul Smith <p@ulsmith.net>
@@ -15,33 +15,33 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @property {string} value The initial value (overrides attribute value)
  *
- * @attribute {String} label The control label
+ * @attribute {String} label The capture label
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} value The initial value, if set
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-switch--background
- * @style_variable --cwc-control-switch--border
- * @style_variable --cwc-control-switch--border-radius
- * @style_variable --cwc-control-switch--color
- * @style_variable --cwc-control-switch--text-align
+ * @style_variable --cwc-capture-switch--background
+ * @style_variable --cwc-capture-switch--border
+ * @style_variable --cwc-capture-switch--border-radius
+ * @style_variable --cwc-capture-switch--color
+ * @style_variable --cwc-capture-switch--text-align
  *
- * @style_variable --cwc-control-switch--background--hover
+ * @style_variable --cwc-capture-switch--background--hover
  *
- * @style_variable --cwc-control-switch--label--color
- * @style_variable --cwc-control-switch--label--font-weight
- * @style_variable --cwc-control-switch--label--text-align
+ * @style_variable --cwc-capture-switch--label--color
+ * @style_variable --cwc-capture-switch--label--font-weight
+ * @style_variable --cwc-capture-switch--label--text-align
  *
- * @style_variable --cwc-control-switch--disabled--opacity
+ * @style_variable --cwc-capture-switch--disabled--opacity
  *
  * @example
- * <cwc-control-switch label="A input" help="Blah blah blah" disabled></cwc-control-switch>
+ * <cwc-capture-switch label="A input" help="Blah blah blah" disabled></cwc-capture-switch>
  */
 
-class CWCControlSwitch extends CustomHTMLElement {
+class CWCCaptureSwitch extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -68,39 +68,41 @@ class CWCControlSwitch extends CustomHTMLElement {
 					box-sizing: border-box;
 				}
 
-				.cwc-control-switch {
+				[hidden] { display: none !important; }
+
+				.cwc-capture-switch {
 					position: relative;
 					padding-right: 25px;
 					width: inherit;
 					height: inherit;
 					display: block;
-					text-align: var(--cwc-control-switch--text-align, left);
+					text-align: var(--cwc-capture-switch--text-align, left);
 				}
 
-				.cwc-control-switch [invisible] { opacity: 0; }
+				.cwc-capture-switch [invisible] { opacity: 0; }
 
-				.cwc-control-switch label {
+				.cwc-capture-switch label {
 					display: block;
 					height: 20px;
 					font-size: 14px;
 					flex: 1 1;
-					text-align: var(--cwc-control-switch--label--text-align, left);
-					color: var(--cwc-control-switch--label--color, black);
-					font-weight: var(--cwc-control-switch--label--font-weight, normal);
+					text-align: var(--cwc-capture-switch--label--text-align, left);
+					color: var(--cwc-capture-switch--label--color, black);
+					font-weight: var(--cwc-capture-switch--label--font-weight, normal);
 				}
 
-				.cwc-control-switch .cwc-switch-box {
+				.cwc-capture-switch .cwc-switch-box {
 					margin: 1px;
 					width: 80px;
 					height: 30px;
 					display: inline-block;
 					position: relative;
 					box-sizing: border-box;
-					border-radius: var(--cwc-control-switch--border-radius, 0px);
-					border: var(--cwc-control-switch--border, 1px solid black);
+					border-radius: var(--cwc-capture-switch--border-radius, 0px);
+					border: var(--cwc-capture-switch--border, 1px solid black);
 				}
 
-				.cwc-control-switch .cwc-switch-box .cwc-switch-blob {
+				.cwc-capture-switch .cwc-switch-box .cwc-switch-blob {
 					display: block;
 					height: 26px;
 				    width: 36px;
@@ -112,31 +114,33 @@ class CWCControlSwitch extends CustomHTMLElement {
 					line-height: 26px;
 					transition: left 0.1s ease-in-out;
 					cursor: default;
-					color: var(--cwc-control-switch--color, white);
-					background: var(--cwc-control-switch--background, black);
-					border-radius: var(--cwc-control-switch--border-radius, 0px);
+					color: var(--cwc-capture-switch--color, white);
+					background: var(--cwc-capture-switch--background, black);
+					border-radius: var(--cwc-capture-switch--border-radius, 0px);
 				}
 
-				.cwc-control-switch .cwc-switch-box .cwc-switch-blob[on] { left: 41px; }
+				.cwc-capture-switch .cwc-switch-box .cwc-switch-blob[on] { left: 41px; }
 
-				.cwc-control-switch .cwc-help {
+				.cwc-capture-switch .cwc-help {
 					position: absolute;
 					top: 0px;
 					right: 0px;
 				}
 
-				.cwc-control-switch .cwc-help .help-tip { vertical-align: top; }
+				.cwc-capture-switch .cwc-help .help-tip { vertical-align: top; }
 
-				:host(:hover) .cwc-control-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-control-switch--background--hover, black); }
+				:host(:hover) .cwc-capture-switch .cwc-switch-box .cwc-switch-blob { background: var(--cwc-capture-switch--background--hover, black); }
 
-				:host([justify="center"]) .cwc-control-switch { text-align: center; }
-				:host([justify="right"]) .cwc-control-switch { text-align: right; }
+				:host([justify="center"]) .cwc-capture-switch { text-align: center; }
+				:host([justify="right"]) .cwc-capture-switch { text-align: right; }
 
-				:host([disabled]) .cwc-control-switch .cwc-switch-box { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-switch--disabled--opacity, 0.6); }
+				:host([disabled]) .cwc-capture-switch .cwc-switch-box { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-capture-switch--disabled--opacity, 0.6); }
 			</style>
 
-			<div class="cwc-control-switch">
-				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
+			<div class="cwc-capture-switch">
+				<label ?hidden="${!this.hasAttribute('label')}">
+					${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+				</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
 					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
@@ -168,7 +172,7 @@ class CWCControlSwitch extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['disabled', 'label', 'help'] }
+	static get observedAttributes() { return ['disabled', 'label', 'help', 'required', 'required-marker'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -225,4 +229,4 @@ class CWCControlSwitch extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-switch', CWCControlSwitch);
+customElements.define('cwc-capture-switch', CWCCaptureSwitch);

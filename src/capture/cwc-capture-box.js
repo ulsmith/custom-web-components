@@ -1,7 +1,7 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
 
 /**
- * @public @name CWCControlBox
+ * @public @name CWCCaptureBox
  * @extends CustomHTMLElement
  * @description Custom Web Component, box select
  * @author Paul Smith <p@ulsmith.net>
@@ -13,39 +13,39 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @method render() Re-render the options
  * @method validate(Array value) The value saved, an array of selections
  *
- * @attribute {String} label The control label
+ * @attribute {String} label The capture label
  * @attribute {String} value The initial value, if set
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-box--border
- * @style_variable --cwc-control-box--border-radius
+ * @style_variable --cwc-capture-box--border
+ * @style_variable --cwc-capture-box--border-radius
  *
- * @style_variable --cwc-control-box--label--color
- * @style_variable --cwc-control-box--label--font-weight
- * @style_variable --cwc-control-box--label--text-align
+ * @style_variable --cwc-capture-box--label--color
+ * @style_variable --cwc-capture-box--label--font-weight
+ * @style_variable --cwc-capture-box--label--text-align
  *
- * @style_variable --cwc-control-box--option--background
- * @style_variable --cwc-control-box--option--color
- * @style_variable --cwc-control-box--option--font-size
- * @style_variable --cwc-control-box--option--font-family
- * @style_variable --cwc-control-box--option--cursor
- * @style_variable --cwc-control-box--option--border-radius
+ * @style_variable --cwc-capture-box--option--background
+ * @style_variable --cwc-capture-box--option--color
+ * @style_variable --cwc-capture-box--option--font-size
+ * @style_variable --cwc-capture-box--option--font-family
+ * @style_variable --cwc-capture-box--option--cursor
+ * @style_variable --cwc-capture-box--option--border-radius
  *
- * @style_variable --cwc-control-box--option--background--selected
- * @style_variable --cwc-control-box--option--color--selected
+ * @style_variable --cwc-capture-box--option--background--selected
+ * @style_variable --cwc-capture-box--option--color--selected
  *
- * @style_variable --cwc-control-box--disabled--opacity
+ * @style_variable --cwc-capture-box--disabled--opacity
  *
  * @example
- * <cwc-control-box label="Hello" value="1" disabled invalid @change="${this.test.bind(this)}">
+ * <cwc-capture-box label="Hello" value="1" disabled invalid @change="${this.test.bind(this)}">
  * 		<option value="1">One</option>
  * 		<option value="2">Two</option>
- * </cwc-control-box>
+ * </cwc-capture-box>
  */
-class CWCControlBox extends CustomHTMLElement {
+class CWCCaptureBox extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -74,6 +74,8 @@ class CWCControlBox extends CustomHTMLElement {
 					box-sizing: border-box;
 				}
 
+				[hidden] { display: none !important; }
+
 				.container {
 					width: 100%;
 					height: inherit;
@@ -88,9 +90,9 @@ class CWCControlBox extends CustomHTMLElement {
 				.container label {
 					display: block;
 					min-height: 20px;
-					color: var(--cwc-control-box--label--color, black);
-					font-weight: var(--cwc-control-box--label--font-weight, normal);
-					text-align: var(--cwc-control-box--label--text-align, left);
+					color: var(--cwc-capture-box--label--color, black);
+					font-weight: var(--cwc-capture-box--label--font-weight, normal);
+					text-align: var(--cwc-capture-box--label--text-align, left);
 					font-size: 14px;
 					overflow: hidden;
 				}
@@ -99,8 +101,8 @@ class CWCControlBox extends CustomHTMLElement {
 					display: flex;
 					flex-flow: row;
 					width: 100%;
-					border: var(--cwc-control-box--border, 1px solid black);
-					border-radius: var(--cwc-control-box--border-radius, 0);
+					border: var(--cwc-capture-box--border, 1px solid black);
+					border-radius: var(--cwc-capture-box--border-radius, 0);
 					padding: 1px;
 					box-sizing: border-box;
 				}
@@ -108,33 +110,35 @@ class CWCControlBox extends CustomHTMLElement {
  				.container .cwc-box-buttons .cwc-option {
  					flex: 1 1;
  					display: block;
- 					background: var(--cwc-control-box--option--background, white);
- 					color: var(--cwc-control-box--option--color, black);
- 					font-size: var(--cwc-control-box--option--font-size, 13px);
- 					font-family: var(--cwc-control-box--option--font-family, inherit);
-					cursor: var(--cwc-control-box--option--cursor, default);
+ 					background: var(--cwc-capture-box--option--background, white);
+ 					color: var(--cwc-capture-box--option--color, black);
+ 					font-size: var(--cwc-capture-box--option--font-size, 13px);
+ 					font-family: var(--cwc-capture-box--option--font-family, inherit);
+					cursor: var(--cwc-capture-box--option--cursor, default);
  					height: 28px;
  					text-align: center;
  					line-height: 30px;
  					padding: 0 5px;
  					white-space: nowrap;
-					border-radius: var(--cwc-control-box--option--border-radius, 0);
+					border-radius: var(--cwc-capture-box--option--border-radius, 0);
 					outline: none;
 				}
 
 				:host([disabled]) .container .cwc-box-buttons .cwc-option {	pointer-events: none; cursor: not-allowed; }
-				:host([disabled]) {	opacity: var(--cwc-control-box--disabled--opacity, 0.6); }
+				:host([disabled]) {	opacity: var(--cwc-capture-box--disabled--opacity, 0.6); }
 
  				.container .cwc-box-buttons .cwc-option[selected] {
- 					background: var(--cwc-control-box--option--background--selected, black);
- 					color: var(--cwc-control-box--option--color--selected, white);
+ 					background: var(--cwc-capture-box--option--background--selected, black);
+ 					color: var(--cwc-capture-box--option--color--selected, white);
 					cursor: default;
  				}
 
 			</style>
 
 			<div class="container" ?invalid="${this.invalid}">
-				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
+				<label ?hidden="${!this.hasAttribute('label')}">
+					${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+				</label>
 				<div id="box-buttons" class="cwc-box-buttons" @change="${this._change.bind(this)}">
 					${this.options.length > 0 ? this.options.map((option) => html`
 						<span class="cwc-option" tabindex="0" value="${option.value}" ?selected="${option.selected}" @click="${this._change.bind(this)}">${option.label}</span>
@@ -165,7 +169,7 @@ class CWCControlBox extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid', 'required-asterisk'] }
+	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid', 'required-marker'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -256,4 +260,4 @@ class CWCControlBox extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-box', CWCControlBox);
+customElements.define('cwc-capture-box', CWCCaptureBox);

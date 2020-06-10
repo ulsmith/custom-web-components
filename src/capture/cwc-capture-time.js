@@ -1,11 +1,11 @@
 import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
 import '../icon/material/cwc-icon-material-general.js';
 import '../overlay/cwc-overlay-modal.js';
-import './cwc-control-input.js';
-import './cwc-control-button.js';
+import './cwc-capture-input.js';
+import '../control/cwc-control-button.js';
 
 /**
- * @public @name CWCControlTime
+ * @public @name CWCCaptureTime
  * @extends CustomHTMLElement
  * @description Custom Web Component, time input with overlay picker letting you pick a time
  * @author Paul Smith <p@ulsmith.net>
@@ -27,40 +27,40 @@ import './cwc-control-button.js';
  * @attribute {String} label The label to use for the input box
  * @attribute {String} placeholder The placeholder text in the input box
  * @attribute {String} help The help tip text
- * @attribute {Flag} required Is the control required
- * @attribute {Flag} disabled Is the control disabled
- * @attribute {Flag} invalid Is the control invalid
- * @attribute {Flag} validate-on-load Validate the control on load
+ * @attribute {Flag} required Is the capture required
+ * @attribute {Flag} disabled Is the capture disabled
+ * @attribute {Flag} invalid Is the capture invalid
+ * @attribute {Flag} validate-on-load Validate the capture on load
  *
  * @style_variable @inherits All cwc-control-button variables inherited
- * @style_variable @inherits All cwc-control-input variables inherited
+ * @style_variable @inherits All cwc-capture-input variables inherited
  * @style_variable @inherits All cwc-overlay-modal variables inherited
  * 
- * @style_variable --cwc-control-time--input--padding
+ * @style_variable --cwc-capture-time--input--padding
  * 
- * @style_variable --cwc-control-time--button-open--background
- * @style_variable --cwc-control-time--button-open--color
- * @style_variable --cwc-control-time--button-open--border
- * @style_variable --cwc-control-time--button-open--outline
- * @style_variable --cwc-control-time--button-open--background--hover
- * @style_variable --cwc-control-time--button-open--background--focus
- * @style_variable --cwc-control-time--button-open--background--active
- * @style_variable --cwc-control-time--button-open--box-shadow--hover
- * @style_variable --cwc-control-time--button-open--box-shadow--focus
- * @style_variable --cwc-control-time--button-open--box-shadow--active
+ * @style_variable --cwc-capture-time--button-open--background
+ * @style_variable --cwc-capture-time--button-open--color
+ * @style_variable --cwc-capture-time--button-open--border
+ * @style_variable --cwc-capture-time--button-open--outline
+ * @style_variable --cwc-capture-time--button-open--background--hover
+ * @style_variable --cwc-capture-time--button-open--background--focus
+ * @style_variable --cwc-capture-time--button-open--background--active
+ * @style_variable --cwc-capture-time--button-open--box-shadow--hover
+ * @style_variable --cwc-capture-time--button-open--box-shadow--focus
+ * @style_variable --cwc-capture-time--button-open--box-shadow--active
  * 
- * @style_variable --cwc-control-time--icon--margin
+ * @style_variable --cwc-capture-time--icon--margin
  * 
- * @style_variable --cwc-control-time--selectable--border
- * @style_variable --cwc-control-time--selectable--background
- * @style_variable --cwc-control-time--selectable--color
- * @style_variable --cwc-control-time--selectable--border-radius
- * @style_variable --cwc-control-time--selectable--color
+ * @style_variable --cwc-capture-time--selectable--border
+ * @style_variable --cwc-capture-time--selectable--background
+ * @style_variable --cwc-capture-time--selectable--color
+ * @style_variable --cwc-capture-time--selectable--border-radius
+ * @style_variable --cwc-capture-time--selectable--color
  * 
  * @example
- * <cwc-control-time format="hh:mm:ss"></cwc-control-time>
+ * <cwc-capture-time format="hh:mm:ss"></cwc-capture-time>
  */
-class CWCControlTime extends CustomHTMLElement {
+class CWCCaptureTime extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -102,7 +102,7 @@ class CWCControlTime extends CustomHTMLElement {
 
 				[hidden] { display: none !important; }
 
-				.cwc-control-time .cwc-picker-box {
+				.cwc-capture-time .cwc-picker-box {
 					position: relative;
 					width: 220px;
 					height: 230px;
@@ -113,41 +113,41 @@ class CWCControlTime extends CustomHTMLElement {
 					user-select: none;
 				}
 
-				.cwc-control-time .cwc-inputs { width: 100%; display: inline-block; position: relative; }
+				.cwc-capture-time .cwc-inputs { width: 100%; display: inline-block; position: relative; }
 
-				.cwc-control-time .cwc-inputs .cwc-input {
+				.cwc-capture-time .cwc-inputs .cwc-input {
 					width: 100%;
 					display: inline-block;
 					padding: 0 40px 0 0;
 					box-sizing: border-box;
-					--cwc-control-input--padding: var(--cwc-control-time--input--padding, 4px 25px 4px 4px);
+					--cwc-capture-input--padding: var(--cwc-capture-time--input--padding, 4px 25px 4px 4px);
 				}
 
-				.cwc-control-time .cwc-inputs .cwc-icon-button  { 
-					--cwc-control-button--background: var(--cwc-control-time--button-open--background);
-					--cwc-control-button--color: var(--cwc-control-time--button-open--color);
-					--cwc-control-button--border: var(--cwc-control-time--button-open--border);
-					--cwc-control-button--outline: var(--cwc-control-time--button-open--outline);
+				.cwc-capture-time .cwc-inputs .cwc-icon-button  { 
+					--cwc-control-button--background: var(--cwc-capture-time--button-open--background);
+					--cwc-control-button--color: var(--cwc-capture-time--button-open--color);
+					--cwc-control-button--border: var(--cwc-capture-time--button-open--border);
+					--cwc-control-button--outline: var(--cwc-capture-time--button-open--outline);
 					
-					--cwc-control-button--background--hover: var(--cwc-control-time--button-open--background--hover);
-					--cwc-control-button--background--focus: var(--cwc-control-time--button-open--background--focus);
-					--cwc-control-button--background--active: var(--cwc-control-time--button-open--background--active);
+					--cwc-control-button--background--hover: var(--cwc-capture-time--button-open--background--hover);
+					--cwc-control-button--background--focus: var(--cwc-capture-time--button-open--background--focus);
+					--cwc-control-button--background--active: var(--cwc-capture-time--button-open--background--active);
 
-					--cwc-control-button--box-shadow--hover: var(--cwc-control-time--button-open--box-shadow--hover);
-					--cwc-control-button--box-shadow--focus: var(--cwc-control-time--button-open--box-shadow--focus);
-					--cwc-control-button--box-shadow--active: var(--cwc-control-time--button-open--box-shadow--active);
+					--cwc-control-button--box-shadow--hover: var(--cwc-capture-time--button-open--box-shadow--hover);
+					--cwc-control-button--box-shadow--focus: var(--cwc-capture-time--button-open--box-shadow--focus);
+					--cwc-control-button--box-shadow--active: var(--cwc-capture-time--button-open--box-shadow--active);
 					--cwc-control-button--padding: 2px; 
 					position: absolute; 
 					top: 20px; 
 				}
 
-				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
-				.cwc-control-time .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
-				.cwc-control-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-control-time--icon--margin, 0); }
-				.cwc-control-time .cwc-picker-controls { position: relative; }
-				.cwc-control-time .cwc-control-box { padding: 10px; margin: 0; text-align: center; }
+				.cwc-capture-time .cwc-inputs .cwc-icon-button.cwc-open { right: 0px; }
+				.cwc-capture-time .cwc-inputs .cwc-icon-button.cwc-clear { right: 40px; padding: 5px; }
+				.cwc-capture-time .cwc-inputs .cwc-icon-button .cwc-icon { height: 24px; width: 24px; vertical-align: top; padding: 2px; margin: var(--cwc-capture-time--icon--margin, 0); }
+				.cwc-capture-time .cwc-picker-captures { position: relative; }
+				.cwc-capture-time .cwc-capture-box { padding: 10px; margin: 0; text-align: center; }
 
-				.cwc-control-time .cwc-bar-box {
+				.cwc-capture-time .cwc-bar-box {
 					position: absolute;
 					top: 50%;
 					left: 50%;
@@ -158,13 +158,13 @@ class CWCControlTime extends CustomHTMLElement {
 					height: 230px;
 				}
 
-				.cwc-control-time .cwc-time-bar {
+				.cwc-capture-time .cwc-time-bar {
 					position: absolute;
 					top: 50%;
 					z-index: 0;
-					border: var(--cwc-control-time--selectable--border, 1px solid #ccc);
-					background: var(--cwc-control-time--selectable--background, #ddd);
-					color: var(--cwc-control-time--selectable--color, #999);
+					border: var(--cwc-capture-time--selectable--border, 1px solid #ccc);
+					background: var(--cwc-capture-time--selectable--background, #ddd);
+					color: var(--cwc-capture-time--selectable--color, #999);
 					padding: 0;
 					margin-top: -35px;
 					height: 70px;
@@ -173,14 +173,14 @@ class CWCControlTime extends CustomHTMLElement {
 					text-align: center;
 					font-size: 10px;
 					text-transform: uppercase;
-					border-radius: var(--cwc-control-time--selectable--border-radius, 0px);
+					border-radius: var(--cwc-capture-time--selectable--border-radius, 0px);
 				}
 
-				.cwc-control-time .cwc-time-bar.cwc-left { left: 0px; }
-				.cwc-control-time .cwc-time-bar.cwc-middle { left: 50%; margin-left: -35px; }
-				.cwc-control-time .cwc-time-bar.cwc-right { right: 0px; }
+				.cwc-capture-time .cwc-time-bar.cwc-left { left: 0px; }
+				.cwc-capture-time .cwc-time-bar.cwc-middle { left: 50%; margin-left: -35px; }
+				.cwc-capture-time .cwc-time-bar.cwc-right { right: 0px; }
 
-				.cwc-control-time .cwc-picker-time-box-mask {
+				.cwc-capture-time .cwc-picker-time-box-mask {
 					margin: 0;
 					padding: 0;
 					width: 70px;
@@ -191,7 +191,7 @@ class CWCControlTime extends CustomHTMLElement {
 					display: inline-block;
 				}
 
-				.cwc-control-time .cwc-picker-time-box {
+				.cwc-capture-time .cwc-picker-time-box {
 					display: inline-block;
 					height: 160px;
 					width: 110px;
@@ -199,28 +199,28 @@ class CWCControlTime extends CustomHTMLElement {
 					overflow-y: scroll;
 				}
 
-				.cwc-control-time .cwc-hours, .cwc-control-time .cwc-minutes, .cwc-control-time .cwc-seconds {
+				.cwc-capture-time .cwc-hours, .cwc-capture-time .cwc-minutes, .cwc-capture-time .cwc-seconds {
 					padding-top: 50px;
     				padding-bottom: 50px;
 					height: fit-content;
 					float: left;
 				}
 
-				.cwc-control-time .cwc-hours .cwc-hour, .cwc-control-time .cwc-minutes .cwc-minute, .cwc-control-time .cwc-seconds .cwc-second {
+				.cwc-capture-time .cwc-hours .cwc-hour, .cwc-capture-time .cwc-minutes .cwc-minute, .cwc-capture-time .cwc-seconds .cwc-second {
 					display: block;
 					float: left;
 					height: 40px;
 					line-height: 40px;
 					font-size: 40px;
 					margin: 10px 0px 10px 13px;
-					color: var(--cwc-control-time--selectable--color, #999);
+					color: var(--cwc-capture-time--selectable--color, #999);
 					-webkit-user-select: none;
 					-moz-user-select: none;
 					-ms-user-select: none;
 					user-select: none;
 				}
 
-				.cwc-control-time .cwc-arrow {
+				.cwc-capture-time .cwc-arrow {
 				    position: absolute;
 					height: 30px;
 					width: 30px;
@@ -234,13 +234,13 @@ class CWCControlTime extends CustomHTMLElement {
 					color: #444;
 				}
 
-				.cwc-control-time .cwc-arrow[up] { top: 0px; }
-				.cwc-control-time .cwc-arrow[down] { bottom: 0px; }
-				.cwc-control-time .cwc-arrow[hour] { left: 20px; }
-				.cwc-control-time .cwc-arrow[minute] { left: 50%; margin-left: -15px; }
-				.cwc-control-time .cwc-arrow[second] { right: 20px; }
+				.cwc-capture-time .cwc-arrow[up] { top: 0px; }
+				.cwc-capture-time .cwc-arrow[down] { bottom: 0px; }
+				.cwc-capture-time .cwc-arrow[hour] { left: 20px; }
+				.cwc-capture-time .cwc-arrow[minute] { left: 50%; margin-left: -15px; }
+				.cwc-capture-time .cwc-arrow[second] { right: 20px; }
 
-				.cwc-control-time .cwc-bottom-controls {
+				.cwc-capture-time .cwc-bottom-captures {
 					display: flex;
 					flex-flow: row;
 					margin: 5px -5px -5px -5px;
@@ -248,27 +248,27 @@ class CWCControlTime extends CustomHTMLElement {
 					z-index: 100;
 				}
 
-				.cwc-control-time .cwc-bottom-controls .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
+				.cwc-capture-time .cwc-bottom-captures .cwc-bottom-button { flex: 1 1; margin: 5px; text-align: center; }
 			</style>
 
-			<div class="cwc-control-time">
+			<div class="cwc-capture-time">
 				<div class="cwc-inputs">
-					<cwc-control-input
+					<cwc-capture-input
 						id="input"
 						class="cwc-input"
 						type="text"
 						label="${ifDefined(this.label)}"
 						regex="${ifDefined(this._pattern(this.format))}"
-						invalid-message="${this.format} or now, midnight..."
+						invalid-message="${this.getAttribute('invalid-message') || this.format + ' or now, midnight...'}"
 						help="${ifDefined(this.getAttribute('help') || undefined)}"
 						placeholder="${this.getAttribute('placeholder') || ''}"
 						.value="${this.value}"
 						?disabled="${this.hasAttribute('disabled')}"
 						?required="${this.hasAttribute('required')}"
-						?required-asterisk="${this.hasAttribute('required-asterisk')}"
+						required-marker="${ifDefined(this.getAttribute('required-marker'))}"
 						?validate-on-load="${this.hasAttribute('validate-on-load')}"
 						@validated="${this._manual.bind(this)}"
-					></cwc-control-input>
+					></cwc-capture-input>
 					<cwc-icon-material-general name="clear" class="cwc-icon-button cwc-clear" @click="${this._delete.bind(this)}" ?hidden="${this.hasAttribute('disabled')}"></cwc-icon-material-general>
 					<cwc-control-button class="cwc-icon-button cwc-open" @click="${this.show.bind(this)}" ?disabled="${this.hasAttribute('disabled')}">
 						<cwc-icon-material-general name="schedule" class="cwc-icon"></cwc-icon-material-general>
@@ -276,7 +276,7 @@ class CWCControlTime extends CustomHTMLElement {
 				</div>
 
 				<cwc-overlay-modal id="picker" @hide="${this._closed.bind(this)}">
-					<div class="cwc-picker-controls" slot="body">
+					<div class="cwc-picker-captures" slot="body">
 						<div class="cwc-bar-box">
 							<div class="cwc-time-bar cwc-left">
 								<span>Hours</span>
@@ -324,7 +324,7 @@ class CWCControlTime extends CustomHTMLElement {
 							</div>
 						</div>
 					</div>
-					<div class="bottom-controls">
+					<div class="bottom-captures">
 						<cwc-control-button class="cwc-bottom-button" @click="${this._now.bind(this)}">Now</cwc-control-button>
 						<cwc-control-button class="cwc-bottom-button" @click="${this.hide.bind(this)}">Close</cwc-control-button>
 					</div>
@@ -412,6 +412,13 @@ class CWCControlTime extends CustomHTMLElement {
 		this.dispatchEvent(new CustomEvent('hide'));
 	}
 
+	/**
+	 * @private @name validate
+	 * @description Proxy the validation to input
+	 * @param {String} value The value to validate
+	 */
+	validate(value) { return this.shadowRoot.querySelector('cwc-capture-input').validate(value) }
+
 	_closed(ev) {
 		this.opened = false;
 		this.date.setHours(this.hours[this.position.hour]);
@@ -438,6 +445,8 @@ class CWCControlTime extends CustomHTMLElement {
 		}
 
 		this.value = this._dateToTime(this._timeToDate(ev.target.value));
+		this.updateTemplate();
+		this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
 	}
 
 	/**
@@ -512,6 +521,8 @@ class CWCControlTime extends CustomHTMLElement {
 	_delete(ev) {
 		this.value = undefined;
 		this.shadowRoot.querySelector('#input').focus();
+		this.updateTemplate();
+		setTimeout(() => this.dispatchEvent(new CustomEvent('change', { detail: this.value })), 50);
 	}
 
 	/**
@@ -684,4 +695,4 @@ class CWCControlTime extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-time', CWCControlTime);
+customElements.define('cwc-capture-time', CWCCaptureTime);

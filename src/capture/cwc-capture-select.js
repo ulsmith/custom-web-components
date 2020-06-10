@@ -2,7 +2,7 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
 import '../overlay/cwc-overlay-help.js';
 
 /**
- * @public @name CWCControlSelect
+ * @public @name CWCCaptureSelect
  * @extends CustomHTMLElement
  * @description Custom Web Component, select box for forms
  * @author Paul Smith <p@ulsmith.net>
@@ -16,41 +16,41 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @property {String} value The initial value (overrides attribute value)
  *
- * @attribute {String} label The control label
- * @attribute {String} name The control name
+ * @attribute {String} label The capture label
+ * @attribute {String} name The capture name
  * @attribute {String} justify [left, center, right] Justify options
- * @attribute {String} invalid-message The message to show when control is invalid
+ * @attribute {String} invalid-message The message to show when capture is invalid
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} value The initial value, if set
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-select--background
- * @style_variable --cwc-control-select--border
- * @style_variable --cwc-control-select--border-radius
- * @style_variable --cwc-control-select--color
- * @style_variable --cwc-control-select--height
- * @style_variable --cwc-control-select--font-size
- * @style_variable --cwc-control-select--font-weight
- * @style_variable --cwc-control-select--font-style
- * @style_variable --cwc-control-select--font-family
- * @style_variable --cwc-control-select--margin
- * @style_variable --cwc-control-select--padding
- * @style_variable --cwc-control-select--text-align
+ * @style_variable --cwc-capture-select--background
+ * @style_variable --cwc-capture-select--border
+ * @style_variable --cwc-capture-select--border-radius
+ * @style_variable --cwc-capture-select--color
+ * @style_variable --cwc-capture-select--height
+ * @style_variable --cwc-capture-select--font-size
+ * @style_variable --cwc-capture-select--font-weight
+ * @style_variable --cwc-capture-select--font-style
+ * @style_variable --cwc-capture-select--font-family
+ * @style_variable --cwc-capture-select--margin
+ * @style_variable --cwc-capture-select--padding
+ * @style_variable --cwc-capture-select--text-align
  *
- * @style_variable --cwc-control-select--label--text-align
- * @style_variable --cwc-control-select--label--color
- * @style_variable --cwc-control-select--label--font-weight
+ * @style_variable --cwc-capture-select--label--text-align
+ * @style_variable --cwc-capture-select--label--color
+ * @style_variable --cwc-capture-select--label--font-weight
  *
- * @style_variable --cwc-control-select--invalid--border - Drops back to danger if not set
- * @style_variable --cwc-control-select--invalid--color - Drops back to danger if not set
+ * @style_variable --cwc-capture-select--invalid--border - Drops back to danger if not set
+ * @style_variable --cwc-capture-select--invalid--color - Drops back to danger if not set
  *
- * @style_variable --cwc-control-select--disabled--opacity
+ * @style_variable --cwc-capture-select--disabled--opacity
  *
  * @example
- * <cwc-control-select
+ * <cwc-capture-select
  * 		label="A input"
  * 		name="something"
  * 		invalid-message="Please check me"
@@ -62,9 +62,9 @@ import '../overlay/cwc-overlay-help.js';
  * >
  * 		<option value="one">One</option>
  * 		<option value="two">Two</option>
- * </cwc-control-select>
+ * </cwc-capture-select>
  */
-class CWCControlSelect extends CustomHTMLElement {
+class CWCCaptureSelect extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -89,29 +89,31 @@ class CWCControlSelect extends CustomHTMLElement {
 					width: 100%;
 					height: 62px;
 					box-sizing: border-box;
-					padding: var(--cwc-control-select--margin, 0px);
+					padding: var(--cwc-capture-select--margin, 0px);
 				}
 
-				.cwc-control-select {
+				[hidden] { display: none !important; }
+
+				.cwc-capture-select {
 					width: inherit;
 					height: inherit;
-					padding: var(--cwc-control-select--padding, 0px);
+					padding: var(--cwc-capture-select--padding, 0px);
 					box-sizing: border-box;
 				}
 
-				.cwc-control-select .cwc-select-container {
+				.cwc-capture-select .cwc-select-container {
 					width: 100%;
 					min-height: 30px;
 					display: inline-block;
 					padding: 20px 0 12px 0;
 					box-sizing: border-box;
 					position: relative;
-					text-align: var(--cwc-control-select--text-align, left);
+					text-align: var(--cwc-capture-select--text-align, left);
 				}
 
-				.cwc-control-select [invisible] { opacity: 0; }
+				.cwc-capture-select [invisible] { opacity: 0; }
 
-				.cwc-control-select label {
+				.cwc-capture-select label {
 					display: block;
 					height: 20px;
 					width: fit-content;
@@ -121,29 +123,29 @@ class CWCControlSelect extends CustomHTMLElement {
 					position: absolute;
 					top: 0;
 					left: 0;
-					text-align: var(--cwc-control-select--label--text-align, left);
-					color: var(--cwc-control-select--label--color, black);
-					font-weight: var(--cwc-control-select--label--font-weight, normal);
+					text-align: var(--cwc-capture-select--label--text-align, left);
+					color: var(--cwc-capture-select--label--color, black);
+					font-weight: var(--cwc-capture-select--label--font-weight, normal);
 				}
 
-				.cwc-control-select select {
+				.cwc-capture-select select {
 					box-sizing: border-box;
 					width: 100%;
 					min-height: 30px;
 					background-color: transparent;
 					display: block;
-					color: var(--cwc-control-select--color, black);
-					border: var(--cwc-control-select--border, 1px solid black);
-					border-radius: var(--cwc-control-select--border-radius, 0);
-					background: var(--cwc-control-select--background, white);
-					height: var(--cwc-control-select--height, 30px);
-					font-size: var(--cwc-control-select--font-size, 13px);
-					font-weight: var(--cwc-control-select--font-weight, normal);
-					font-style: var(--cwc-control-select--font-style, normal);
-					font-family: var(--cwc-control-select--font-family, inherit);
+					color: var(--cwc-capture-select--color, black);
+					border: var(--cwc-capture-select--border, 1px solid black);
+					border-radius: var(--cwc-capture-select--border-radius, 0);
+					background: var(--cwc-capture-select--background, white);
+					height: var(--cwc-capture-select--height, 30px);
+					font-size: var(--cwc-capture-select--font-size, 13px);
+					font-weight: var(--cwc-capture-select--font-weight, normal);
+					font-style: var(--cwc-capture-select--font-style, normal);
+					font-family: var(--cwc-capture-select--font-family, inherit);
 				}
 
-				.cwc-control-select .cwc-error {
+				.cwc-capture-select .cwc-error {
 					display: block;
 					width: 100%;
 					opacity: 0;
@@ -155,28 +157,30 @@ class CWCControlSelect extends CustomHTMLElement {
 					left: 0;
 				}
 
-				.cwc-control-select[invalid] .cwc-error { opacity: 1; }
+				.cwc-capture-select[invalid] .cwc-error { opacity: 1; }
 
-				.cwc-control-select .cwc-help {
+				.cwc-capture-select .cwc-help {
 					position: absolute;
 					top: 0px;
 					right: 0px;
 				}
 
-				.cwc-control-select .cwc-help .help-tip { vertical-align: top; }
+				.cwc-capture-select .cwc-help .help-tip { vertical-align: top; }
 
-				:host .cwc-control-select[invalid] select { border: var(--cwc-control-select--invalid--border, 1px solid red) !important; color: var(--cwc-control-select--invalid--color, var(--cwc-control-select--danger--color, red)) !important; }
-				:host .cwc-control-select[invalid] .cwc-error { color: var(--cwc-control-select--invalid--color, red) }
+				:host .cwc-capture-select[invalid] select { border: var(--cwc-capture-select--invalid--border, 1px solid red) !important; color: var(--cwc-capture-select--invalid--color, var(--cwc-capture-select--danger--color, red)) !important; }
+				:host .cwc-capture-select[invalid] .cwc-error { color: var(--cwc-capture-select--invalid--color, red) }
 
 				:host([justify="center"]) .cwc-select-container { text-align: center; }
 				:host([justify="right"]) .cwc-select-container { text-align: right; }
 
-				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-select--disabled--opacity, 0.6); }
+				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-capture-select--disabled--opacity, 0.6); }
 			</style>
 
-			<div class="cwc-control-select" ?invalid="${this.hasAttribute('invalid')}">
+			<div class="cwc-capture-select" ?invalid="${this.hasAttribute('invalid')}">
 				<div class="cwc-select-container">
-					<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}</label>
+					<label ?hidden="${!this.hasAttribute('label')}">
+						${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+					</label>
 					<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
 						<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 					</div>
@@ -208,7 +212,7 @@ class CWCControlSelect extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid'] }
+	static get observedAttributes() { return ['name', 'label', 'invalid-message', 'required', 'disabled', 'invalid', 'required-marker'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -291,4 +295,4 @@ class CWCControlSelect extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-select', CWCControlSelect);
+customElements.define('cwc-capture-select', CWCCaptureSelect);

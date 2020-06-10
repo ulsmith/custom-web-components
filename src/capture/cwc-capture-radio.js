@@ -4,7 +4,7 @@ import '../overlay/cwc-overlay-help.js';
 
 /**
  *
- * @public @name CWCControlRadio
+ * @public @name CWCCaptureRadio
  * @extends CustomHTMLElement
  * @description Custom Web Component, radio button
  * @author Paul Smith <p@ulsmith.net>
@@ -19,35 +19,36 @@ import '../overlay/cwc-overlay-help.js';
  *
  * @attribute {String} label The checkbox label
  * @attribute {String} name The checkbox name
- * @attribute {String} invalid-message The message to show when control is invalid
+ * @attribute {String} invalid-message The message to show when capture is invalid
  * @attribute {String} value The initial value, if set
  * @attribute {String} help The help text to display with a little hover icon
  * @attribute {String} justify The justification as left, right, center
- * @attribute {Flag} disabled To disable the control
- * @attribute {Flag} invalid The control is invalid
- * @attribute {Flag} required The control is required
- * @attribute {Flag} validate-on-load Validate the control when it loads in the dom
+ * @attribute {Flag} disabled To disable the capture
+ * @attribute {Flag} invalid The capture is invalid
+ * @attribute {Flag} required The capture is required
+ * @attribute {Flag} validate-on-load Validate the capture when it loads in the dom
  *
- * @style_variable --cwc-control-radio--fill
- * @style_variable --cwc-control-radio--color
- * @style_variable --cwc-control-radio--text-align
+ * @style_variable --cwc-capture-radio--fill
+ * @style_variable --cwc-capture-radio--color
+ * @style_variable --cwc-capture-radio--text-align
+ * @style_variable --cwc-capture-radio--padding
  *
- * @style_variable --cwc-control-radio--fill--hover
- * @style_variable --cwc-control-radio--color--hover
+ * @style_variable --cwc-capture-radio--fill--hover
+ * @style_variable --cwc-capture-radio--color--hover
  *
- * @style_variable --cwc-control-radio--label--text-align
- * @style_variable --cwc-control-radio--label--color
- * @style_variable --cwc-control-radio--label--font-weight
+ * @style_variable --cwc-capture-radio--label--text-align
+ * @style_variable --cwc-capture-radio--label--color
+ * @style_variable --cwc-capture-radio--label--font-weight
  *
- * @style_variable --cwc-control-radio--invalid--fill
- * @style_variable --cwc-control-radio--invalid--color
+ * @style_variable --cwc-capture-radio--invalid--fill
+ * @style_variable --cwc-capture-radio--invalid--color
  *
- * @style_variable --cwc-control-radio--disabled--opacity
+ * @style_variable --cwc-capture-radio--disabled--opacity
  *
- * @slot root Single root slot to show all cwc-control-radio-option elements
+ * @slot root Single root slot to show all cwc-capture-radio-option elements
  *
  * @example
- * <cwc-control-radio
+ * <cwc-capture-radio
  * 		label="A input"
  * 		name="something"
  * 		invalid-message="Please check me"
@@ -57,11 +58,11 @@ import '../overlay/cwc-overlay-help.js';
  * 		required
  * 		validate-on-load
  * >
- * 		<cwc-control-radio-option value="one" selected>One</cwc-control-radio-option>
- * 		<cwc-control-radio-option value="two">Two</cwc-control-radio-option>
- * </cwc-control-radio>
+ * 		<cwc-capture-radio-option value="one" selected>One</cwc-capture-radio-option>
+ * 		<cwc-capture-radio-option value="two">Two</cwc-capture-radio-option>
+ * </cwc-capture-radio>
  */
-class CWCControlRadio extends CustomHTMLElement {
+class CWCCaptureRadio extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -96,10 +97,10 @@ class CWCControlRadio extends CustomHTMLElement {
 					width: inherit;
 					height: inherit;
 					display: inline-block;
-					padding: 6px 0 6px 0;
+					padding: var(--cwc-capture-radio--padding, 0);
 					box-sizing: border-box;
 					position: relative;
-					text-align: var(--cwc-control-radio--text-align, left);
+					text-align: var(--cwc-capture-radio--text-align, left);
 				}
 
 				.cwc-radio-container [invisible] { opacity: 0; }
@@ -110,9 +111,9 @@ class CWCControlRadio extends CustomHTMLElement {
 					font-size: 14px;
 					padding-right: 25px;
 					overflow: hidden;
-					text-align: var(--cwc-control-radio--label--text-align, left);
-					color: var(--cwc-control-radio--label--color, black);
-					font-weight: var(--cwc-control-radio--label--font-weight, normal);
+					text-align: var(--cwc-capture-radio--label--text-align, left);
+					color: var(--cwc-capture-radio--label--color, black);
+					font-weight: var(--cwc-capture-radio--label--font-weight, normal);
 				}
 
 				.cwc-radio-container .cwc-radio-buttons {
@@ -145,20 +146,22 @@ class CWCControlRadio extends CustomHTMLElement {
 
 				.cwc-radio-container .cwc-help .help-tip { vertical-align: top; }
 
-				:host .cwc-radio-buttons { fill: var(--cwc-control-radio--fill, black); color: var(--cwc-control-radio--color, black); }
-				:host(:hover) .cwc-radio-buttons { fill: var(--cwc-control-radio--fill--hover, black); color: var(--cwc-control-radio--color--hover, black); }
+				:host .cwc-radio-buttons { fill: var(--cwc-capture-radio--fill, black); color: var(--cwc-capture-radio--color, black); }
+				:host(:hover) .cwc-radio-buttons { fill: var(--cwc-capture-radio--fill--hover, black); color: var(--cwc-capture-radio--color--hover, black); }
 
-				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-control-radio--invalid--fill, red); color: var(--cwc-control-radio--invalid--color, red); }
-				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-control-radio--invalid--color, red); }
+				:host .cwc-radio-container[invalid] .cwc-radio-buttons { fill: var(--cwc-capture-radio--invalid--fill, red); color: var(--cwc-capture-radio--invalid--color, red); }
+				:host .cwc-radio-container[invalid] .cwc-error { color: var(--cwc-capture-radio--invalid--color, red); }
 
 				:host([justify="center"]) .cwc-radio-container { text-align: center; }
 				:host([justify="right"]) .cwc-radio-container { text-align: right; }
 
-				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-control-radio--disabled--opacity, 0.6); }
+				:host([disabled]) { pointer-events: none; cursor: not-allowed; opacity: var(--cwc-capture-radio--disabled--opacity, 0.6); }
 			</style>
 
 			<div class="cwc-radio-container" ?invalid="${this.hasAttribute('invalid')}">
-				<label ?invisible="${!this.hasAttribute('label')}">${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-asterisk') ? ' *' : ''}</label>
+				<label ?hidden="${!this.hasAttribute('label')}">
+					${this.getAttribute('label')}${this.hasAttribute('required') && this.hasAttribute('required-marker') ? ' ' + this.getAttribute('required-marker') : ''}
+				</label>
 				<div class="cwc-help" ?hidden="${!this.hasAttribute('help')}">
 					<cwc-overlay-help class="help-tip">${this.getAttribute('help')}</cwc-overlay-help>
 				</div>
@@ -191,7 +194,7 @@ class CWCControlRadio extends CustomHTMLElement {
 	 * @description Provide attributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['label', 'name', 'invalid-message', 'disabled', 'invalid', 'required'] }
+	static get observedAttributes() { return ['label', 'name', 'invalid-message', 'disabled', 'invalid', 'required', 'required-marker'] }
 
 	/**
 	 * @public @name attributeChanged
@@ -269,10 +272,10 @@ class CWCControlRadio extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-radio', CWCControlRadio);
+customElements.define('cwc-capture-radio', CWCCaptureRadio);
 
 /**
- * @public @name CWCControlRadioOption
+ * @public @name CWCCaptureRadioOption
  * @extends CustomHTMLElement
  * @description Custom Web Component, radio button options for radio button
  * @author Paul Smith <p@ulsmith.net>
@@ -287,9 +290,9 @@ customElements.define('cwc-control-radio', CWCControlRadio);
  * @slot root Single root slot to show option label/text/icon etc.
  *
  * @example
- * <cwc-control-radio-option value="one" selected>One</cwc-control-radio-option>
+ * <cwc-capture-radio-option value="one" selected>One</cwc-capture-radio-option>
  */
-class CWCControlRadioOption extends CustomHTMLElement {
+class CWCCaptureRadioOption extends CustomHTMLElement {
 
 	/**
      * @public @constructor @name constructor
@@ -324,13 +327,12 @@ class CWCControlRadioOption extends CustomHTMLElement {
 					-ms-user-select: none;
 				}
 
-				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
-				.cwc-control-radio-option { display: inline-block; height: 30px; padding: 0 5px; }
-				.cwc-control-radio-option .cwc-radio-button-icon { display: inline-block; padding: 4px; fill: inherit; vertical-align: sub; }
-				.cwc-control-radio-option .cwc-radio-button-label { display: inline-block; font-size: 14px; color: inherit; position: relative; top: -7px; }
+				.cwc-capture-radio-option { display: inline-block; height: 30px; padding: 0 5px 0 0; }
+				.cwc-capture-radio-option .cwc-radio-button-icon { display: inline-block; padding: 2px; fill: inherit; vertical-align: sub; }
+				.cwc-capture-radio-option .cwc-radio-button-label { display: inline-block; font-size: 14px; color: inherit; position: relative; top: -7px; }
 			</style>
 
-			<div class="cwc-control-radio-option">
+			<div class="cwc-capture-radio-option">
 				<cwc-icon-material-general class="cwc-radio-button-icon" @click="${this._click.bind(this)}"type="icons" name="${this.hasAttribute('selected') ? 'radioButtonChecked' : 'radioButtonUnchecked'}"></cwc-icon-material-general>
 				<span class="cwc-radio-button-label" @click="${this._click.bind(this)}"><slot></slot></span>
 			</div>
@@ -382,4 +384,4 @@ class CWCControlRadioOption extends CustomHTMLElement {
 }
 
 // bootstrap the class as a new web component
-customElements.define('cwc-control-radio-option', CWCControlRadioOption);
+customElements.define('cwc-capture-radio-option', CWCCaptureRadioOption);

@@ -78,6 +78,8 @@ class CWCControlButton extends CustomHTMLElement {
 					user-select: none;
 				}
 
+				:host([icon]) .cwc-control-button { padding: var(--cwc-control-button--icon--padding, 0); }
+
 				:host(:hover) .cwc-control-button { background: var(--cwc-control-button--background--hover, #ddd); box-shadow: var(--cwc-control-button--box-shadow--hover, none); }
 				:host(:focus) .cwc-control-button { background: var(--cwc-control-button--background--focus, #ddd); box-shadow: var(--cwc-control-button--box-shadow--focus, 0 0 0 1px grey); }
 				:host(:active) .cwc-control-button { background: var(--cwc-control-button--background--active, #bbb); box-shadow: var(--cwc-control-button--box-shadow--active, 0 0 0 2px grey); }			
@@ -93,7 +95,7 @@ class CWCControlButton extends CustomHTMLElement {
 	 * @description Provide atributes to watch for changes
 	 * @return {Array} Array of attribute names as strings
 	 */
-	static get observedAttributes() { return ['disabled'] }
+	static get observedAttributes() { return ['disabled', 'icon'] }
 
 	/**
 	 * @public @name attributeChanged
