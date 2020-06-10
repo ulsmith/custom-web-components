@@ -1,5 +1,4 @@
 import './cwc-capture-box.js';
-import './cwc-capture-button.js';
 import './cwc-capture-checkbox.js';
 import './cwc-capture-date.js';
 import './cwc-capture-input.js';
