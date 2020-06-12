@@ -136,7 +136,7 @@ class CWCCaptureInput extends CustomHTMLElement {
 					font-weight: var(--cwc-capture-input--font-weight, normal);
 					font-style: var(--cwc-capture-input--font-style, normal);
 					font-family: var(--cwc-capture-input--font-family, inherit);
-					min-height: 30px;
+					min-height: var(--cwc-capture-input--min-height, 30px);
 				}
 
 				.cwc-input-container input::-ms-clear { display: none; }
@@ -147,7 +147,7 @@ class CWCCaptureInput extends CustomHTMLElement {
 					background-color: transparent;
 					display: block;
 					height: 100%;
-					min-height: 30px;
+					min-height: var(--cwc-capture-input--min-height, 100px);
 					padding: var(--cwc-capture-input--padding, 4px);
 					border-radius: var(--cwc-capture-input--border-radius, 0);
 					border: var(--cwc-capture-input--border, 1px solid black);
@@ -205,10 +205,11 @@ class CWCCaptureInput extends CustomHTMLElement {
 						placeholder="${ifDefined(this.getAttribute('placeholder') || undefined)}"
 						autocomplete="${ifDefined(this.getAttribute('autocomplete') || undefined)}"
 						?disabled="${this.hasAttribute('disabled')}"
+						.value="${!this.value ? '' : this.value}"
 						@input="${this._event.bind(this)}"
 						@keydown="${this._event.bind(this)}"
 						@keyup="${this._event.bind(this)}"
-					>${!this.value ? '' : this.value}</textarea>
+					></textarea>
 				` : html`
 					<input
 						id="input"
