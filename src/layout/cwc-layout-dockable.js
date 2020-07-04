@@ -1,6 +1,6 @@
 import { CustomHTMLElement, html } from '../../../custom-web-component/index.js';
 
-import '../icon/material/cwc-icon-material-general.js';
+import '../icon/material/index.js';
 
 /**
  * @public @name CWCLayoutDockable
@@ -139,7 +139,8 @@ class CWCLayoutDockable extends CustomHTMLElement {
 				.structure-menu .structure-menu-box .menu-routes ul li { cursor: pointer; padding: var(--cwc-layout-dockable--menu-route--padding, 0px); opacity: var(--cwc-layout-dockable--menu-route--opacity, 0.9); }
 				.structure-menu .structure-menu-box .menu-routes ul li[selected] { background: var(--cwc-layout-dockable--menu-route--selected--background, #33333311); }
 				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: var(--cwc-layout-dockable--menu-route--background--hover, #33333322); }
-				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: var(--cwc-layout-dockable--menu-route--link--padding, 15px); text-decoration: none; color: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); }
+				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: var(--cwc-layout-dockable--menu-route--link--padding, 15px); text-decoration: none; color: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); fill: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); }
+				.structure-menu .structure-menu-box .menu-routes ul li a.link .link-icon { width: 20px; height:20px; padding: 0; }
 				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: var(--cwc-layout-dockable--menu-footer--padding, 15px); color: var(--cwc-layout-dockable--menu-footer--color, var(--cwc-layout-dockable--menu--color, #222))}
 				
 				.structure-page { display: block; flex: 10 1 535px; overflow-y: auto; margin: 0; padding: var(--cwc-layout-dockable--page--padding, 20px); box-sizing: border-box; background: var(--cwc-layout-dockable--page--background, #ddd); color: var(--cwc-layout-dockable--page--color, #222); }
@@ -167,29 +168,68 @@ class CWCLayoutDockable extends CustomHTMLElement {
 					padding: var(--cwc-layout-dockable--menu-button--icon--padding, 5px); 
 					fill: var(--cwc-layout-dockable--menu-button--icon--fill, #222);
 				}
+
+				.shrink-icon {
+					cursor: pointer;
+					position: absolute;
+					top: 10px;
+					left: 10px;
+					z-index: 1000;
+				}
+
+				[shrinkable] {
+					transition: all 0.3s ease;
+				}
+
+				.shrink-icon[shrink] { transform: rotate(180deg); }
+				.structure-menu[shrink] { flex: 0 1 50px; overflow: hidden; }
+				.structure-menu[shrink] .structure-menu-box .menu-routes ul li a.link { height: 20px; }
+				.structure-menu .structure-menu-box .menu-routes ul li a.link span.single { display: inline-block; opacity: 0; margin-left: 5px; width: 0px; }
+				.structure-menu[shrink] .structure-menu-box .menu-routes ul li a.link span.single { opacity: 1; height: 20px; }
+				.structure-menu[shrink] .structure-menu-box .menu-routes ul li a.link span.full { opacity: 0; height: 0px; }
+				.structure-menu[shrink] .structure-menu-box .menu-header { opacity: 0; width: 100px; height: 0px; }
+				.structure-menu[shrink] .structure-menu-box .menu-footer { opacity: 0; width: 100px; }
 				
 				@media (max-width:799px) {
+					.shrink-icon { display: none; }
 					.structure-menu { position: fixed; top: 0px; left: 0px; z-index: 1000; width: 250px; min-height: 100%; opacity: 0.95; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5); }
 					.structure-menu[docked] { left: -300px; }
 					.structure-page { padding-bottom: 50px; }
-					.structure-page .icon-bars { display: block; }
+					.structure-page .icon-bars { display: block; z-index: 10000; }
 				}
 			</style>
 
 			<div class="cwc-layout-dockable">
-				<div id="structure-menu" class="structure-menu">
-					<div class="structure-menu-box">
+				<cwc-icon-material-general class="shrink-icon" name="firstPage" shrinkable ?shrink="${this._shrink}" @click="${this._toggleShrink.bind(this)}"></cwc-icon-material-general>
+				<div id="structure-menu" class="structure-menu" shrinkable ?shrink="${this._shrink}">
+					<div class="structure-menu-box" shrinkable ?shrink="${this._shrink}">
 						<div class="menu-header">
 							<slot name="menu-header"></slot>
 						</div>
 						<div class="menu-routes">
 							<ul>
 								${this.routes.map((route) => (route.hidden ? '' : html`
-									<li ?selected="${this.route && this.route.component == route.component}"><a class="link" href="/${route.path}" @click="${this.changeRoute.bind(this, route)}">${route.label}</a></li>
+									<li ?selected="${this.route && this.route.component == route.component}">
+										<a class="link" href="/${route.path}" @click="${this.changeRoute.bind(this, route)}" shrinkable ?shrink="${this._shrink}">
+											${route.icon && route.icon.type === 'av' ? html`<cwc-icon-material-av class="link-icon" name="${route.icon.name}"></cwc-icon-material-av>` : ''}
+											${route.icon && route.icon.type === 'communication' ? html`<cwc-icon-material-communication class="link-icon" name="${route.icon.name}"></cwc-icon-material-communication>` : ''}
+											${route.icon && route.icon.type === 'device' ? html`<cwc-icon-material-device class="link-icon" name="${route.icon.name}"></cwc-icon-material-device>` : ''}
+											${route.icon && route.icon.type === 'editor' ? html`<cwc-icon-material-editor class="link-icon" name="${route.icon.name}"></cwc-icon-material-editor>` : ''}
+											${route.icon && route.icon.type === 'general' ? html`<cwc-icon-material-general class="link-icon" name="${route.icon.name}"></cwc-icon-material-general>` : ''}
+											${route.icon && route.icon.type === 'hardware' ? html`<cwc-icon-material-hardware class="link-icon" name="${route.icon.name}"></cwc-icon-material-hardware>` : ''}
+											${route.icon && route.icon.type === 'image' ? html`<cwc-icon-material-image class="link-icon" name="${route.icon.name}"></cwc-icon-material-image>` : ''}
+											${route.icon && route.icon.type === 'map' ? html`<cwc-icon-material-map class="link-icon" name="${route.icon.name}"></cwc-icon-material-map>` : ''}
+											${route.icon && route.icon.type === 'notification' ? html`<cwc-icon-material-notification class="link-icon" name="${route.icon.name}"></cwc-icon-material-notification>` : ''}
+											${route.icon && route.icon.type === 'place' ? html`<cwc-icon-material-place class="link-icon" name="${route.icon.name}"></cwc-icon-material-place>` : ''}
+											${route.icon && route.icon.type === 'social' ? html`<cwc-icon-material-social class="link-icon" name="${route.icon.name}"></cwc-icon-material-social>` : ''}
+											<span class="single" shrinkable ?shrink="${this._shrink}">${!route.icon ? route.label.charAt(0) : ''}</span>
+											<span class="full" shrinkable ?shrink="${this._shrink}">${route.label}</span>
+										</a>
+									</li>
 								`))}
 							</ul>
 						</div>
-						<div class="menu-footer">
+						<div class="menu-footer" shrinkable ?shrink="${this._shrink}">
 							<slot name="menu-footer"></slot>
 						</div>
 					</div>
@@ -293,6 +333,11 @@ class CWCLayoutDockable extends CustomHTMLElement {
 
 		// stop anchors actually reloading
 		ev.preventDefault();
+	}
+
+	_toggleShrink(ev) {
+		this._shrink = !this._shrink;
+		this.updateTemplate();
 	}
 }
 
