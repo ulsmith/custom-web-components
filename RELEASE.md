@@ -1,7 +1,7 @@
 Custom Web Components
 =======================
 
-# 1.5.2
+# 1.5.3
 
 Added menu shrink ability to dockable menu component
 

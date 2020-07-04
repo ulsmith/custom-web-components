@@ -141,7 +141,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: var(--cwc-layout-dockable--menu-route--background--hover, #33333322); }
 				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: var(--cwc-layout-dockable--menu-route--link--padding, 15px); text-decoration: none; color: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); fill: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); }
 				.structure-menu .structure-menu-box .menu-routes ul li a.link .link-icon { width: 20px; height:20px; padding: 0; }
-				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: var(--cwc-layout-dockable--menu-footer--padding, 15px); color: var(--cwc-layout-dockable--menu-footer--color, var(--cwc-layout-dockable--menu--color, #222))}
+				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: var(--cwc-layout-dockable--menu-footer--padding, 15px); color: var(--cwc-layout-dockable--menu-footer--color, var(--cwc-layout-dockable--menu--color, #222)); }
 				
 				.structure-page { display: block; flex: 10 1 535px; overflow-y: auto; margin: 0; padding: var(--cwc-layout-dockable--page--padding, 20px); box-sizing: border-box; background: var(--cwc-layout-dockable--page--background, #ddd); color: var(--cwc-layout-dockable--page--color, #222); }
 				.structure-page .icon-bars { 
@@ -172,6 +172,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 				.shrink-icon {
 					cursor: pointer;
 					position: absolute;
+					fill: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222));
 					top: 10px;
 					left: 10px;
 					z-index: 1000;
