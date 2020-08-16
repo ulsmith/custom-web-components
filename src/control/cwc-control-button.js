@@ -50,8 +50,11 @@ class CWCControlButton extends CustomHTMLElement {
 	static template() {
 		return html`
 			<style>	
-				:host { display: inline-block; }
-				:host { outline: var(--cwc-control-button--outline, none); }
+				:host { 
+					display: inline-block; 
+					outline: var(--cwc-control-button--outline, none);
+					cursor: var(--cwc-control-button--cursor, default);
+				}
 				
 				.cwc-control-button { 
 					box-sizing: border-box;
@@ -66,7 +69,6 @@ class CWCControlButton extends CustomHTMLElement {
 					padding: var(--cwc-control-button--padding, 0 8px);
 					font-size: var(--cwc-control-button--font-size, 14px);
 					font-family: var(--cwc-control-button--font-family, inherit);
-					cursor: var(--cwc-control-button--cursor, default);
 					outline: none;
 					box-shadow: var(--cwc-control-button--box-shadow, none);
 					display: inline-block;

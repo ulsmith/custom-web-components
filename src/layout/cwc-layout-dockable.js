@@ -88,6 +88,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 		// public
 		this.route;
 		this.routes = [];
+		this.permissions;
 
 		// private
 		this._windowEvent;
@@ -188,7 +189,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 				.structure-menu .structure-menu-box .menu-routes ul li a.link span.single { display: inline-block; opacity: 0; margin-left: 5px; width: 0px; }
 				.structure-menu[shrink] .structure-menu-box .menu-routes ul li a.link span.single { opacity: 1; height: 20px; }
 				.structure-menu[shrink] .structure-menu-box .menu-routes ul li a.link span.full { opacity: 0; height: 0px; }
-				.structure-menu[shrink] .structure-menu-box .menu-header { opacity: 0; width: 100px; height: 0px; }
+				.structure-menu[shrink] .structure-menu-box .menu-header { opacity: 0; width: 100px; height: 15px; flex: none; }
 				.structure-menu[shrink] .structure-menu-box .menu-footer { opacity: 0; width: 100px; }
 				
 				@media (max-width:799px) {
@@ -209,7 +210,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 						</div>
 						<div class="menu-routes">
 							<ul>
-								${this.routes.map((route) => (route.hidden ? '' : html`
+								${this.routes.map((route) => (route.hidden === true || (route.hidden === 'unauthorized' && route.permission && !this._permitted(route.permission, 'read')) ? '' : html`
 									<li ?selected="${this.route && this.route.component == route.component}">
 										<a class="link" href="/${route.path}" @click="${this.changeRoute.bind(this, route)}" shrinkable ?shrink="${this._shrink}">
 											${route.icon && route.icon.type === 'av' ? html`<cwc-icon-material-av class="link-icon" name="${route.icon.name}"></cwc-icon-material-av>` : ''}
@@ -250,7 +251,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['routes','route'];
+		return ['routes', 'route','permissions'];
 	}
 
 	/**
@@ -339,6 +340,17 @@ class CWCLayoutDockable extends CustomHTMLElement {
 	_toggleShrink(ev) {
 		this._shrink = !this._shrink;
 		this.updateTemplate();
+	}
+
+	/**
+	 * @private @name _permitted
+	 * @description Change the route of the application
+	 * 
+     * @param {String} path The path of the route
+	 */
+	_permitted(permission, type) {
+		permission = this.permissions ? this.permissions.filter((perm) => perm.role === permission)[0] || {} : {};
+		return permission[type];
 	}
 }
 

@@ -1,7 +1,6 @@
-import { CustomHTMLElement, html, ifDefined } from '../../../custom-web-component/index.js';
+import { CustomHTMLElement, html, ifDefined, styleMap } from '../../../custom-web-component/index.js';
 
-import '../icon/material/cwc-icon-material-general.js';
-import '../icon/material/cwc-icon-material-image.js';
+import '../icon/material/index.js';
 import '../base/cwc-base-tag.js';
 import '../control/cwc-control-button.js';
 
@@ -34,6 +33,7 @@ import '../control/cwc-control-button.js';
  * @property {String} body[][].justify Justify the heading left, center, right
  * @property {String} body[][].fontWeight Font weight of the heading normal, bold
  * @property {String} body[][].event Make the contents a clickable button with an event to fire (returns row)
+ * @property {String} body[][].detail Event detail if you want to do an event but send back something other than teh row of the table, such as the data object
  * @property {String} body[][].link Make the contents a clickable anchor link
  * @property {String} body[][].value The actual data should you be using an object and not a string
  * 
@@ -111,8 +111,6 @@ class CwcLayoutTable extends CustomHTMLElement {
 		this.header;
 		this.body;
 		this.footer;
-
-		if (this.hasAttribute('paginate-internal')) this.setAttribute('loading', '');
 	}
 
 	// Define a template
@@ -264,6 +262,7 @@ class CwcLayoutTable extends CustomHTMLElement {
 						<tr>
 							${this.header && this.header.length ? this.header.map((h, i) => html`
 								<th
+									?hidden="${h.hidden}"
 									colspan="${ifDefined(h.colspan)}"
 									justify="${ifDefined(h.justify)}"
 									font-weight="${ifDefined(h.fontWeight)}"
@@ -286,16 +285,43 @@ class CwcLayoutTable extends CustomHTMLElement {
 							<tr>
 								${r.map((c) => html`
 									<td 
-										colspan="${ifDefined(c.colspan)}"
-										justify="${ifDefined(c.justify)}"
-										font-weight="${ifDefined(c.fontWeight)}"
-										?evented="${c.event}"
+										?hidden="${c && c.hidden}"
+										colspan="${ifDefined(c ? c.colspan : undefined)}"
+										justify="${ifDefined(c ? c.justify : undefined)}"
+										font-weight="${ifDefined(c ? c.fontWeight : undefined)}"
+										?evented="${c && c.event}"
 									>
-										${c.value === undefined ? c : c.link !== undefined ? html`
-											<a href="${c.link}">${c.value}</a>
-										` : c.event !== undefined ? html`
-											<cwc-control-button @click="${this._action.bind(this, c.event, r)}">${c.value}</cwc-control-button>
-										` : c.value}
+										${typeof c !== 'object' ? c : c.link ? html`
+											<a href="${c.link}" style="${ifDefined(c.style ? styleMap(c.style) : undefined)}">${c.value}</a>
+										` : c.event ? html`
+											<cwc-control-button ?disabled="${c.disabled}" @click="${this._action.bind(this, c.event, c.detail ? c.detail : r)}" style="${ifDefined(c.style ? styleMap(c.style) : undefined)}">
+												${c.icon && c.icon.type === 'av' ? html`<cwc-icon-material-av class="link-icon" name="${c.icon.name}"></cwc-icon-material-av>` : ''}
+												${c.icon && c.icon.type === 'communication' ? html`<cwc-icon-material-communication class="link-icon" name="${c.icon.name}"></cwc-icon-material-communication>` : ''}
+												${c.icon && c.icon.type === 'device' ? html`<cwc-icon-material-device class="link-icon" name="${c.icon.name}"></cwc-icon-material-device>` : ''}
+												${c.icon && c.icon.type === 'editor' ? html`<cwc-icon-material-editor class="link-icon" name="${c.icon.name}"></cwc-icon-material-editor>` : ''}
+												${c.icon && c.icon.type === 'general' ? html`<cwc-icon-material-general class="link-icon" name="${c.icon.name}"></cwc-icon-material-general>` : ''}
+												${c.icon && c.icon.type === 'hardware' ? html`<cwc-icon-material-hardware class="link-icon" name="${c.icon.name}"></cwc-icon-material-hardware>` : ''}
+												${c.icon && c.icon.type === 'image' ? html`<cwc-icon-material-image class="link-icon" name="${c.icon.name}"></cwc-icon-material-image>` : ''}
+												${c.icon && c.icon.type === 'map' ? html`<cwc-icon-material-map class="link-icon" name="${c.icon.name}"></cwc-icon-material-map>` : ''}
+												${c.icon && c.icon.type === 'notification' ? html`<cwc-icon-material-notification class="link-icon" name="${c.icon.name}"></cwc-icon-material-notification>` : ''}
+												${c.icon && c.icon.type === 'place' ? html`<cwc-icon-material-place class="link-icon" name="${c.icon.name}"></cwc-icon-material-place>` : ''}
+												${c.icon && c.icon.type === 'social' ? html`<cwc-icon-material-social class="link-icon" name="${c.icon.name}"></cwc-icon-material-social>` : ''}
+												${c.value ? c.value : ''}
+											</cwc-control-button>
+										` : html`
+											${c.icon && c.icon.type === 'av' ? html`<cwc-icon-material-av class="link-icon" name="${c.icon.name}"></cwc-icon-material-av>` : ''}
+											${c.icon && c.icon.type === 'communication' ? html`<cwc-icon-material-communication class="link-icon" name="${c.icon.name}"></cwc-icon-material-communication>` : ''}
+											${c.icon && c.icon.type === 'device' ? html`<cwc-icon-material-device class="link-icon" name="${c.icon.name}"></cwc-icon-material-device>` : ''}
+											${c.icon && c.icon.type === 'editor' ? html`<cwc-icon-material-editor class="link-icon" name="${c.icon.name}"></cwc-icon-material-editor>` : ''}
+											${c.icon && c.icon.type === 'general' ? html`<cwc-icon-material-general class="link-icon" name="${c.icon.name}"></cwc-icon-material-general>` : ''}
+											${c.icon && c.icon.type === 'hardware' ? html`<cwc-icon-material-hardware class="link-icon" name="${c.icon.name}"></cwc-icon-material-hardware>` : ''}
+											${c.icon && c.icon.type === 'image' ? html`<cwc-icon-material-image class="link-icon" name="${c.icon.name}"></cwc-icon-material-image>` : ''}
+											${c.icon && c.icon.type === 'map' ? html`<cwc-icon-material-map class="link-icon" name="${c.icon.name}"></cwc-icon-material-map>` : ''}
+											${c.icon && c.icon.type === 'notification' ? html`<cwc-icon-material-notification class="link-icon" name="${c.icon.name}"></cwc-icon-material-notification>` : ''}
+											${c.icon && c.icon.type === 'place' ? html`<cwc-icon-material-place class="link-icon" name="${c.icon.name}"></cwc-icon-material-place>` : ''}
+											${c.icon && c.icon.type === 'social' ? html`<cwc-icon-material-social class="link-icon" name="${c.icon.name}"></cwc-icon-material-social>` : ''}
+											${c.value ? html`<span style="${ifDefined(c.style ? styleMap(c.style) : undefined)}">${c.value}</span>` : ''}
+										`}
 									</td>
 								`)}
 							</tr>
@@ -359,9 +385,9 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Mixed} newValue The new value
 	 */
 	propertyChanged(property, oldValue, newValue) {
-		if (property === 'body' && this.hasAttribute('paginate-internal') && newValue) {
-			this.removeAttribute('loading');
-			this._pageCount = Math.ceil(newValue.length / this._pageSize);
+		if (property === 'body') {
+			if (this.hasAttribute('paginate-internal') && newValue) this._pageCount = Math.ceil(newValue.length / this._pageSize);
+			this._order();
 		}
 
 		this.updateTemplate();
@@ -400,23 +426,30 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Number} idx The index of the column to order
 	 * @param {Event} ev The event that kicked the method
 	 */
-	_order(idx, ev) {		
-		// set direction
-		switch (this.header[idx].order) {
-			case 'asc': this.header[idx].order = 'desc'; break;
-			case 'desc': this.header[idx].order = 'asc'; break;
-			case '': this.header[idx].order = 'asc'; break;
+	_order(idx, ev) {	
+		// set on load?
+		if (idx === undefined) idx = this.header.findIndex((h) => ['asc', 'desc'].indexOf(h.order) >= 0); 
+		else {
+			// switch direction as it was a click
+			switch (this.header[idx].order) {
+				case 'asc': this.header[idx].order = 'desc'; break;
+				case 'desc': this.header[idx].order = 'asc'; break;
+				case '': this.header[idx].order = 'asc'; break;
+			}
 		}
+
 		// remove other heading directions
 		for (let i = 0; i < this.header.length; i++) if (i !== idx && this.header[i].order) this.header[i].order = '';
 
 		// event or order
+		if (!this.header[idx]) return;
+
 		this.dispatchEvent(new CustomEvent('order', { detail: { index: idx, order: this.header[idx].order } }));
 		if (this.hasAttribute('paginate-external')) return;
 		else {
 			this.body = this.body.sort((a, b) => {
-				if (a[idx] < b[idx]) return this.header[idx].order === 'asc' ? -1 : 1;
-				if (a[idx] > b[idx]) return this.header[idx].order === 'asc' ? 1 : -1;
+				if ((a[idx].order ? a[idx].order : a[idx]) < (b[idx].order ? b[idx].order : b[idx])) return this.header[idx].order === 'asc' ? -1 : 1;
+				if ((a[idx].order ? a[idx].order : a[idx]) > (b[idx].order ? b[idx].order : b[idx])) return this.header[idx].order === 'asc' ? 1 : -1;
 				return 0;
 			});
 		}
@@ -520,7 +553,7 @@ class CwcLayoutTable extends CustomHTMLElement {
 	 * @param {Object} row The row of data that emitted the action
 	 */
 	_action(event, row) {
-		this.dispatchEvent(new CustomEvent(event, { detail: { row: row } }))
+		this.dispatchEvent(new CustomEvent(event, { detail: row }))
 	} 
 }
 

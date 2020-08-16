@@ -71,13 +71,6 @@ export default class CWCResourceStore {
 	 * @return Boolean If the data was removed
 	 */
 	deleteItem(key) {
-		// blank key or value
-		var result = false;
-		if (!key || typeof key !== 'string' || key.charAt(key.length - 1) == '.') return result;
-
-		// remove value
-		if (localStorage[this.baseName + '.store.' + key]) return localStorage.removeItem(this.baseName + '.store.' + key);
-
-		return false;
+		localStorage.removeItem(this.baseName + '.store.' + key);
 	}
 }

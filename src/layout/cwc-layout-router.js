@@ -128,7 +128,7 @@ class CWCLayoutRouter extends CustomHTMLElement {
      * @param {String} path The path of the route
 	 */
 	_permitted(permission, type) {
-		permission = this.permissions.filter((perm) => perm.role === permission)[0] || {};
+		permission = this.permissions ? this.permissions.filter((perm) => perm.role === permission)[0] || {} : {};
 		return permission[type];
 	}
 
@@ -140,25 +140,21 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 */
 	updateRoute(data) {
 		let path;
+		let route;
 
 		// empty route or popstate event, work out route from url | route passed in as route | route passed as string path string
 		if (!data || data.type === 'popstate') path = this.hasAttribute('push-state') ? window.location.pathname.replace(/^\/|\/$/g, '') : window.location.hash.replace(/^\#|\#$/g, '');
-		else if (data.path !== undefined) path = data.path.replace(/^\/|\/$/g, '');
-		else if (data.length) path = data.replace(/^\/|\/$/g, '');
-		else return;
+		else if (typeof data === 'object' && data.path) route = data;
+		else if (typeof data === 'string') path = data.replace(/^\/|\/$/g, '');
 
-		// resolve from path
-		let route = this._getRouteFromPath(path);
-		let routeDefault = this._getRouteFromPath(this.getAttribute('default'));
-		let routeNotFound = this._getRouteFromPath(this.getAttribute('not-found'));
-		let routeNotAllowed = this._getRouteFromPath(this.getAttribute('not-allowed'));
-		if (route && route.prefix) route.parameters = path.split(route.prefix)[1].replace(/^\/|\/$/g, '').split('/');
-
-		// not set, load default, set then load, else 404
-		if (route && route.permission && !this._permitted(route.permission, 'read')) this._loadRoute(routeNotAllowed);
-		else if (!path) this._loadRoute(routeDefault);
+		// resolve route if not resolved
+		route = route ? route : this._getRouteFromPath(path);
+		
+		// load route or a fallback
+		if (route && route.permission && !this._permitted(route.permission, 'read')) this._loadRoute(this._getRouteFromPath(this.getAttribute('not-allowed')));
+		else if (!route && !path) this._loadRoute(this._getRouteFromPath(this.getAttribute('default')));
 		else if (route) this._loadRoute(route);
-		else this._loadRoute(routeNotFound);
+		else this._loadRoute(this._getRouteFromPath(this.getAttribute('not-found')));
 	}
 
 	/**
@@ -170,7 +166,9 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 * @return {Object} The route object
 	 */
 	_getRouteFromPath(path) {
-		return this.routes.filter(selected => !selected.prefix ? selected.path === path : path.indexOf(selected.prefix + (selected.prefix.charAt(selected.prefix.length - 1) != '/' ? '/' : '')) === 0)[0] || undefined;
+		let route = this.routes.find((r) => r.match ? (new RegExp(r.match)).test(path) || (new RegExp(`^${r.path}$`)).test(path) : (new RegExp(`^${r.path}$`)).test(path));
+		if (route && route.match) route.parameters = path.match(new RegExp(route.match));
+		return route; 
 	}
 
 	/**
@@ -183,6 +181,9 @@ class CWCLayoutRouter extends CustomHTMLElement {
 		// should we load route, has it changed
 		if (this._selected && this._selected.component == selected.component) return;
 
+		// set fresh load, to skip hash update in URL
+		let fresh = this._selected === this.route;
+		
 		// set route
 		this._selected = selected;
 		this.route = selected;
@@ -197,12 +198,14 @@ class CWCLayoutRouter extends CustomHTMLElement {
 				});
 		} else this._paintRoute(selected.component);
 
+		if (fresh) return;
+
 		// persist history/location
 		if (this.hasAttribute('push-state')) {
 			// should we redirect default to path
-			let path = this._selected.path !== this.getAttribute('default') ? this._selected.path : (this.hasAttribute('redirect') ? this._selected.path : '');
+			let path = this.route.path !== this.getAttribute('default') ? this.route.path : (this.hasAttribute('redirect') ? this.route.path : '');
 			history.pushState({ 'route': path }, '', path);
-		} else window.location.hash = this._selected.path;
+		} else window.location.hash = this.route.path;
 	}
 
 	/**
@@ -213,6 +216,8 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 */
 	_paintRoute(component) {
 		this.shadowRoot.innerHTML = `<${component}></${component}>`;
+		let comp = this.shadowRoot.querySelector(component);
+		comp.route = this.route;
 		this.dispatchEvent(new CustomEvent('change', { detail: this._selected }));
 
 		setTimeout(() => window.scrollTo({ left: 0, top: 0, behavior: 'smooth' }), 200);

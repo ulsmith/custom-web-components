@@ -266,7 +266,7 @@ class CWCCaptureInput extends CustomHTMLElement {
 	 * @description Callback run once the custom element has been added to the DOM and template is rendered
 	 */
 	connected() {
-		if (this.hasAttribute('validate-on-load') || !!this.value) {
+		if (this.hasAttribute('validate-on-load')) {
 			this.validate(this.value);
 			this.updateTemplate();
 		}
@@ -281,14 +281,25 @@ class CWCCaptureInput extends CustomHTMLElement {
 	}
 
 	/**
+	 * @private @name valid
+	 * @description Check if value is valid but do not fire validation
+     * @param {Event} ev Any event that kicks the function
+	 */
+	isInvalid(value) {
+		let v = value === undefined ? this.value : value;
+		let i = this.hasAttribute('regex') && !((new RegExp(this.getAttribute('regex'))).test(v)) ? true : false;
+		i = this.hasAttribute('required') ? (!v || v.length < 1 ? true : i) : (!v || v.length < 1 ? false : i);
+
+		return i;
+	}
+
+	/**
 	 * @private @name validate
 	 * @description Validate for errors based on required or regex
      * @param {Event} ev Any event that kicks the function
 	 */
 	validate(value) {
-		value = value === undefined ? this.value : value;
-		this.invalid = this.hasAttribute('regex') && !((new RegExp(this.getAttribute('regex'))).test(value)) ? true : false;
-		this.invalid = this.hasAttribute('required') ? (!value || value.length < 1 ? true : this.invalid) : (!value || value.length < 1 ? false : this.invalid);
+		this.invalid = this.isInvalid(value);
 
 		if (this.invalid) this.setAttribute('invalid', '');
 		else this.removeAttribute('invalid');

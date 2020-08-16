@@ -157,6 +157,8 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 		this._messageType;
 		this._messageIcon;
 		this._messageText;
+		this._lastAuth;
+		this._authDebounce;
 	}
 
 	/**
@@ -261,6 +263,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 				}
 
 				.main button {
+					font-family: inherit;
 					padding: var(--cwc-overlay-authentication--box-main--button--padding, 0 10px);
 					position: var(--cwc-overlay-authentication--box-main--button--position, absolute);
 					right: var(--cwc-overlay-authentication--box-main--button--right, 10px);
@@ -268,7 +271,34 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 					height: var(--cwc-overlay-authentication--box-main--button--height, 30px);
 					border: var(--cwc-overlay-authentication--box-main--button--border, darkblue);
 					background: var(--cwc-overlay-authentication--box-main--button--background, blue);
+					outline: var(--cwc-overlay-authentication--box-main--button--outline, blue);
 					color: var(--cwc-overlay-authentication--box-main--button--color, white);
+					cursor: var(--cwc-overlay-authentication--box-main--button--cursor, default);
+					opacity: var(--cwc-overlay-authentication--box-main--button--opacity, 1);
+				}
+
+				.main button:hover {
+					border: var(--cwc-overlay-authentication--box-main--button--border--hover, var(--cwc-overlay-authentication--box-main--button--border, darkblue));
+					background: var(--cwc-overlay-authentication--box-main--button--background--hover, var(--cwc-overlay-authentication--box-main--button--background, blue));
+					outline: var(--cwc-overlay-authentication--box-main--button--outline--hover, var(--cwc-overlay-authentication--box-main--button--outline, blue));
+					color: var(--cwc-overlay-authentication--box-main--button--color--hover, var(--cwc-overlay-authentication--box-main--button--color, white));
+					opacity: var(--cwc-overlay-authentication--box-main--button--opacity--hover, var(--cwc-overlay-authentication--box-main--button--opacity, 1));
+				}
+
+				.main button:focus {
+					border: var(--cwc-overlay-authentication--box-main--button--border--focus, var(--cwc-overlay-authentication--box-main--button--border, darkblue));
+					background: var(--cwc-overlay-authentication--box-main--button--background--focus, var(--cwc-overlay-authentication--box-main--button--background, blue));
+					outline: var(--cwc-overlay-authentication--box-main--button--outline--focus, var(--cwc-overlay-authentication--box-main--button--outline, blue));
+					color: var(--cwc-overlay-authentication--box-main--button--color--focus, var(--cwc-overlay-authentication--box-main--button--color, white));
+					opacity: var(--cwc-overlay-authentication--box-main--button--opacity--focus, var(--cwc-overlay-authentication--box-main--button--opacity, 1));
+				}
+
+				.main button:active {
+					border: var(--cwc-overlay-authentication--box-main--button--border--active, var(--cwc-overlay-authentication--box-main--button--border, darkblue));
+					background: var(--cwc-overlay-authentication--box-main--button--background--active, var(--cwc-overlay-authentication--box-main--button--background, blue));
+					outline: var(--cwc-overlay-authentication--box-main--button--outline--active, var(--cwc-overlay-authentication--box-main--button--outline, blue));
+					color: var(--cwc-overlay-authentication--box-main--button--color--active, var(--cwc-overlay-authentication--box-main--button--color, white));
+					opacity: var(--cwc-overlay-authentication--box-main--button--opacity--active, var(--cwc-overlay-authentication--box-main--button--opacity, 1));
 				}
 
 				.main button[disabled] {
@@ -370,6 +400,18 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 					border-radius: var(--cwc-overlay-authentication--auth-icon--border-radius, 50px);
 				}
 
+				.close-link { 
+					display: var(--cwc-overlay-authentication--close-link--display, block);
+					position: absolute;
+					top: var(--cwc-overlay-authentication--close-link--top, -20px);
+					right: 0px;
+					color: var(--cwc-overlay-authentication--close-link--color, red);
+					opacity: var(--cwc-overlay-authentication--close-link--opacity, 0.8);
+					cursor: var(--cwc-overlay-authentication--close-link--cursor, pointer);
+				}
+
+				.close-link:hover { opacity: 1; }
+
 				@keyframes pulse {
 					0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7); }
 					70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0); }
@@ -381,6 +423,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 				<div class="backdrop"></div>
 				<div class="wrapper">
 					<div id="detail-box" class="box" ?hidden="${this._action === 'authenticate'}">
+						<span class="close-link" @click="${this.close.bind(this)}">Close</span>
 						<div class="header">
 							<h1 ?hidden="${this._action !== 'login'}">Log In</h1>
 							<h1 ?hidden="${this._action !== 'reset'}">Reset Password</h1>
@@ -436,7 +479,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 							<span ?hidden="${this._action === 'login'}" @click="${this._switch.bind(this, 'login')}">Log in</span>
 						</div>
 						<div class="bumpf">
-							<span>&copy;2020 Project 7</span>
+							<span>&copy;${(new Date()).getFullYear()} ${this.getAttribute('system-name')}</span>
 							<span class="version">V${this.getAttribute('system-version')}</span>
 						</div>
 					</div>
@@ -479,12 +522,15 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 		this._store = new CWCResourceStore(this.getAttribute('system-key'));
 		this._request = new CWCResourceRequest(this.getAttribute('system-key'));
 		this._request.setBaseUrl(this.getAttribute('api-url'));
+		this._authDebounce = this.hasAttribute('auth-debounce') ? Number(this.hasAttribute('auth-debounce')) : 60000;
 
 		// login or auth on load
-		if (!!this._request.hasToken()) this.authenticate();
-		else {
-			this._action = 'login';
-			this.updateTemplate();
+		if (!!this._request.hasToken()) {
+			this.authenticate();
+		} else if (!this.hasAttribute('show-on-load')) {
+			this.shadowRoot.querySelector('#login').style.opacity = 0;
+			this.shadowRoot.querySelector('#login').style.display = 'none';
+		} else {
 			this.login(); 
 		}
 	}
@@ -494,6 +540,9 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 	 * @description Show the login overlay
 	 */
 	login() {
+		this._action = 'login';
+		this.updateTemplate();
+
 		// sniff out a password reset
 		if (this.route && this.route.path && this.hasAttribute('register-route') && this.route.path === this.getAttribute('register-route')) {
 			this._token = undefined;
@@ -533,41 +582,49 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 	 * @description Tell the auth module to re-auth the user
 	 */
 	authenticate() {
-		clearTimeout(this.authenticateDebounce);
+		if (!this._request.hasToken() && !this.route) return;
+		if (this._lastAuth && Date.now() < this._lastAuth + this._authDebounce) return;
+		this._lastAuth = Date.now();
 
-		this.authenticateDebounce = setTimeout(() => {
-			// sniff out a password reset
-			if (!this._request.hasToken()) {
-				switch (this.route.prefix) {
-					case this.getAttribute('register-route'):
-						this._token = this.route.parameters[0];
-						this._switch('register-confirm');
-						return;
-					case this.getAttribute('reset-route'):
-						this._token = this.route.parameters[0];
-						this._switch('reset-confirm');
-						return;
-					case this.getAttribute('activate-route'):
-						this._token = this.route.parameters[0];
-						this._switch('activate-confirm');
-						return;
-				}
-
+		// sniff out a password reset
+		if (!this._request.hasToken() && this.route) {
+			switch (this.route.path) {
+				case this.getAttribute('register-route'):
+					this._token = this.route.parameters[1];
+					this._switch('register-confirm');
+					this.shadowRoot.querySelector('#login').style.display = 'block';
+					setTimeout(() => this.shadowRoot.querySelector('#login').style.opacity = 1, 10);
+					return;
+				case this.getAttribute('reset-route'):
+					this._token = this.route.parameters[1];
+					this._switch('reset-confirm');
+					this.shadowRoot.querySelector('#login').style.display = 'block';
+					setTimeout(() => this.shadowRoot.querySelector('#login').style.opacity = 1, 10);
+					return;
+				case this.getAttribute('activate-route'):
+					this._token = this.route.parameters[1];
+					this._switch('activate-confirm');
+					this.shadowRoot.querySelector('#login').style.display = 'block';
+					setTimeout(() => this.shadowRoot.querySelector('#login').style.opacity = 1, 10);
+					return;
 			}
+		}
 
-			// show authenticating
-			this._request.get('account/authenticate').then((response) => {
-				this.shadowRoot.querySelector('#login').style.opacity = 0;
-				setTimeout(() => this.shadowRoot.querySelector('#login').style.display = 'none', 500);
-				this._store.setItem('auth.user', response.data.user);
-				this._store.setItem('auth.organisation', response.data.organisation);
-				this._store.setItem('auth.permissions', response.data.permissions);
-				this.dispatchEvent(new CustomEvent('change', { detail: response.data }));
-			}).catch((error) => {
-				this._request.deleteToken();
-				this.dispatchEvent(new CustomEvent('change', { detail: {} }));
-			});
-		}, 10);
+		// show authenticating
+		this._request.get('account/authenticate').then((response) => {
+			this.shadowRoot.querySelector('#login').style.opacity = 0;
+			setTimeout(() => this.shadowRoot.querySelector('#login').style.display = 'none', 500);
+			this._store.setItem('auth.user', response.data.user);
+			this._store.setItem('auth.organisation', response.data.organisation);
+			this._store.setItem('auth.permissions', response.data.permissions);
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'authenticate', data: response.data }}));
+		}).catch((error) => {
+			this._store.deleteItem('auth.user');
+			this._store.deleteItem('auth.organisation');
+			this._store.deleteItem('auth.permissions');
+			this._request.deleteToken();
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'authenticate', data: {} } }));
+		});
 	}
 
 	/**
@@ -576,9 +633,17 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 	 */
 	terminate() {
 		this._request.deleteToken();
-		this._switch('login');
+		this._store.deleteItem('auth.user');
+		this._store.deleteItem('auth.organisation');
+		this._store.deleteItem('auth.permissions');
+		if (this.hasAttribute('show-on-load')) this._switch('login');
 
-		this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+		this.dispatchEvent(new CustomEvent('change', { detail: { type: 'terminate', data: {} } }));
+	}
+
+	close() {
+		this.shadowRoot.querySelector('#login').style.opacity = 0;
+		setTimeout(() => this.shadowRoot.querySelector('#login').style.display = 'none', 500);
 	}
 
 	/**
@@ -623,7 +688,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this._store.setItem('auth.user', response.data.user);
 			this._store.setItem('auth.organisation', response.data.organisation);
 			this._store.setItem('auth.permissions', response.data.permissions);
-			this.dispatchEvent(new CustomEvent('change', { detail: response.data }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'login', data: response.data } }));
 
 			identity.value = '';
 			password.value = '';
@@ -642,7 +707,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'login', data: {} } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 
@@ -677,6 +742,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 
 			message.setAttribute('show', '');
 			this._action = 'login';
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'reset', data: true } }));
 		}).catch((response) => {
 			this._request.deleteToken();
 
@@ -689,7 +755,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'reset', data: false } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 
@@ -722,10 +788,12 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this._token = undefined;
 			this._messageType = 'success';
 			this._messageIcon = 'check';
-			this._messageText = 'Password reset successfully';
+			this._messageText = 'Password reset successfully, redirecting...';
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'reset-confirm', data: true } }));
+			setTimeout(() => window.location.href = '/', 2000);
 		}).catch((response) => {
 			identity.setAttribute('invalid', '');
 			identity.value = '';
@@ -739,7 +807,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'reset-confirm', data: false } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 
@@ -777,6 +845,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this._token = undefined;
 			this.updateTemplate();
 			message.setAttribute('show', '');
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'register', data: true } }));
 		}).catch((response) => {
 			identity.setAttribute('invalid', '');
 			identity.value = '';
@@ -790,7 +859,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'register', data: false } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 
@@ -824,6 +893,8 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'register-confirm', data: true } }));
+			setTimeout(() => window.location.href = '/', 2000);
 		}).catch((response) => {
 			identity.setAttribute('invalid', '');
 			identity.value = '';
@@ -833,7 +904,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'register-confirm', data: false } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 
@@ -856,10 +927,12 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this._token = undefined;
 			this._messageType = 'success';
 			this._messageIcon = 'check';
-			this._messageText = 'User Activated';
+			this._messageText = 'User Activated, redirecting...';
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'activate-confirm', data: true } }));
+			setTimeout(() => window.location.href = '/', 2000);
 		}).catch((response) => {
 			this._messageType = 'danger';
 			this._messageIcon = 'warning';
@@ -867,7 +940,7 @@ class CWCOverlayAuthentication extends CustomHTMLElement {
 			this.updateTemplate();
 
 			message.setAttribute('show', '');
-			this.dispatchEvent(new CustomEvent('change', { detail: {} }));
+			this.dispatchEvent(new CustomEvent('change', { detail: { type: 'activate-confirm', data: false } }));
 		}).then(() => button.removeAttribute('disabled'));
 	}
 }
