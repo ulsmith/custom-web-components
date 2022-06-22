@@ -89,6 +89,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 		this.route;
 		this.routes = [];
 		this.permissions;
+		this.authed;
 
 		// private
 		this._windowEvent;
@@ -210,7 +211,13 @@ class CWCLayoutDockable extends CustomHTMLElement {
 						</div>
 						<div class="menu-routes">
 							<ul>
-								${this.routes.map((route) => (route.hidden === true || (route.hidden === 'unauthorized' && route.permission && !this._permitted(route.permission, 'read')) ? '' : html`
+								${this.routes.filter((route) => 
+									!((route.hidden === true) || 
+									(route.hidden === 'authorized' && this.authed) ||
+									(route.hidden === 'unauthorized' && !this.authed) || 
+									(route.hidden === 'permitted' && route.permission && this._permitted(route.permission, 'read')) || 
+									(route.hidden === 'unpermitted' && (!route.permission || !this._permitted(route.permission, 'read'))))
+								).map((route) => html`
 									<li ?selected="${this.route && this.route.component == route.component}">
 										<a class="link" href="/${route.path}" @click="${this.changeRoute.bind(this, route)}" shrinkable ?shrink="${this._shrink}">
 											${route.icon && route.icon.type === 'av' ? html`<cwc-icon-material-av class="link-icon" name="${route.icon.name}"></cwc-icon-material-av>` : ''}
@@ -228,7 +235,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 											<span class="full" shrinkable ?shrink="${this._shrink}">${route.label}</span>
 										</a>
 									</li>
-								`))}
+								`)}
 							</ul>
 						</div>
 						<div class="menu-footer" shrinkable ?shrink="${this._shrink}">
