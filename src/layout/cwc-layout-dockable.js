@@ -21,7 +21,7 @@ import '../icon/material/index.js';
  * @property {Object} route.path The url path to match such as some/url would match http://yoursite.com/some/url
  * @property {Object} route.prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
  * @property {Object} route.label The label to use when displaying links in the menu
- * @property {Object} route.hidden Do not show the route in the menu
+ * @property {Object} route.show Do not show the route in the menu when set and false
  * @property {Object} route.permission The permission you need to have to view the route with cwc-layout-router
  * @property {Array[Object]} routes Array of routes to use for menu items
  *
@@ -122,6 +122,7 @@ class CWCLayoutDockable extends CustomHTMLElement {
 					overflow-y: auto; 
 					box-sizing: border-box; 
 					transition: left 0.4s ease-in-out;
+					background: var(--cwc-layout-dockable--menu--background, #eee); 
 				}
 
 				.structure-menu .structure-menu-box { 
@@ -139,8 +140,8 @@ class CWCLayoutDockable extends CustomHTMLElement {
 				.structure-menu .structure-menu-box .menu-routes { flex: 50 1; padding: var(--cwc-layout-dockable--menu-routes--padding, 0px); }
 				.structure-menu .structure-menu-box .menu-routes ul { margin: 0; padding: 0; list-style-type: none; }
 				.structure-menu .structure-menu-box .menu-routes ul li { cursor: pointer; padding: var(--cwc-layout-dockable--menu-route--padding, 0px); opacity: var(--cwc-layout-dockable--menu-route--opacity, 0.9); }
-				.structure-menu .structure-menu-box .menu-routes ul li[selected] { background: var(--cwc-layout-dockable--menu-route--selected--background, #33333311); }
-				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: var(--cwc-layout-dockable--menu-route--background--hover, #33333322); }
+				.structure-menu .structure-menu-box .menu-routes ul li[selected] { background: var(--cwc-layout-dockable--menu-route--selected--background, #33333333); }
+				.structure-menu .structure-menu-box .menu-routes ul li:hover { background: var(--cwc-layout-dockable--menu-route--background--hover, #33333355); }
 				.structure-menu .structure-menu-box .menu-routes ul li a.link { display: block; padding: var(--cwc-layout-dockable--menu-route--link--padding, 15px); text-decoration: none; color: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); fill: var(--cwc-layout-dockable--menu-routes--color, var(--cwc-layout-dockable--menu--color, #222)); }
 				.structure-menu .structure-menu-box .menu-routes ul li a.link .link-icon { width: 20px; height:20px; padding: 0; }
 				.structure-menu .structure-menu-box .menu-footer { flex: 1 1; padding: var(--cwc-layout-dockable--menu-footer--padding, 15px); color: var(--cwc-layout-dockable--menu-footer--color, var(--cwc-layout-dockable--menu--color, #222)); }
@@ -212,11 +213,12 @@ class CWCLayoutDockable extends CustomHTMLElement {
 						<div class="menu-routes">
 							<ul>
 								${this.routes.filter((route) => 
-									!((route.hidden === true) || 
-									(route.hidden === 'authorized' && this.authed) ||
-									(route.hidden === 'unauthorized' && !this.authed) || 
-									(route.hidden === 'permitted' && route.permission && this._permitted(route.permission, 'read')) || 
-									(route.hidden === 'unpermitted' && (!route.permission || !this._permitted(route.permission, 'read'))))
+									(route.show === 'authorized' && this.authed) ||
+									(route.show === 'unauthorized' && !this.authed) || 
+									(route.show === 'permitted' && this.authed && route.permission && this._permitted(route.permission, 'read')) || 
+									(route.show === 'unpermitted' && this.authed && (!route.permission || !this._permitted(route.permission, 'read'))) ||
+									route.show === undefined ||
+									route.show === true
 								).map((route) => html`
 									<li ?selected="${this.route && this.route.component == route.component}">
 										<a class="link" href="/${route.path}" @click="${this.changeRoute.bind(this, route)}" shrinkable ?shrink="${this._shrink}">
@@ -258,17 +260,15 @@ class CWCLayoutDockable extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['routes', 'route','permissions'];
+		return ['routes', 'route', 'permissions', 'authed'];
 	}
 
 	/**
-	 * @public @name propertyChanged
+	 * @public @name propertiesChanged
 	 * @description Callback run when an observed property changes value
-	 * @param {String} property The property that changed
-	 * @param {Mixed} oldValue The old value
-	 * @param {Mixed} newValue The new value
+	 * @param {Array} properties The property that changed
 	 */
-	propertyChanged(property, oldValue, newValue) {
+	propertiesChanged(properties) {
 		this.updateTemplate();
 	}
 

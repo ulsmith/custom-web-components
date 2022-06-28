@@ -11,6 +11,8 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * 
  * @event change The route has been changed and is painted to the DOM
  * 
+ * @property {Boolean} authed Is th ecurrent user authenticated or not, used to determin access
+ * 
  * @property {Object} route The route selected { component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' }
  * @property {Array[Object]} routes The routes to use as array of objects [{ component: 'app-system-account', path: 'account', label: 'Account', hidden: true, permission: 'ui.route.account' },...]
  * @property {Array[Object.String]} routes[].src (optional) The full src path to the component, if you wish to dynamically import, omit if loading all routes manually
@@ -18,7 +20,8 @@ import { CustomHTMLElement, html } from '../../../custom-web-component/index.js'
  * @property {Array[Object.String]} routes[].path The url path to match such as some/url would match http://yoursite.com/some/url
  * @property {Array[Object.String]} routes[].prefix The url prefix to match instead of the full path, such as some/url would match http://yoursite.com/some/url/fsdfsdfsdfsd
  * @property {Array[Object.String]} routes[].label The label to use when displaying links in the menu
- * @property {Array[Object.Boolean]} routes[].hidden Do not show the route in the menu
+ * @property {Array[Object.Boolean]} routes[].show Do show the route in the menu as true, false, authorized, unauthorized, permitted, unpermitted (need permissions)
+ * @property {Array[Object.Boolean]} routes[].access Access to  the route as true, false, authorized, unauthorized, permitted, unpermitted (need permissions)
  * @property {Array[Object.String]} routes[].permission The permission you need to have to view the route such as ui.route.something
  * @property {Array[Object]} permissions The permissions for the user logged in, as an array of objects [{role, 'ur.role.name', read: true, write, true, delete: true}, ...]
  * @property {Array[Object.String]} permissions[].role The role that needs to match to the permission in the route
@@ -46,10 +49,12 @@ class CWCLayoutRouter extends CustomHTMLElement {
 		this.route;
 		this.routes;
 		this.permissions;
+		this.authed;
 
 		// private
 		this._windowEvent;
 		this._selected;
+		this._failedRoute;
 	}
 
 	/**
@@ -72,7 +77,7 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 * @return {Array} An array of string property names (camelcase)
 	 */
 	static get observedProperties() {
-		return ['route', 'routes', 'permissions'];
+		return ['permissions', 'authed', 'routes', 'route'];
 	}
 
 	/**
@@ -82,7 +87,7 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 * @return {Array} An array of string attribute names (hyphoned)
 	 */
 	static get observedAttributes() {
-		return ['default', 'not-found', 'push-state', 'redirect'];
+		return ['default', 'not-found', 'not-allowed', 'push-state', 'redirect'];
 	}
 
 	/**
@@ -102,15 +107,13 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	}
 
 	/**
-	 * @public @name propertyChanged
-	 * @description Lifecycle hook that gets called when the elements observed properties change
-     * 
-	 * @param {String} property Name of the property changed
-     * @param {Mixed} oldValue Value before the change
-     * @param {Mixed} newValue Value after the change
+	 * @public @name propertiesChanged
+	 * @description Lifecycle hook that gets called when the all elements observed properties have finished changing for this cycle
+	 * 
+	 * @param {Array} properties The names of the properties updated
 	 */
-	propertyChanged(property, oldValue, newValue) {
-		if (property === 'route' && this.routes) this.updateRoute(newValue);
+	propertiesChanged(properties) {
+		this.updateRoute(this._failedRoute || this.route);
 	}
 
 	/**
@@ -139,22 +142,40 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	 * @param {Mixed} data The new route as a route object ({component: 'some-thing', route: 'one'}), or a route string 'one'
 	 */
 	updateRoute(data) {
-		let path;
-		let route;
+		setTimeout(() => {
+			let path;
+			let route;
+	
+			// empty route or popstate event, work out route from url | route passed in as route | route passed as string path string
+			if (!data || data.type === 'popstate') path = this.hasAttribute('push-state') ? window.location.pathname.replace(/^\/|\/$/g, '') : window.location.hash.replace(/^\#|\#$/g, '');
+			else if (typeof data === 'object' && data.path) route = data;
+			else if (typeof data === 'string') path = data.replace(/^\/|\/$/g, '');
+	
+			// resolve route if not resolved
+			route = route ? route : this._getRouteFromPath(path);
+			
+			// load route
+			if (route) {
+				// if this came throuhg on a likewsie match then we want to store this
+				if (route.match && path) route.rawPath = path;
 
-		// empty route or popstate event, work out route from url | route passed in as route | route passed as string path string
-		if (!data || data.type === 'popstate') path = this.hasAttribute('push-state') ? window.location.pathname.replace(/^\/|\/$/g, '') : window.location.hash.replace(/^\#|\#$/g, '');
-		else if (typeof data === 'object' && data.path) route = data;
-		else if (typeof data === 'string') path = data.replace(/^\/|\/$/g, '');
-
-		// resolve route if not resolved
-		route = route ? route : this._getRouteFromPath(path);
-		
-		// load route or a fallback
-		if (route && route.permission && !this._permitted(route.permission, 'read')) this._loadRoute(this._getRouteFromPath(this.getAttribute('not-allowed')));
-		else if (!route && !path) this._loadRoute(this._getRouteFromPath(this.getAttribute('default')));
-		else if (route) this._loadRoute(route);
-		else this._loadRoute(this._getRouteFromPath(this.getAttribute('not-found')));
+				if (			
+					(route.access === 'authorized' && this.authed) ||
+					(route.access === 'unauthorized' && !this.authed) ||
+					(route.access === 'permitted' && this.authed && route.permission && this._permitted(route.permission, 'read')) ||
+					(route.access === 'unpermitted' && this.authed && (!route.permission || !this._permitted(route.permission, 'read'))) ||
+					route.access === undefined ||
+					route.access === true
+				) this._loadRoute(route);
+				else {
+					this._failedRoute = route;
+					this._loadRoute(this._getRouteFromPath(this.getAttribute('not-allowed')));
+				}
+			} else {
+				if (!path) this._loadRoute(this._getRouteFromPath(this.getAttribute('default')));
+				else this._loadRoute(this._getRouteFromPath(this.getAttribute('not-found')));
+			}
+		}, 5)
 	}
 
 	/**
@@ -180,13 +201,13 @@ class CWCLayoutRouter extends CustomHTMLElement {
 	_loadRoute(selected) {
 		// should we load route, has it changed
 		if (this._selected && this._selected.component == selected.component) return;
-
-		// set fresh load, to skip hash update in URL
-		let fresh = this._selected === this.route;
 		
 		// set route
 		this._selected = selected;
 		this.route = selected;
+
+		// if this route is good then clear failed route
+		if (this.route.path !== this.getAttribute('not-allowed')) this._failedRoute = undefined;
 
 		// if component was not loaded in routes file, 
 		if (!customElements.get(selected.component)) {
@@ -198,14 +219,12 @@ class CWCLayoutRouter extends CustomHTMLElement {
 				});
 		} else this._paintRoute(selected.component);
 
-		if (fresh) return;
-
 		// persist history/location
 		if (this.hasAttribute('push-state')) {
 			// should we redirect default to path
-			let path = this.route.path !== this.getAttribute('default') ? this.route.path : (this.hasAttribute('redirect') ? this.route.path : '');
+			let path = this.route.path !== this.getAttribute('default') ? this.route.rawPath || this.route.path : (this.hasAttribute('redirect') ? this.route.rawPath || this.route.path : '');
 			history.pushState({ 'route': path }, '', path);
-		} else window.location.hash = this.route.path;
+		} else window.location.hash = this.route.rawPath || this.route.path;
 	}
 
 	/**
